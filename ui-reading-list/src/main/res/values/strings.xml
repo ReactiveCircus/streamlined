@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="title_reading_list">Reading list</string>
+
+    <string name="empty_reading_list">No saved stories.</string>
+
+</resources>

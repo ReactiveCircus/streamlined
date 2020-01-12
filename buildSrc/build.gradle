@@ -1,0 +1,45 @@
+buildscript {
+    apply from: 'buildDependencies.gradle'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath build.kotlinGradlePlugin
+    }
+}
+
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'kotlin'
+
+repositories {
+    google()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation build.kotlinGradlePlugin
+    implementation build.kotlinSerializationPlugin
+    implementation build.androidGradlePlugin
+    implementation build.detektGradlePlugin
+    implementation build.sqlDelightGradlePlugin
+}
+
+gradlePlugin {
+    plugins {
+        streamlined {
+            id = 'streamlined-plugin'
+            implementationClass = 'io.github.reactivecircus.streamlined.build.StreamlinedPlugin'
+        }
+    }
+}
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="io.github.reactivecircus.streamlined.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/headlinesFragment"
+        android:name="io.github.reactivecircus.streamlined.headlines.HeadlinesFragment"
+        android:label="@string/title_headlines"
+        tools:layout="@layout/fragment_headlines" />
+
+    <fragment
+        android:id="@+id/readingListFragment"
+        android:name="io.github.reactivecircus.streamlined.readinglist.ReadingListFragment"
+        android:label="@string/title_reading_list"
+        tools:layout="@layout/fragment_reading_list" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="io.github.reactivecircus.streamlined.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

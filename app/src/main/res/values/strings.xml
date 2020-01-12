@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="menu_title_home">Home</string>
+    <string name="menu_title_headlines">Headlines</string>
+    <string name="menu_title_reading_list">Readings</string>
+    <string name="menu_title_settings">Settings</string>
+
+</resources>

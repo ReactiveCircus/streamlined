@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--LIGHT COLOR THEME-->
+
+    <!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
+    <!--colorSecondary colors are most often used as accents on components, such as FABs and -->
+    <!--selection controls.-->
+    <color name="color_primary">#1565c0</color>
+    <color name="color_primary_variant">#003c8f</color>
+    <color name="color_secondary">#2e2858</color>
+    <color name="color_secondary_variant">#2e2858</color>
+
+    <!--colorBackground appears behind scrollable content and is used for the default window-->
+    <!--background. colorSurface is mapped to the surface of components such as cards, sheets-->
+    <!--and menus. colorError is used to indicate an error state for components such as-->
+    <!--text fields.-->
+    <color name="color_background">#f6f9ff</color>
+    <color name="color_surface">#f6f9ff</color>
+    <color name="color_error">#b00020</color>
+
+    <!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
+    <!--on which they appear.-->
+    <color name="color_on_primary">#ffffff</color>
+    <color name="color_on_secondary">#f6f9ff</color>
+    <color name="color_on_background">#2e2858</color>
+    <color name="color_on_surface">#2e2858</color>
+    <color name="color_on_error">#ffffff</color>
+
+</resources>

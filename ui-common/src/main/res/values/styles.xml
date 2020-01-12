@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Bottom Sheets-->
+    <style name="ThemeOverlay.AppTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.AppTheme.BottomSheet.Modal</item>
+        <item name="android:navigationBarColor">?colorSurface</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
+    </style>
+    <style name="Widget.AppTheme.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">?shapeAppearanceLargeComponent</item>
+    </style>
+
+    <!--Navigation Drawer-->
+    <style name="Widget.AppTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextAppearance">?textAppearanceBody2</item>
+    </style>
+
+    <!--AppBarLayout-->
+    <style name="Widget.AppTheme.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+        <item name="android:translationZ">@dimen/dimen_4</item>
+    </style>
+
+    <!--Toolbar-->
+    <style name="Widget.AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="titleTextAppearance">@style/Widget.AppTheme.Toolbar.Title</item>
+    </style>
+    <style name="Widget.AppTheme.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="fontFamily">@font/fjalla_one</item>
+        <item name="android:textSize">@dimen/toolbar_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--Bottom Navigation View-->
+    <style name="Widget.AppTheme.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/Widget.AppTheme.BottomNavigationView.TextAppearanceActive</item>
+        <item name="itemIconTint">@color/bottom_nav_color</item>
+        <item name="itemTextColor">@color/bottom_nav_color</item>
+    </style>
+    <style name="Widget.AppTheme.BottomNavigationView.TextAppearanceActive" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/fira_sans_condensed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

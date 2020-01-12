@@ -1,0 +1,63 @@
+build:
+  maxIssues: 0
+
+processors:
+  active: true
+
+console-reports:
+  active: true
+
+comments:
+  active: true
+
+complexity:
+  active: true
+  LongMethod:
+    active: false
+
+empty-blocks:
+  active: true
+
+exceptions:
+  active: true
+
+formatting:
+  active: true
+  android: false
+  autoCorrect: true
+  MaximumLineLength:
+    active: true
+    maxLineLength: 120
+    excludes: "**/test/**, **/androidTest/**"
+
+naming:
+  active: true
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+
+style:
+  active: true
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: false
+    excludes: "**/test/**, **/androidTest/**"
+  MagicNumber:
+    active: true
+    ignoreNumbers: '-1,0,1,2'
+    ignoreHashCodeFunction: false
+    ignorePropertyDeclaration: true
+    ignoreConstantDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreAnnotation: false
+    ignoreNamedArgument: true
+    ignoreEnums: false
+    excludes: "**/test/**, **/androidTest/**"
+  UnnecessaryAbstractClass:
+    active: false

@@ -1,0 +1,5 @@
+root = true
+
+# Allow longer max_line_length for *.kts files
+[*.kts]
+max_line_length = 200
