@@ -1,6 +1,5 @@
-import io.github.reactivecircus.streamlined.build.envOrProp
-import io.github.reactivecircus.streamlined.build.isCiBuild
-import io.github.reactivecircus.streamlined.build.libraries
+import io.github.reactivecircus.streamlined.envOrProp
+import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`
@@ -25,7 +24,7 @@ android {
         applicationId = "io.github.reactivecircus.streamlined"
         versionCode = 1
         versionName = "1.0"
-        project.extra["archivesBaseName"] = "streamlined-$versionName"
+        extra["archivesBaseName"] = "streamlined-$versionName"
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.IntegrationTestRunner"
@@ -77,7 +76,7 @@ android {
             signingConfig = signingConfigs.getByName("debug")
 
             // turn on strict mode for non-CI debug builds
-            buildConfigField("boolean", "ENABLE_STRICT_MODE", "Boolean.parseBoolean(\"${!isCiBuild}\")")
+            buildConfigField("boolean", "ENABLE_STRICT_MODE", "Boolean.parseBoolean(\"${!io.github.reactivecircus.streamlined.isCiBuild}\")")
 
             // override app name for LeakCanary
             resValue("string", "leak_canary_display_activity_label", "streamlined leaks")
@@ -197,22 +196,23 @@ dependencies {
     androidTestImplementation(project(":ui-testing-framework"))
 }
 
-tasks.whenTaskAdded {
-    // don't count dex methods for debug builds
-    if (name.endsWith("DebugDexMethods")) {
-        onlyIf { false }
+// don't count dex methods for debug builds
+tasks.withType<com.getkeepsafe.dexcount.DexCountTask>().configureEach {
+    if (name.contains("debug", ignoreCase = true)) {
+        enabled = false
     }
 }
 
-android.applicationVariants.all {
-    // disable google services plugin for mock flavor
-    tasks.named("process${name.capitalize()}GoogleServices").configure {
-        enabled = flavorName != "mock"
+// disable google services plugin for mock flavor
+tasks.withType<com.google.gms.googleservices.GoogleServicesTask>().configureEach {
+    if (name.contains("mock", ignoreCase = true)) {
+        enabled = false
     }
-    // disable android tests for dev flavors
-    if (flavorName == "dev" && buildType.name == "debug") {
-        tasks.named("connected${name.capitalize()}AndroidTest").configure {
-            enabled = false
-        }
+}
+
+// disable all AndroidTest tasks for dev and prod flavors
+tasks.configureEach {
+    if (name.matches(".*(?i)(dev|prod).+AndroidTest.*".toRegex())) {
+        enabled = false
     }
 }

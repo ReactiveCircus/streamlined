@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.build.libraries
+import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`

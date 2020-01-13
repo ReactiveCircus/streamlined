@@ -30,7 +30,7 @@ gradlePlugin {
     plugins {
         streamlined {
             id = 'streamlined-plugin'
-            implementationClass = 'io.github.reactivecircus.streamlined.build.StreamlinedPlugin'
+            implementationClass = 'io.github.reactivecircus.streamlined.StreamlinedPlugin'
         }
     }
 }
