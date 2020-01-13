@@ -14,16 +14,15 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'kotlin'
 
 repositories {
+    mavenCentral()
     google()
     gradlePluginPortal()
 }
 
 dependencies {
     implementation build.kotlinGradlePlugin
-    implementation build.kotlinSerializationPlugin
     implementation build.androidGradlePlugin
     implementation build.detektGradlePlugin
-    implementation build.sqlDelightGradlePlugin
 }
 
 gradlePlugin {
