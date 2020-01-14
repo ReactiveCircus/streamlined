@@ -14,9 +14,9 @@ private const val SKIPPED_TESTS_REGEX_PATTERN = "test.*(?i)(debug|mock|dev)UnitT
  */
 internal fun Project.enableSlimTests() {
     if (hasProperty(SLIM_TESTS_PROPERTY)) {
-        tasks.configureEach { task ->
-            if (task.name.matches(SKIPPED_TESTS_REGEX_PATTERN.toRegex())) {
-                task.enabled = false
+        tasks.configureEach {
+            if (name.matches(SKIPPED_TESTS_REGEX_PATTERN.toRegex())) {
+                enabled = false
             }
         }
     }

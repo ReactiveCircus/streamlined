@@ -15,17 +15,17 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
- * Apply default configurations to project with [StreamlinedPlugin] applied.
+ * Apply baseline configurations to a [Project].
  */
-internal fun Project.configureProject() {
-    // apply and configure detekt plugin for all projects
+internal fun Project.applyBaselineConfigurations() {
+    // apply and configure detekt plugin
     configureDetektPlugin()
 
-    // apply baseline configurations for all projects
+    // apply common baseline configurations for all projects
     configureForAllProjects()
 
     // apply configurations specific to root project
@@ -34,8 +34,8 @@ internal fun Project.configureProject() {
     }
 
     // apply baseline configurations based on plugins applied
-    plugins.all { plugin ->
-        when (plugin) {
+    plugins.all {
+        when (this) {
             is JavaPlugin,
             is JavaLibraryPlugin -> {
                 project.convention.getPlugin(JavaPluginConvention::class.java).apply {
@@ -77,25 +77,25 @@ private fun Project.configureForAllProjects() {
         jcenter()
     }
 
-    tasks.withType(JavaCompile::class.java).configureEach { task ->
-        task.sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        task.targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    tasks.withType(JavaCompile::class.java).configureEach {
+        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+        targetCompatibility = JavaVersion.VERSION_1_8.toString()
     }
 
-    tasks.withType(KotlinJvmCompile::class.java).configureEach { task ->
-        task.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    tasks.withType(KotlinJvmCompile::class.java).configureEach {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    tasks.withType(KotlinCompile::class.java).configureEach { task ->
-        task.kotlinOptions {
+    tasks.withType(KotlinCompile::class.java).configureEach {
+        kotlinOptions {
             freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
         }
     }
 
-    tasks.withType(Test::class.java).configureEach { test ->
-        test.maxParallelForks = Runtime.getRuntime().availableProcessors() * 2
-        test.testLogging {
-            it.events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
+    tasks.withType(Test::class.java).configureEach {
+        maxParallelForks = Runtime.getRuntime().availableProcessors() * 2
+        testLogging {
+            events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
         }
     }
 }
@@ -120,8 +120,8 @@ private fun BaseExtension.configureCommonAndroidOptions() {
     dexOptions.preDexLibraries = !isCiBuild
 
     compileOptions(Action {
-        it.sourceCompatibility = JavaVersion.VERSION_1_8
-        it.targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     })
 }
 

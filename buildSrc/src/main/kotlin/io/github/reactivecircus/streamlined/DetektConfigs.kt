@@ -17,12 +17,12 @@ internal fun Project.configureDetektPlugin() {
 
     pluginManager.withPlugin("io.gitlab.arturbosch.detekt") {
         extensions.configure(DetektExtension::class.java) {
-            it.toolVersion = versions.detekt
-            it.input = files("src/")
-            it.failFast = true
-            it.config = files("${project.rootDir}/detekt.yml")
-            it.buildUponDefaultConfig = true
-            it.reports(Action { reports ->
+            toolVersion = versions.detekt
+            input = files("src/")
+            failFast = true
+            config = files("${project.rootDir}/detekt.yml")
+            buildUponDefaultConfig = true
+            reports(Action {
                 reports.html.destination = file("${project.buildDir}/reports/detekt/${project.name}.html")
             })
         }

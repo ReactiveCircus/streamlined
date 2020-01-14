@@ -22,6 +22,8 @@ import org.gradle.api.Project
  */
 class StreamlinedPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.afterEvaluate { it.configureProject() }
+        project.afterEvaluate {
+            applyBaselineConfigurations()
+        }
     }
 }
