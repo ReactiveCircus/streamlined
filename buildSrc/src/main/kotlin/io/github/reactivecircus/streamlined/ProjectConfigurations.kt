@@ -75,6 +75,7 @@ private fun Project.configureForAllProjects() {
         mavenCentral()
         google()
         jcenter()
+        maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
     }
 
     tasks.withType(JavaCompile::class.java).configureEach {
