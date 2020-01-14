@@ -1,3 +1,6 @@
+import io.github.reactivecircus.streamlined.dsl.devImplementation
+import io.github.reactivecircus.streamlined.dsl.mockImplementation
+import io.github.reactivecircus.streamlined.dsl.prodImplementation
 import io.github.reactivecircus.streamlined.envOrProp
 import io.github.reactivecircus.streamlined.isCiBuild
 import io.github.reactivecircus.streamlined.libraries
@@ -147,9 +150,9 @@ android {
 
 dependencies {
     implementation(project(":bugsnag-tree"))
-    "mockImplementation"(project(":analytics-api-no-op"))
-    "devImplementation"(project(":analytics-api-firebase"))
-    "prodImplementation"(project(":analytics-api-firebase"))
+    mockImplementation(project(":analytics-api-no-op"))
+    devImplementation(project(":analytics-api-firebase"))
+    prodImplementation(project(":analytics-api-firebase"))
 
     implementation(project(":router"))
     implementation(project(":ui-common"))
@@ -160,13 +163,13 @@ dependencies {
     implementation(project(":ui-story-details"))
 
     implementation(project(":data"))
-    "prodImplementation"(project(":remote-real"))
-    "mockImplementation"(project(":remote-mock"))
+    prodImplementation(project(":remote-real"))
+    mockImplementation(project(":remote-mock"))
 
     implementation(project(":periodic-work"))
 
     // Java 8 desugaring
-    "coreLibraryDesugaring"(libraries.desugarLibs)
+    coreLibraryDesugaring(libraries.desugarLibs)
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

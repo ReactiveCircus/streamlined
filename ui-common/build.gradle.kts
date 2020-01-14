@@ -21,7 +21,7 @@ dependencies {
     api(project(":analytics-api-base"))
 
     // Java 8 desugaring
-    "coreLibraryDesugaring"(libraries.desugarLibs)
+    coreLibraryDesugaring(libraries.desugarLibs)
 
     // Blueprint
     api(libraries.blueprint.ui)
