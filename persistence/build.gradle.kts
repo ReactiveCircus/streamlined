@@ -19,7 +19,7 @@ dependencies {
     implementation(libraries.kotlinStdlib)
 
     // SQLDelight
-    implementation(libraries.sqlDelight.android)
+    implementation(libraries.sqldelight.android)
 
     // Dagger
     implementation(libraries.dagger.runtime)
@@ -32,5 +32,5 @@ dependencies {
     testImplementation(libraries.junit)
     testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
-    testImplementation(libraries.sqlDelight.jvm)
+    testImplementation(libraries.sqldelight.jvm)
 }

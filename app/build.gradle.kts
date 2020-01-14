@@ -1,4 +1,5 @@
 import io.github.reactivecircus.streamlined.envOrProp
+import io.github.reactivecircus.streamlined.isCiBuild
 import io.github.reactivecircus.streamlined.libraries
 
 plugins {
@@ -76,7 +77,7 @@ android {
             signingConfig = signingConfigs.getByName("debug")
 
             // turn on strict mode for non-CI debug builds
-            buildConfigField("boolean", "ENABLE_STRICT_MODE", "Boolean.parseBoolean(\"${!io.github.reactivecircus.streamlined.isCiBuild}\")")
+            buildConfigField("boolean", "ENABLE_STRICT_MODE", "Boolean.parseBoolean(\"${!isCiBuild}\")")
 
             // override app name for LeakCanary
             resValue("string", "leak_canary_display_activity_label", "streamlined leaks")

@@ -14,5 +14,5 @@ rootProject.ext.build = [
         kotlinGradlePlugin        : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
         kotlinSerializationPlugin : "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}",
         detektGradlePlugin        : "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}",
-        sqlDelightGradlePlugin    : "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}",
+        sqldelightGradlePlugin    : "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}",
 ]

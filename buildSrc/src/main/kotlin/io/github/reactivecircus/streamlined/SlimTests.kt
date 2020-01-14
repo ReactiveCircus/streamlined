@@ -13,9 +13,11 @@ private const val SKIPPED_TESTS_REGEX_PATTERN = "test.*(?i)(debug|mock|dev)UnitT
  * in Android App and Library projects, and all tests in JVM projects.
  */
 internal fun Project.enableSlimTests() {
-    tasks.configureEach { task ->
-        if (task.name.matches(SKIPPED_TESTS_REGEX_PATTERN.toRegex()) && hasProperty(SLIM_TESTS_PROPERTY)) {
-            task.enabled = false
+    if (hasProperty(SLIM_TESTS_PROPERTY)) {
+        tasks.configureEach { task ->
+            if (task.name.matches(SKIPPED_TESTS_REGEX_PATTERN.toRegex())) {
+                task.enabled = false
+            }
         }
     }
 }

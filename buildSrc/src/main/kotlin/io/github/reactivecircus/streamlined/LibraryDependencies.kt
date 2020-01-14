@@ -56,7 +56,7 @@ object versions {
     const val okhttp = "4.3.1"
     const val retrofit = "2.7.1"
     const val retrofitSerializationConverter = "0.4.0"
-    const val sqlDelight = "1.2.1"
+    const val sqldelight = "1.2.1"
     const val store = "4.0.0-alpha01"
     const val coil = "0.9.1"
     const val timber = "4.7.1"
@@ -178,9 +178,9 @@ object libraries {
         const val serializationConverter = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${versions.retrofitSerializationConverter}"
     }
 
-    object sqlDelight {
-        const val jvm = "com.squareup.sqldelight:sqlite-driver:${versions.sqlDelight}"
-        const val android = "com.squareup.sqldelight:android-driver:${versions.sqlDelight}"
+    object sqldelight {
+        const val jvm = "com.squareup.sqldelight:sqlite-driver:${versions.sqldelight}"
+        const val android = "com.squareup.sqldelight:android-driver:${versions.sqldelight}"
     }
 
     const val store = "com.dropbox.mobile.store:store4:${versions.store}"
