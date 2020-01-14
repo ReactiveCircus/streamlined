@@ -197,23 +197,19 @@ dependencies {
     androidTestImplementation(project(":ui-testing-framework"))
 }
 
-// don't count dex methods for debug builds
-tasks.withType<com.getkeepsafe.dexcount.DexCountTask>().configureEach {
-    if (name.contains("debug", ignoreCase = true)) {
-        enabled = false
-    }
-}
-
-// disable google services plugin for mock flavor
-tasks.withType<com.google.gms.googleservices.GoogleServicesTask>().configureEach {
-    if (name.contains("mock", ignoreCase = true)) {
-        enabled = false
-    }
-}
-
-// disable all AndroidTest tasks for dev and prod flavors
 tasks.configureEach {
-    if (name.matches(".*(?i)(dev|prod).+AndroidTest.*".toRegex())) {
-        enabled = false
+    when {
+        // don't count dex methods for debug builds
+        name.matches("count(?i).+debugDexMethods".toRegex()) -> {
+            enabled = false
+        }
+        // disable google services plugin for mock flavor
+        name.matches("process(?i)mock.+GoogleServices".toRegex()) -> {
+            enabled = false
+        }
+        // disable all AndroidTest tasks for dev and prod flavors
+        name.matches(".*(?i)(dev|prod).+AndroidTest.*".toRegex()) -> {
+            enabled = false
+        }
     }
 }
