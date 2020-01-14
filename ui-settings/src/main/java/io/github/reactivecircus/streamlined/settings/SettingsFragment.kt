@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import io.github.reactivecircus.streamlined.settings.databinding.FragmentSettingsBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
 
-class SettingsFragment : BaseFragment() {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
-    private lateinit var binding: FragmentSettingsBinding
-
-    override fun onCreateView(
+    override fun provideViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = FragmentSettingsBinding.inflate(inflater, container, false).let {
-        binding = it
-        it.root
+        container: ViewGroup?
+    ): FragmentSettingsBinding {
+        return FragmentSettingsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

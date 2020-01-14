@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import io.github.reactivecircus.streamlined.readinglist.databinding.FragmentReadingListBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
 
-class ReadingListFragment : BaseFragment() {
+class ReadingListFragment : BaseFragment<FragmentReadingListBinding>() {
 
-    private lateinit var binding: FragmentReadingListBinding
-
-    override fun onCreateView(
+    override fun provideViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = FragmentReadingListBinding.inflate(inflater, container, false).let {
-        binding = it
-        it.root
+        container: ViewGroup?
+    ): FragmentReadingListBinding {
+        return FragmentReadingListBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -7,22 +7,17 @@ import android.view.ViewGroup
 import io.github.reactivecircus.streamlined.headlines.databinding.FragmentHeadlinesBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
 
-class HeadlinesFragment : BaseFragment() {
+class HeadlinesFragment : BaseFragment<FragmentHeadlinesBinding>() {
 
-    private lateinit var binding: FragmentHeadlinesBinding
-
-    override fun onCreateView(
+    override fun provideViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = FragmentHeadlinesBinding.inflate(inflater, container, false).let {
-        binding = it
-        it.root
+        container: ViewGroup?
+    ): FragmentHeadlinesBinding {
+        return FragmentHeadlinesBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.toolbar.title = getString(R.string.title_headlines)
     }
 }

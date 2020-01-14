@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
 
-class StoryDetailsFragment : BaseFragment() {
+class StoryDetailsFragment : BaseFragment<FragmentStoryDetailsBinding>() {
 
-    private lateinit var binding: FragmentStoryDetailsBinding
-
-    override fun onCreateView(
+    override fun provideViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = FragmentStoryDetailsBinding.inflate(inflater, container, false).let {
-        binding = it
-        it.root
+        container: ViewGroup?
+    ): FragmentStoryDetailsBinding {
+        return FragmentStoryDetailsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

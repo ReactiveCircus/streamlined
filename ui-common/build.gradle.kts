@@ -7,8 +7,15 @@ plugins {
     id("kotlin-kapt")
 }
 
-// enabled new Java 8 language APIs
-android.compileOptions.coreLibraryDesugaringEnabled = true
+android {
+    @Suppress("UnstableApiUsage")
+    buildFeatures {
+
+        viewBinding = true
+        // enabled new Java 8 language APIs
+        compileOptions.coreLibraryDesugaringEnabled = true
+    }
+}
 
 dependencies {
     api(project(":analytics-api-base"))
