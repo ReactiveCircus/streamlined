@@ -1,10 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
+    <!--Theme for Splash screen. For API >= 27 dark / light themes are used for night / day modes respectively.-->
     <style name="Theme.Streamlined.Splash" parent="Base.Theme.Streamlined">
         <item name="android:statusBarColor">?android:colorBackground</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">?android:colorBackground</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
