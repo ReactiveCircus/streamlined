@@ -1,4 +1,4 @@
-package reactivecircus.streamlined.router
+package io.github.reactivecircus.streamlined.router
 
 /**
  * APIs for performing cross-module in-app navigation.

@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.testing
 
-import reactivecircus.streamlined.router.Router
+import io.github.reactivecircus.streamlined.router.Router
 
 /**
  * No-op implementation of [Router].

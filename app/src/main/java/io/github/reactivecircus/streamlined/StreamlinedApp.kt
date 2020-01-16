@@ -5,7 +5,7 @@ import android.app.Application
 import com.bugsnag.android.Bugsnag
 import com.bugsnag.android.Client
 import io.github.reactivecircus.analytics.AnalyticsApi
-import reactivecircus.bugsnag.BugsnagTree
+import io.github.reactivecircus.bugsnag.BugsnagTree
 import timber.log.Timber
 import javax.inject.Inject
 

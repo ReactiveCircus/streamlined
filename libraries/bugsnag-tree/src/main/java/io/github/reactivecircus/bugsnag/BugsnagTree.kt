@@ -1,4 +1,4 @@
-package reactivecircus.bugsnag
+package io.github.reactivecircus.bugsnag
 
 import android.util.Log.ASSERT
 import android.util.Log.ERROR

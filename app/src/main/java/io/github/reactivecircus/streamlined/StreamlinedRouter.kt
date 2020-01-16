@@ -4,7 +4,7 @@ import android.app.Activity
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
-import reactivecircus.streamlined.router.Router
+import io.github.reactivecircus.streamlined.router.Router
 import javax.inject.Inject
 
 /**
