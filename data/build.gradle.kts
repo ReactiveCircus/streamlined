@@ -35,5 +35,5 @@ dependencies {
     testImplementation(libraries.junit)
     testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
-    testImplementation(libraries.kotlinx.coroutines.test)
+    testImplementation(project(":coroutines-test-ext"))
 }

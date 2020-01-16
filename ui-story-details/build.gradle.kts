@@ -46,8 +46,7 @@ dependencies {
     testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
     testImplementation(libraries.androidx.archCore.testing)
-    testImplementation(libraries.kotlinx.coroutines.test)
-    testImplementation(project(":coroutines-testing"))
+    testImplementation(project(":coroutines-test-ext"))
 
     // Android tests
     androidTestImplementation(project(":ui-testing-framework"))

@@ -1,4 +1,4 @@
-package io.github.reactivecircus.coroutines.testing
+package io.github.reactivecircus.coroutines.test.ext
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

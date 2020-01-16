@@ -10,5 +10,5 @@ dependencies {
     implementation(libraries.junit)
     implementation(libraries.truth)
     implementation(libraries.kotlinx.coroutines.core)
-    implementation(libraries.kotlinx.coroutines.test)
+    api(libraries.kotlinx.coroutines.test)
 }

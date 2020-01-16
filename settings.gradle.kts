@@ -20,7 +20,7 @@ includeProject(":bugsnag-tree", "libraries/bugsnag-tree")
 includeProject(":analytics-api-base", "libraries/analytics/analytics-api-base")
 includeProject(":analytics-api-firebase", "libraries/analytics/analytics-api-firebase")
 includeProject(":analytics-api-no-op", "libraries/analytics/analytics-api-no-op")
-includeProject(":coroutines-testing", "libraries/coroutines-testing")
+includeProject(":coroutines-test-ext", "libraries/coroutines-test-ext")
 
 fun includeProject(name: String, filePath: String) {
     include(name)
