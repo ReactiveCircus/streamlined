@@ -8,6 +8,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":analytics-api-no-op"))
     implementation(project(":router"))
     implementation(project(":ui-common"))
     implementation(project(":data"))
@@ -24,9 +25,6 @@ dependencies {
     // retrofit-mock
     implementation(libraries.retrofit.mock)
 
-    // timber
-    implementation(libraries.timber)
-
     implementation(libraries.androidx.fragment.testing) {
         exclude(group = "androidx.test")
     }
@@ -41,5 +39,4 @@ dependencies {
     api(libraries.androidx.espresso.contrib)
     api(libraries.androidx.espresso.intents)
     api(libraries.truth)
-    api(project(":analytics-api-no-op"))
 }
