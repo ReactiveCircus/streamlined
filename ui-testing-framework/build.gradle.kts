@@ -9,7 +9,7 @@ plugins {
 
 dependencies {
     implementation(project(":analytics-api-no-op"))
-    implementation(project(":router"))
+    implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":data"))
     implementation(project(":remote-mock"))
@@ -24,6 +24,9 @@ dependencies {
 
     // retrofit-mock
     implementation(libraries.retrofit.mock)
+
+    // timber
+    implementation(libraries.timber)
 
     implementation(libraries.androidx.fragment.testing) {
         exclude(group = "androidx.test")

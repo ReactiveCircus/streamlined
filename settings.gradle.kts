@@ -1,7 +1,7 @@
 rootProject.name= "streamlined"
 
 include(":app")
-include(":router")
+include(":navigator")
 include(":ui-common")
 include(":ui-home")
 include(":ui-headlines")

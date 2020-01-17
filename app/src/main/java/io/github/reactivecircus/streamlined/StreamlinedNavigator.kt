@@ -4,16 +4,16 @@ import android.app.Activity
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
-import io.github.reactivecircus.streamlined.router.Router
+import io.github.reactivecircus.streamlined.navigator.Navigator
 import javax.inject.Inject
 
 /**
- * Implementation of [Router].
+ * Implementation of [Navigator].
  */
 // TODO bound this to an ActivityScope (MainActivity)
-class StreamlinedRouter @Inject constructor(
+class StreamlinedNavigator @Inject constructor(
     private val activity: Activity
-) : Router {
+) : Navigator {
 
     override fun navigateToStoryDetailsScreen(storyId: String) {
         activity.findNavController(R.id.rootNavHostFragment).navigate(

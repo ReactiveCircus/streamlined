@@ -38,8 +38,10 @@ abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        activity?.run {
-//            analyticsApi.setCurrentScreenName(this, javaClass.simpleName, javaClass.simpleName)
-//        }
+//        analyticsApi.setCurrentScreenName(
+//            requireActivity(),
+//            javaClass.simpleName,
+//            javaClass.simpleName
+//        )
     }
 }

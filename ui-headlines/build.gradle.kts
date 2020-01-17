@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":router"))
+    implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":domain"))
 

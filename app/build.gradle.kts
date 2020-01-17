@@ -154,7 +154,7 @@ dependencies {
     devImplementation(project(":analytics-api-firebase"))
     prodImplementation(project(":analytics-api-firebase"))
 
-    implementation(project(":router"))
+    implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":ui-home"))
     implementation(project(":ui-headlines"))

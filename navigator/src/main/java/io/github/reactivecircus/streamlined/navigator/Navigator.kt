@@ -1,9 +1,9 @@
-package io.github.reactivecircus.streamlined.router
+package io.github.reactivecircus.streamlined.navigator
 
 /**
  * APIs for performing cross-module in-app navigation.
  */
-interface Router {
+interface Navigator {
 
     fun navigateToStoryDetailsScreen(storyId: String)
 }
