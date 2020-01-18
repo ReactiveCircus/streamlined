@@ -8,10 +8,9 @@ import com.google.common.truth.Truth.assertAbout
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScope
 
 @UseExperimental(ExperimentalCoroutinesApi::class)
@@ -40,22 +39,14 @@ class FlowSubject<T> constructor(
     @UseExperimental(InternalCoroutinesApi::class)
     suspend fun emitsExactly(vararg expected: T) {
         val collectedSoFar = mutableListOf<T>()
-        val collectJob = testCoroutineScope.launch {
+        val collectJob = testCoroutineScope.async {
             actual.collect {
                 collectedSoFar.add(it)
-                runCatching {
-                    assertThat(collectedSoFar.size).isAtMost(expected.size)
-                }.onFailure { throwable ->
-                    cancel("Exception thrown while collecting Flow.", throwable)
-                }
+                assertThat(collectedSoFar.size).isAtMost(expected.size)
             }
         }
         testCoroutineScope.advanceUntilIdle()
-        if (collectJob.isCancelled) {
-            throw collectJob.getCancellationException().cause!!
-        } else {
-            collectJob.cancel()
-        }
+        collectJob.cancel()
         assertThat(collectedSoFar).isEqualTo(expected.toList())
     }
 
