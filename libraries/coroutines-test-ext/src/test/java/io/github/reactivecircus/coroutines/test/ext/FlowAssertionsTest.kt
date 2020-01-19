@@ -1,5 +1,6 @@
 package io.github.reactivecircus.coroutines.test.ext
 
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -37,9 +38,19 @@ class FlowAssertionsTest {
                 emit(3)
             }
 
-            assertThrows<AssertionError> {
+            val exception = assertThrows<AssertionError> {
                 assertThat(flow).emitsExactly(1, 2, 3)
             }
+            assertThat(exception).hasMessageThat().contains(
+                """
+                    Flow did not emit exactly expected items
+                    missing (1)   : 2
+                    unexpected (1): 20
+                    ---
+                    expected      : [1, 2, 3]
+                    but was       : [1, 20, 3]
+                """.trimIndent()
+            )
         }
 
     @Test
@@ -51,9 +62,42 @@ class FlowAssertionsTest {
                 emit(2)
             }
 
-            assertThrows<AssertionError> {
+            val exception = assertThrows<AssertionError> {
                 testScope.assertThat(flow).emitsExactly(1, 2, 3)
             }
+            assertThat(exception).hasMessageThat().contains(
+                """
+                    Flow did not emit exactly expected items
+                    missing (1): 3
+                    ---
+                    expected   : [1, 2, 3]
+                    but was    : [1, 2]
+                """.trimIndent()
+            )
+        }
+
+    @Test
+    fun `emitsExactly fails when items emitted by the Flow are out of the expected order`() =
+        testScope.runBlockingTest {
+            val flow = flow {
+                emit(1)
+                delay(100)
+                emit(3)
+                delay(100)
+                emit(2)
+            }
+
+            val exception = assertThrows<AssertionError> {
+                assertThat(flow).emitsExactly(1, 2, 3)
+            }
+            assertThat(exception).hasMessageThat().contains(
+                """
+                    Flow did not emit exactly expected items
+                    contents match, but order was wrong
+                    expected: [1, 2, 3]
+                    but was : [1, 3, 2]
+                """.trimIndent()
+            )
         }
 
     @Test
@@ -69,8 +113,15 @@ class FlowAssertionsTest {
                 emit(4)
             }
 
-            assertThrows<AssertionError> {
+            val exception = assertThrows<AssertionError> {
                 assertThat(flow).emitsExactly(1, 2, 3)
             }
+            assertThat(exception).hasMessageThat().contains(
+                """
+                    Too many emissions from the Flow (only first unexpected emission is shown)
+                    expected: [1, 2, 3]
+                    but was : [1, 2, 3, 4]
+                """.trimIndent()
+            )
         }
 }

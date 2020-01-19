@@ -5,7 +5,7 @@ package io.github.reactivecircus.coroutines.test.ext
 import com.google.common.truth.FailureMetadata
 import com.google.common.truth.Subject
 import com.google.common.truth.Truth.assertAbout
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.async
@@ -42,12 +42,19 @@ class FlowSubject<T> constructor(
         val collectJob = testCoroutineScope.async {
             actual.collect {
                 collectedSoFar.add(it)
-                assertThat(collectedSoFar.size).isAtMost(expected.size)
+                if (collectedSoFar.size > expected.size) {
+                    assertWithMessage("Too many emissions from the Flow (only first unexpected emission is shown)")
+                        .that(collectedSoFar)
+                        .isEqualTo(expected)
+                }
             }
         }
         testCoroutineScope.advanceUntilIdle()
+        collectJob.getCompletionExceptionOrNull()?.run { throw this }
         collectJob.cancel()
-        assertThat(collectedSoFar).isEqualTo(expected.toList())
+        assertWithMessage("Flow did not emit exactly expected items")
+            .that(collectedSoFar)
+            .isEqualTo(expected.toList())
     }
 
     class Factory<T>(
