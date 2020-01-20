@@ -3,7 +3,10 @@ package io.github.reactivecircus.coroutines.test.ext
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
@@ -22,6 +25,17 @@ class FlowAssertionsTest {
                 emit(2)
                 delay(100)
                 emit(3)
+            }
+
+            assertThat(flow).emitsExactly(1, 2, 3)
+        }
+
+    @Test
+    fun `emitsExactly succeeds when the Flow emits exactly the expected item but is not yet complete`() =
+        testScope.runBlockingTest {
+            val flow = flow {
+                emitAll(flowOf(1, 2, 3))
+                suspendCancellableCoroutine<Unit> {}
             }
 
             assertThat(flow).emitsExactly(1, 2, 3)

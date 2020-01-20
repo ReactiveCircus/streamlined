@@ -8,10 +8,10 @@ import com.google.common.truth.Truth.assertAbout
 import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.TestCoroutineScope
-
 
 @ExperimentalCoroutinesApi
 fun <T> TestCoroutineScope.assertThat(flow: Flow<T>): FlowSubject<T> {
@@ -21,7 +21,6 @@ fun <T> TestCoroutineScope.assertThat(flow: Flow<T>): FlowSubject<T> {
         )
     ).that(flow)
 }
-
 
 @ExperimentalCoroutinesApi
 class FlowSubject<T> constructor(
@@ -50,8 +49,11 @@ class FlowSubject<T> constructor(
             }
         }
         testCoroutineScope.advanceUntilIdle()
-        collectJob.getCompletionExceptionOrNull()?.run { throw this }
-        collectJob.cancel()
+
+        if (!collectJob.isActive) {
+            collectJob.getCompletionExceptionOrNull()?.run { throw this }
+        }
+        collectJob.cancelAndJoin()
         assertWithMessage("Flow did not emit exactly expected items")
             .that(collectedSoFar)
             .isEqualTo(expected.toList())
