@@ -7,20 +7,23 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.github.reactivecircus.streamlined.data.mapper.toEntity
-import io.github.reactivecircus.streamlined.data.repository.StoryRepositoryImpl
-import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
+import io.github.reactivecircus.streamlined.data.mapper.toModel
+import io.github.reactivecircus.streamlined.data.repository.BookmarkRepositoryImpl
+import io.github.reactivecircus.streamlined.domain.model.Story
+import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.persistence.StoryDao
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
 import io.github.reactivecircus.streamlined.persistence.di.PersistenceComponent
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.map
 
 @Module(includes = [DataModule.Providers::class])
 internal abstract class DataModule {
 
     @Binds
-    abstract fun storyRepository(impl: StoryRepositoryImpl): StoryRepository
+    abstract fun bookmarkRepository(impl: BookmarkRepositoryImpl): BookmarkRepository
 
     @Module
     internal object Providers {
@@ -38,14 +41,16 @@ internal abstract class DataModule {
         fun storiesStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao
-        ): Store<Unit, List<StoryEntity>> {
+        ): Store<Unit, List<Story>> {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
                 fetcher = {
                     newsApiService.headlines().map { it.toEntity() }
                 }
             ).persister(
                 reader = {
-                    storyDao.allStories()
+                    storyDao.allStories().map { stories ->
+                        stories.map { it.toModel() }
+                    }
                 },
                 writer = { _, stories ->
                     storyDao.updateStories(stories)

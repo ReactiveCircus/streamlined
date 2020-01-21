@@ -17,6 +17,9 @@ dependencies {
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 
+    // Store
+    api(libraries.store)
+
     // Dagger
     implementation(libraries.dagger.runtime)
     kapt(libraries.dagger.compiler)

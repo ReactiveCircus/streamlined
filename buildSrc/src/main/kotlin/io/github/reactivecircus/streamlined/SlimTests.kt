@@ -2,9 +2,6 @@ package io.github.reactivecircus.streamlined
 
 import org.gradle.api.Project
 
-private const val SLIM_TESTS_PROPERTY = "slimTests"
-private const val SKIPPED_TESTS_REGEX_PATTERN = "test.*(?i)(debug|mock|dev)UnitTest"
-
 /**
  * When the "slimTests" project property is provided, skip the unit tests for `debug`, `mock` and `dev`
  * to avoid running the same tests repeatedly in different build variants.
@@ -21,3 +18,7 @@ internal fun Project.enableSlimTests() {
         }
     }
 }
+
+private const val SLIM_TESTS_PROPERTY = "slimTests"
+private const val SKIPPED_TESTS_REGEX_PATTERN = "test.*(?i)(debug|mock|dev)UnitTest"
+

@@ -16,9 +16,6 @@ import retrofit2.mock.MockRetrofit
 import retrofit2.mock.NetworkBehavior
 import java.util.concurrent.TimeUnit
 
-private const val MOCK_SERVER_PORT = 5_000
-private const val DUMMY_URL = "http://localhost:$MOCK_SERVER_PORT/"
-
 @Module
 internal object MockRemoteModule {
 
@@ -67,3 +64,6 @@ internal object MockRemoteModule {
         )
     }
 }
+
+private const val MOCK_SERVER_PORT = 5_000
+private const val DUMMY_URL = "http://localhost:$MOCK_SERVER_PORT/"
