@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import io.github.reactivecircus.analytics.AnalyticsApi
-import javax.inject.Inject
 
-abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
-
-    @Inject
-    lateinit var analyticsApi: AnalyticsApi
+abstract class BaseFragment<Binding : ViewBinding>(
+    private val analyticsApi: AnalyticsApi
+) : Fragment() {
 
     private var _binding: Binding? = null
     protected val binding get() = _binding!!
@@ -38,10 +36,10 @@ abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        analyticsApi.setCurrentScreenName(
-//            requireActivity(),
-//            javaClass.simpleName,
-//            javaClass.simpleName
-//        )
+        analyticsApi.setCurrentScreenName(
+            requireActivity(),
+            javaClass.simpleName,
+            javaClass.simpleName
+        )
     }
 }

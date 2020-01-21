@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.github.reactivecircus.analytics.AnalyticsApi
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
+import javax.inject.Inject
 
-class StoryDetailsFragment : BaseFragment<FragmentStoryDetailsBinding>() {
+class StoryDetailsFragment @Inject constructor(
+    analyticsApi: AnalyticsApi
+) : BaseFragment<FragmentStoryDetailsBinding>(analyticsApi) {
 
     override fun provideViewBinding(
         inflater: LayoutInflater,

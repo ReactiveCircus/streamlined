@@ -40,19 +40,6 @@ android {
         resValue("string", "app_name", "streamlined.")
     }
 
-    lintOptions {
-        disable("ParcelCreator")
-        disable("GoogleAppIndexingWarning")
-        isQuiet = false
-        isIgnoreWarnings = false
-        htmlReport = true
-        xmlReport = true
-        htmlOutput = file("$buildDir/reports/lint/lint-reports.html")
-        xmlOutput = file("$buildDir/reports/lint/lint-reports.xml")
-        isCheckDependencies = true
-        isIgnoreTestSources = true
-    }
-
     signingConfigs {
         named("debug") {
             storeFile = rootProject.file("secrets/debug.keystore")
@@ -111,11 +98,15 @@ android {
             manifestPlaceholders = mapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_DEV_API_KEY"))
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"true\")")
             buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"true\")")
+            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
+            buildConfigField("String", "API_KEY", "\"${envOrProp("NEWS_API_DEV_API_KEY")}\"")
         }
         register("prod") {
             manifestPlaceholders = mapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY"))
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"true\")")
             buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"true\")")
+            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
+            buildConfigField("String", "API_KEY", "\"${envOrProp("NEWS_API_PROD_API_KEY")}\"")
         }
     }
 
@@ -143,8 +134,8 @@ android {
 
     sourceSets {
         // common source set for dev and prod
-        getByName("dev").java.srcDir("src/common/java")
-        getByName("prod").java.srcDir("src/common/java")
+        getByName("dev").java.srcDir("src/online/java")
+        getByName("prod").java.srcDir("src/online/java")
     }
 }
 
@@ -162,9 +153,11 @@ dependencies {
     implementation(project(":ui-settings"))
     implementation(project(":ui-story-details"))
 
+    implementation(project(":domain"))
     implementation(project(":data"))
-    prodImplementation(project(":remote-real"))
     mockImplementation(project(":remote-mock"))
+    devImplementation(project(":remote-real"))
+    prodImplementation(project(":remote-real"))
 
     implementation(project(":periodic-work"))
 
@@ -175,7 +168,7 @@ dependencies {
     implementation(libraries.kotlinStdlib)
 
     // Blueprint
-    implementation(libraries.blueprint.threadingCoroutines)
+    implementation(libraries.blueprint.asyncCoroutines)
 
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)

@@ -18,7 +18,7 @@ object versions {
         const val core = "17.2.1"
     }
 
-    const val blueprint = "1.3.1"
+    const val blueprint = "1.4.0"
     const val flowbinding = "0.8.0"
 
     object androidx {
@@ -87,7 +87,7 @@ object libraries {
 
     object blueprint {
         const val ui = "io.github.reactivecircus.blueprint:blueprint-ui:${versions.blueprint}"
-        const val threadingCoroutines = "io.github.reactivecircus.blueprint:blueprint-threading-coroutines:${versions.blueprint}"
+        const val asyncCoroutines = "io.github.reactivecircus.blueprint:blueprint-async-coroutines:${versions.blueprint}"
         const val interactorCoroutines = "io.github.reactivecircus.blueprint:blueprint-interactor-coroutines:${versions.blueprint}"
         const val testingRobot = "io.github.reactivecircus.blueprint:blueprint-testing-robot:${versions.blueprint}"
     }
@@ -179,8 +179,12 @@ object libraries {
     }
 
     object sqldelight {
-        const val jvm = "com.squareup.sqldelight:sqlite-driver:${versions.sqldelight}"
-        const val android = "com.squareup.sqldelight:android-driver:${versions.sqldelight}"
+        object driver {
+            const val android = "com.squareup.sqldelight:android-driver:${versions.sqldelight}"
+            const val jvm = "com.squareup.sqldelight:sqlite-driver:${versions.sqldelight}"
+        }
+
+        const val coroutinesExtensions = "com.squareup.sqldelight:coroutines-extensions:${versions.sqldelight}"
     }
 
     const val store = "com.dropbox.mobile.store:store4:${versions.store}"

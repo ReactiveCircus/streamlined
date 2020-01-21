@@ -3,9 +3,12 @@ import io.github.reactivecircus.streamlined.libraries
 plugins {
     `streamlined-plugin`
     id("kotlin")
+    id("kotlin-kapt")
 }
 
 dependencies {
+    api(project(":remote-base"))
+
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)
 
@@ -19,4 +22,5 @@ dependencies {
 
     // Dagger
     implementation(libraries.dagger.runtime)
+    kapt(libraries.dagger.compiler)
 }

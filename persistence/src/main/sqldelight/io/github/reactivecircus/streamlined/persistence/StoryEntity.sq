@@ -1,10 +1,16 @@
-CREATE TABLE story (
+CREATE TABLE StoryEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     description TEXT NOT NULL,
-    url TEXT,
-    imageUrl TEXT,
+    url TEXT NOT NULL,
+    imageUrl TEXT NOT NULL,
     publishedAt INTEGER NOT NULL,
     UNIQUE (title, publishedAt)
 );
+
+allStories:
+SELECT * FROM StoryEntity;
+
+deleteAll:
+DELETE FROM StoryEntity;

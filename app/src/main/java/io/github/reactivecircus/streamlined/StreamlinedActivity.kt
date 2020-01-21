@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class StreamlinedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.fragmentFactory = appComponent.fragmentFactory
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Streamlined_DayNight)
         setContentView(R.layout.activity_streamlined)

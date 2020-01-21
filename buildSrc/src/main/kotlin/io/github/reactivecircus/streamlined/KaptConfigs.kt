@@ -14,7 +14,6 @@ internal fun Project.configureKapt() {
                 if (isCiBuild) {
                     option("-Xmaxerrs", 500)
                 } else {
-                    option("-Adagger.formatGeneratedSource=disabled")
                     option("-Adagger.moduleBindingValidation=ERROR")
                 }
             }

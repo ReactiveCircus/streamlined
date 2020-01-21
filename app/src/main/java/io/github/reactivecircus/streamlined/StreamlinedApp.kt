@@ -1,26 +1,26 @@
 package io.github.reactivecircus.streamlined
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Application
+import android.content.Context
 import com.bugsnag.android.Bugsnag
 import com.bugsnag.android.Client
-import io.github.reactivecircus.analytics.AnalyticsApi
 import io.github.reactivecircus.bugsnag.BugsnagTree
+import io.github.reactivecircus.streamlined.di.AppComponent
 import timber.log.Timber
-import javax.inject.Inject
 
 @SuppressLint("Registered")
 open class StreamlinedApp : Application() {
 
-    private lateinit var bugsnagClient: Client
+    private val appComponent: AppComponent by lazy {
+        AppComponent.factory().create(this)
+    }
 
-    @Inject
-    lateinit var analyticsApi: AnalyticsApi
+    private lateinit var bugsnagClient: Client
 
     override fun onCreate() {
         super.onCreate()
-
-        // TODO build app graph and inject
 
         // initialize Bugsnag
         if (BuildConfig.ENABLE_BUGSNAG) {
@@ -35,7 +35,7 @@ open class StreamlinedApp : Application() {
         initializeTimber()
 
         // initialize analytics api
-        // TODO analyticsApi.setEnableAnalytics(BuildConfig.ENABLE_ANALYTICS)
+        appComponent.analyticsApi.setEnableAnalytics(BuildConfig.ENABLE_ANALYTICS)
     }
 
     protected open fun initializeTimber() {
@@ -46,4 +46,11 @@ open class StreamlinedApp : Application() {
             return@beforeNotify true
         }
     }
+
+    companion object {
+        fun appComponent(context: Context) =
+            (context.applicationContext as StreamlinedApp).appComponent
+    }
 }
+
+val Activity.appComponent get() = StreamlinedApp.appComponent(this)

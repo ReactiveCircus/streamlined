@@ -1,5 +1,6 @@
 package io.github.reactivecircus.streamlined
 
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Action
@@ -9,8 +10,10 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.internal.file.impl.DefaultFileMetadata.file
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.File
 
 /**
  * Configure root project.
@@ -92,4 +95,30 @@ internal fun BaseExtension.configureCommonAndroidOptions() {
 internal fun LibraryExtension.configureAndroidLibraryOptions() {
     // Disable generating BuildConfig.java
     buildFeatures.buildConfig = false
+}
+
+/**
+ * Apply configuration options for Android Application projects.
+ */
+internal fun AppExtension.configureAndroidApplicationOptions(project: Project) {
+    lintOptions {
+        disable("ParcelCreator")
+        disable("GoogleAppIndexingWarning")
+        isQuiet = false
+        isIgnoreWarnings = false
+        htmlReport = true
+        xmlReport = true
+        htmlOutput = File("${project.buildDir}/reports/lint/lint-reports.html")
+        xmlOutput = File("${project.buildDir}/reports/lint/lint-reports.xml")
+        isCheckDependencies = true
+        isIgnoreTestSources = true
+    }
+
+    packagingOptions {
+        excludes = setOf(
+            "META-INF/*.kotlin_module",
+            "META-INF/proguard/coroutines.pro",
+            "META-INF/MANIFEST.MF"
+        )
+    }
 }

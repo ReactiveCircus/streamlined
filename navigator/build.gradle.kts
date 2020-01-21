@@ -2,7 +2,8 @@ import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`
-    id("kotlin")
+    id("com.android.library")
+    id("kotlin-android")
 }
 
 dependencies {

@@ -1,5 +1,6 @@
 package io.github.reactivecircus.streamlined.testing
 
+import android.app.Activity
 import io.github.reactivecircus.streamlined.navigator.Navigator
 
 /**
@@ -7,5 +8,5 @@ import io.github.reactivecircus.streamlined.navigator.Navigator
  */
 class NoOpNavigator : Navigator {
 
-    override fun navigateToStoryDetailsScreen(storyId: String) = Unit
+    override fun navigateToStoryDetailsScreen(activity: Activity, storyId: String) = Unit
 }

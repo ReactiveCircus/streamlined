@@ -19,7 +19,11 @@ dependencies {
     implementation(libraries.kotlinStdlib)
 
     // SQLDelight
-    implementation(libraries.sqldelight.android)
+    implementation(libraries.sqldelight.driver.android)
+    implementation(libraries.sqldelight.coroutinesExtensions)
+
+    // Coroutines
+    implementation(libraries.kotlinx.coroutines.core)
 
     // Dagger
     implementation(libraries.dagger.runtime)
@@ -32,5 +36,5 @@ dependencies {
     testImplementation(libraries.junit)
     testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
-    testImplementation(libraries.sqldelight.jvm)
+    testImplementation(libraries.sqldelight.driver.jvm)
 }

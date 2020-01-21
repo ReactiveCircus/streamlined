@@ -3,6 +3,7 @@ import io.github.reactivecircus.streamlined.libraries
 plugins {
     `streamlined-plugin`
     id("kotlin")
+    id("kotlinx-serialization")
 }
 
 dependencies {

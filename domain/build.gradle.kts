@@ -12,7 +12,7 @@ dependencies {
 
     // Blueprint
     implementation(libraries.blueprint.interactorCoroutines)
-    implementation(libraries.blueprint.threadingCoroutines)
+    implementation(libraries.blueprint.asyncCoroutines)
 
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)

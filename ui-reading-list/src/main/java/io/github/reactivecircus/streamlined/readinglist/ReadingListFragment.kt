@@ -4,10 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.github.reactivecircus.analytics.AnalyticsApi
+import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.readinglist.databinding.FragmentReadingListBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
+import javax.inject.Inject
 
-class ReadingListFragment : BaseFragment<FragmentReadingListBinding>() {
+class ReadingListFragment @Inject constructor(
+    analyticsApi: AnalyticsApi,
+    private val navigator: Navigator
+) : BaseFragment<FragmentReadingListBinding>(analyticsApi) {
 
     override fun provideViewBinding(
         inflater: LayoutInflater,
