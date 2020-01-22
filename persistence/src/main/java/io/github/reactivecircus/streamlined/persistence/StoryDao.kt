@@ -8,7 +8,7 @@ interface StoryDao {
 
     fun storyById(id: Long): StoryEntity?
 
-    suspend fun insertStories(stories: List<StoryEntity>)
+    suspend fun updateStories(stories: List<StoryEntity>)
 
     suspend fun deleteAll()
 }

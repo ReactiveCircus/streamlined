@@ -12,8 +12,12 @@ CREATE TABLE StoryEntity (
 findAllStories:
 SELECT * FROM StoryEntity;
 
+findAllStoryIds:
+SELECT id FROM StoryEntity;
+
 findStoryById:
-SELECT * FROM StoryEntity WHERE id = ?;
+SELECT * FROM
+StoryEntity WHERE id = ?;
 
 findStoryIdByTitleAndPublishedTime:
 SELECT id FROM StoryEntity
@@ -25,3 +29,7 @@ VALUES (?, ?, ?, ?, ?, ?);
 
 deleteAll:
 DELETE FROM StoryEntity;
+
+deleteStoriesByIds:
+DELETE FROM StoryEntity
+WHERE id IN ?;

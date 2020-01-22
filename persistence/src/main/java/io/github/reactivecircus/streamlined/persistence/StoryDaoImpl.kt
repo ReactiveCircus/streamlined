@@ -9,6 +9,7 @@ internal class StoryDaoImpl @Inject constructor(
     private val queries: StoryEntityQueries
 ) : StoryDao {
     override fun allStories(): Flow<List<StoryEntity>> {
+        // TODO replace with allStoriesByFilter(...)
         return queries.findAllStories().asFlow().mapToList()
     }
 
@@ -16,15 +17,19 @@ internal class StoryDaoImpl @Inject constructor(
         return queries.findStoryById(id).executeAsOneOrNull()
     }
 
-    override suspend fun insertStories(stories: List<StoryEntity>) {
+    override suspend fun updateStories(stories: List<StoryEntity>) {
         queries.transaction {
+            val ids = queries.findAllStoryIds().executeAsList().toMutableSet()
+
             stories.forEach {
-                val storyExists = queries.findStoryIdByTitleAndPublishedTime(
+                val existingStoryId = queries.findStoryIdByTitleAndPublishedTime(
                     title = it.title,
                     publishedTime = it.publishedTime
-                ).executeAsOneOrNull() != null
+                ).executeAsOneOrNull()
 
-                if (!storyExists) {
+                if (existingStoryId != null) {
+                    ids -= existingStoryId
+                } else {
                     queries.insertStory(
                         title = it.title,
                         author = it.author,
@@ -34,6 +39,13 @@ internal class StoryDaoImpl @Inject constructor(
                         publishedTime = it.publishedTime
                     )
                 }
+            }
+
+            ids.chunked(MAX_PARAMETERS_PER_STATEMENT).forEach { chunk ->
+                // TODO check if the story to be deleted is bookmarked.
+                //  if bookmarked, remove all relevant records in StoryFilter but leave it in StoryEntity
+                //  otherwise delete (cascade?) it (and relevant records in other tables e.g. StoryFilter)
+                queries.deleteStoriesByIds(chunk)
             }
         }
     }

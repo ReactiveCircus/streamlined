@@ -63,7 +63,7 @@ internal abstract class DataModule {
                     }
                 },
                 writer = { _, stories ->
-                    storyDao.insertStories(stories)
+                    storyDao.updateStories(stories)
                 },
                 delete = {
                     storyDao.deleteAll()
