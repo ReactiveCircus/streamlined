@@ -1,3 +1,3 @@
-# Allow longer max_line_length within buildSrc/
 [*.kt]
+# Allow longer max_line_length within buildSrc/
 max_line_length = 200

@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":ui-common"))
     implementation(project(":data"))
     implementation(project(":remote-mock"))
-    implementation(project(":periodic-work"))
+    implementation(project(":background-work"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

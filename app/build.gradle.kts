@@ -159,7 +159,7 @@ dependencies {
     devImplementation(project(":remote-real"))
     prodImplementation(project(":remote-real"))
 
-    implementation(project(":periodic-work"))
+    implementation(project(":background-work"))
 
     // Java 8 desugaring
     coreLibraryDesugaring(libraries.desugarLibs)
