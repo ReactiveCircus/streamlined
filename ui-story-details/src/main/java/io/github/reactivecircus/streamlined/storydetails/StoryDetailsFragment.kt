@@ -7,11 +7,19 @@ import android.view.ViewGroup
 import io.github.reactivecircus.analytics.AnalyticsApi
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
+import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import javax.inject.Inject
+import javax.inject.Provider
 
 class StoryDetailsFragment @Inject constructor(
-    analyticsApi: AnalyticsApi
+    analyticsApi: AnalyticsApi,
+    private val viewModelProvider: Provider<StoryDetailsViewModel.Factory>
 ) : BaseFragment<FragmentStoryDetailsBinding>(analyticsApi) {
+
+    private val viewModel: StoryDetailsViewModel by fragmentViewModel {
+        val id = requireArguments().getLong(ARG_STORY_ID)
+        viewModelProvider.get().create(id)
+    }
 
     override fun provideViewBinding(
         inflater: LayoutInflater,

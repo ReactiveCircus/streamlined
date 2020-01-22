@@ -9,11 +9,33 @@ internal class StoryDaoImpl @Inject constructor(
     private val queries: StoryEntityQueries
 ) : StoryDao {
     override fun allStories(): Flow<List<StoryEntity>> {
-        return queries.allStories().asFlow().mapToList()
+        return queries.findAllStories().asFlow().mapToList()
     }
 
-    override suspend fun updateStories(stories: List<StoryEntity>) {
-        TODO("not implemented")
+    override fun storyById(id: Long): StoryEntity? {
+        return queries.findStoryById(id).executeAsOneOrNull()
+    }
+
+    override suspend fun insertStories(stories: List<StoryEntity>) {
+        queries.transaction {
+            stories.forEach {
+                val storyExists = queries.findStoryIdByTitleAndPublishedTime(
+                    title = it.title,
+                    publishedTime = it.publishedTime
+                ).executeAsOneOrNull() != null
+
+                if (!storyExists) {
+                    queries.insertStory(
+                        title = it.title,
+                        author = it.author,
+                        description = it.description,
+                        url = it.url,
+                        imageUrl = it.imageUrl,
+                        publishedTime = it.publishedTime
+                    )
+                }
+            }
+        }
     }
 
     override suspend fun deleteAll() {

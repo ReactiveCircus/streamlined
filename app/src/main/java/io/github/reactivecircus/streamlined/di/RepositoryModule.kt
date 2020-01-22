@@ -1,34 +1,33 @@
 package io.github.reactivecircus.streamlined.di
 
 import android.app.Application
-import com.dropbox.android.external.store4.Store
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import io.github.reactivecircus.streamlined.data.di.DataComponent
-import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
+import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
-import javax.inject.Singleton
 
 @Module
 object RepositoryModule {
 
     @Provides
-    @Singleton
-    fun provideStoryStore(
+    @Reusable
+    fun provideStoryRepository(
         application: Application,
         newsApiService: NewsApiService
-    ): Store<Unit, List<Story>> {
+    ): StoryRepository {
         return DataComponent.factory()
             .create(
                 context = application,
                 newsApiService = newsApiService
             )
-            .storyStore
+            .storyRepository
     }
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideBookmarkRepository(
         application: Application,
         newsApiService: NewsApiService

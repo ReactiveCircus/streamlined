@@ -11,8 +11,8 @@ dependencies {
     implementation(libraries.kotlinStdlib)
 
     // Blueprint
-    implementation(libraries.blueprint.interactorCoroutines)
-    implementation(libraries.blueprint.asyncCoroutines)
+    api(libraries.blueprint.interactorCoroutines)
+    api(libraries.blueprint.asyncCoroutines)
 
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)

@@ -6,7 +6,9 @@ interface StoryDao {
 
     fun allStories(): Flow<List<StoryEntity>>
 
-    suspend fun updateStories(stories: List<StoryEntity>)
+    fun storyById(id: Long): StoryEntity?
+
+    suspend fun insertStories(stories: List<StoryEntity>)
 
     suspend fun deleteAll()
 }

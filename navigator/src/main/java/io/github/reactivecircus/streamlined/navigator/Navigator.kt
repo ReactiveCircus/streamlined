@@ -7,5 +7,5 @@ import android.app.Activity
  */
 interface Navigator {
 
-    fun navigateToStoryDetailsScreen(activity: Activity, storyId: String)
+    fun navigateToStoryDetailsScreen(activity: Activity, storyId: Long)
 }

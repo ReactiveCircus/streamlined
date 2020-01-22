@@ -12,7 +12,7 @@ internal fun StoryDTO.toEntity(): StoryEntity {
         description = description,
         url = url,
         imageUrl = urlToImage,
-        publishedAt = 0L // TODO add publishedAt.toTimestamp() extension in remote-base
+        publishedTime = 0L // TODO add publishedTime.toTimestamp() extension in remote-base
     )
 }
 
@@ -24,6 +24,6 @@ internal fun StoryEntity.toModel(): Story {
         description = description,
         url = url,
         imageUrl = imageUrl,
-        publishedAt = publishedAt
+        publishedTime = publishedTime
     )
 }

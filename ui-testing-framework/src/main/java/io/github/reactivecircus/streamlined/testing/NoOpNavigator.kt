@@ -8,5 +8,5 @@ import io.github.reactivecircus.streamlined.navigator.Navigator
  */
 class NoOpNavigator : Navigator {
 
-    override fun navigateToStoryDetailsScreen(activity: Activity, storyId: String) = Unit
+    override fun navigateToStoryDetailsScreen(activity: Activity, storyId: Long) = Unit
 }

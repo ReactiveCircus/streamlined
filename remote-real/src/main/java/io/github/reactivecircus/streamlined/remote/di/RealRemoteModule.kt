@@ -14,11 +14,13 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
+import javax.inject.Singleton
 
 @Module
 internal object RealRemoteModule {
 
     @Provides
+    @Singleton
     fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             // add interceptor for injecting API key for all requests
@@ -31,6 +33,7 @@ internal object RealRemoteModule {
     }
 
     @Provides
+    @Singleton
     fun provideRetrofit(
         @BaseUrl baseUrl: String,
         okhttpClient: Lazy<OkHttpClient>
@@ -48,6 +51,7 @@ internal object RealRemoteModule {
     }
 
     @Provides
+    @Singleton
     fun provideNewsApiService(retrofit: Retrofit): NewsApiService {
         return retrofit.create()
     }

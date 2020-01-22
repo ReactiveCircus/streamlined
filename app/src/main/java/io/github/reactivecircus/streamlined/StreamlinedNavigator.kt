@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 class StreamlinedNavigator @Inject constructor() : Navigator {
 
-    override fun navigateToStoryDetailsScreen(activity: Activity, storyId: String) {
+    override fun navigateToStoryDetailsScreen(activity: Activity, storyId: Long) {
         activity.findNavController(R.id.rootNavHostFragment).navigate(
             R.id.action_global_storyDetailsFragment,
             bundleOf(StoryDetailsFragment.ARG_STORY_ID to storyId)

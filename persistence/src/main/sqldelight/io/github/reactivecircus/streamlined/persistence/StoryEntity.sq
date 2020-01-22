@@ -5,12 +5,23 @@ CREATE TABLE StoryEntity (
     description TEXT NOT NULL,
     url TEXT NOT NULL,
     imageUrl TEXT NOT NULL,
-    publishedAt INTEGER NOT NULL,
-    UNIQUE (title, publishedAt)
+    publishedTime INTEGER NOT NULL,
+    UNIQUE (title, publishedTime)
 );
 
-allStories:
+findAllStories:
 SELECT * FROM StoryEntity;
+
+findStoryById:
+SELECT * FROM StoryEntity WHERE id = ?;
+
+findStoryIdByTitleAndPublishedTime:
+SELECT id FROM StoryEntity
+WHERE title = ?1 AND publishedTime = ?2;
+
+insertStory:
+INSERT OR FAIL INTO StoryEntity(title, author, description, url, imageUrl, publishedTime)
+VALUES (?, ?, ?, ?, ?, ?);
 
 deleteAll:
 DELETE FROM StoryEntity;

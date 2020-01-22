@@ -15,11 +15,13 @@ import retrofit2.Retrofit
 import retrofit2.mock.MockRetrofit
 import retrofit2.mock.NetworkBehavior
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 internal object MockRemoteModule {
 
     @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
@@ -29,6 +31,7 @@ internal object MockRemoteModule {
     }
 
     @Provides
+    @Singleton
     fun provideRetrofit(okhttpClient: Lazy<OkHttpClient>): Retrofit {
         return Retrofit.Builder()
             .baseUrl(DUMMY_URL)
@@ -41,6 +44,7 @@ internal object MockRemoteModule {
     }
 
     @Provides
+    @Singleton
     fun provideNetworkBehavior(): NetworkBehavior {
         return NetworkBehavior.create().apply {
             // make sure behavior is deterministic
@@ -53,6 +57,7 @@ internal object MockRemoteModule {
     }
 
     @Provides
+    @Singleton
     fun provideNewsApiService(
         networkBehavior: NetworkBehavior,
         retrofit: Retrofit

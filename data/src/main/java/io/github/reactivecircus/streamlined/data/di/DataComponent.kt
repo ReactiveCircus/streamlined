@@ -1,11 +1,10 @@
 package io.github.reactivecircus.streamlined.data.di
 
 import android.content.Context
-import com.dropbox.android.external.store4.Store
 import dagger.BindsInstance
 import dagger.Component
-import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
+import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
 import javax.inject.Singleton
 
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 )
 interface DataComponent {
 
-    val storyStore: Store<Unit, List<Story>>
+    val storyRepository: StoryRepository
 
     val bookmarkRepository: BookmarkRepository
 

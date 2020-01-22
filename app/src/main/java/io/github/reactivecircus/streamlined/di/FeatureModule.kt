@@ -9,10 +9,15 @@ import io.github.reactivecircus.streamlined.headlines.HeadlinesFragment
 import io.github.reactivecircus.streamlined.home.HomeFragment
 import io.github.reactivecircus.streamlined.readinglist.ReadingListFragment
 import io.github.reactivecircus.streamlined.settings.SettingsFragment
+import io.github.reactivecircus.streamlined.storydetails.StoryDetailsAssistedModule
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
 import kotlin.reflect.KClass
 
-@Module
+@Module(
+    includes = [
+        StoryDetailsAssistedModule::class
+    ]
+)
 abstract class FeatureModule {
 
     @Binds

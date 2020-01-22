@@ -7,5 +7,5 @@ class Story(
     val description: String,
     val url: String,
     val imageUrl: String,
-    val publishedAt: Long
+    val publishedTime: Long
 )

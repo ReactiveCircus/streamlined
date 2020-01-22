@@ -41,6 +41,13 @@ dependencies {
     implementation(libraries.dagger.runtime)
     kapt(libraries.dagger.compiler)
 
+    // Assisted injection
+    compileOnly(libraries.assistedInject.annotations)
+    kapt(libraries.assistedInject.processor)
+
+    // timber
+    implementation(libraries.timber)
+
     // Unit tests
     testImplementation(libraries.junit)
     testImplementation(libraries.mockk)
