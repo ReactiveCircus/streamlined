@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.di
 
-import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -15,12 +15,12 @@ object RepositoryModule {
     @Provides
     @Reusable
     fun provideStoryRepository(
-        application: Application,
+        context: Context,
         newsApiService: NewsApiService
     ): StoryRepository {
         return DataComponent.factory()
             .create(
-                context = application,
+                context = context,
                 newsApiService = newsApiService
             )
             .storyRepository
@@ -29,12 +29,12 @@ object RepositoryModule {
     @Provides
     @Reusable
     fun provideBookmarkRepository(
-        application: Application,
+        context: Context,
         newsApiService: NewsApiService
     ): BookmarkRepository {
         return DataComponent.factory()
             .create(
-                context = application,
+                context = context,
                 newsApiService = newsApiService
             )
             .bookmarkRepository

@@ -33,13 +33,8 @@ dependencies {
     // timber
     implementation(libraries.timber)
 
-    // Android tests
-    androidTestImplementation(libraries.androidx.test.coreKtx)
-    androidTestImplementation(libraries.androidx.test.monitor)
-    androidTestImplementation(libraries.androidx.test.runner)
-    androidTestImplementation(libraries.androidx.test.rules)
-    androidTestImplementation(libraries.androidx.test.ext.junitKtx)
-    androidTestImplementation(libraries.androidx.espresso.core)
-    androidTestImplementation(libraries.androidx.work.testing)
-    androidTestImplementation(libraries.truth)
+    // Unit tests
+    testImplementation(libraries.junit)
+    testImplementation(libraries.mockk)
+    testImplementation(libraries.truth)
 }

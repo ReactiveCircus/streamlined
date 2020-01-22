@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import androidx.work.Configuration
 import com.bugsnag.android.Bugsnag
 import com.bugsnag.android.Client
 import io.github.reactivecircus.bugsnag.BugsnagTree
@@ -11,7 +12,7 @@ import io.github.reactivecircus.streamlined.di.AppComponent
 import timber.log.Timber
 
 @SuppressLint("Registered")
-open class StreamlinedApp : Application() {
+open class StreamlinedApp : Application(), Configuration.Provider {
 
     private val appComponent: AppComponent by lazy {
         AppComponent.factory().create(this)
@@ -36,6 +37,9 @@ open class StreamlinedApp : Application() {
 
         // initialize analytics api
         appComponent.analyticsApi.setEnableAnalytics(BuildConfig.ENABLE_ANALYTICS)
+
+        // scheduler background sync
+        appComponent.backgroundWorkScheduler.scheduleHourlyStorySync()
     }
 
     protected open fun initializeTimber() {
@@ -45,6 +49,10 @@ open class StreamlinedApp : Application() {
             tree.update(error)
             return@beforeNotify true
         }
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return appComponent.workManagerConfiguration
     }
 
     companion object {

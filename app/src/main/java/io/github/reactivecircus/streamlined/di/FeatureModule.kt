@@ -15,6 +15,7 @@ import kotlin.reflect.KClass
 
 @Module(
     includes = [
+        FragmentFactoryModule::class,
         StoryDetailsAssistedModule::class
     ]
 )

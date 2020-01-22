@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.di
 
-import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -12,7 +12,7 @@ object SdkModule {
 
     @Provides
     @Reusable
-    fun provideAnalyticsApi(application: Application): AnalyticsApi {
-        return FirebaseAnalyticsApi(application)
+    fun provideAnalyticsApi(context: Context): AnalyticsApi {
+        return FirebaseAnalyticsApi(context)
     }
 }

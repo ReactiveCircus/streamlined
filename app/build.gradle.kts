@@ -175,6 +175,9 @@ dependencies {
     implementation(libraries.kotlinx.coroutines.core)
     implementation(libraries.kotlinx.coroutines.android)
 
+    // Work manager
+    implementation(libraries.androidx.work.runtimeKtx)
+
     // Dagger
     implementation(libraries.dagger.runtime)
     kapt(libraries.dagger.compiler)
