@@ -201,15 +201,15 @@ tasks.configureEach {
     when {
         // don't count dex methods for debug builds
         name.matches("count(?i).+debugDexMethods".toRegex()) -> {
-            enabled = false
+            onlyIf { false }
         }
         // disable google services plugin for mock flavor
         name.matches("process(?i)mock.+GoogleServices".toRegex()) -> {
-            enabled = false
+            onlyIf { false }
         }
-        // disable all AndroidTest tasks for dev and prod flavors
-        name.matches(".*(?i)(dev|prod).+AndroidTest.*".toRegex()) -> {
-            enabled = false
+        // disable all AndroidTest tasks for prod flavor
+        name.matches(".*(?i)(prod).+AndroidTest.*".toRegex()) -> {
+            onlyIf { false }
         }
     }
 }
