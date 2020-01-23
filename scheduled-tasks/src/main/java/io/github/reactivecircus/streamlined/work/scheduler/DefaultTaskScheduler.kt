@@ -9,9 +9,9 @@ import io.github.reactivecircus.streamlined.work.worker.StorySyncWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class DefaultBackgroundWorkScheduler @Inject constructor(
+class DefaultTaskScheduler @Inject constructor(
     private val workManager: WorkManager
-) : BackgroundWorkScheduler {
+) : TaskScheduler {
 
     override fun scheduleHourlyStorySync() {
         val request = PeriodicWorkRequestBuilder<StorySyncWorker>(

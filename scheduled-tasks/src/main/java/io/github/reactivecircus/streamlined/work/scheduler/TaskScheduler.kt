@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.work.scheduler
 
-interface BackgroundWorkScheduler {
+interface TaskScheduler {
 
     /**
      * Schedules hourly stories syncing in the background.

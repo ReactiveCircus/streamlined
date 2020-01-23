@@ -10,17 +10,17 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import dagger.multibindings.IntoMap
-import io.github.reactivecircus.streamlined.work.scheduler.BackgroundWorkScheduler
-import io.github.reactivecircus.streamlined.work.scheduler.DefaultBackgroundWorkScheduler
+import io.github.reactivecircus.streamlined.work.scheduler.TaskScheduler
+import io.github.reactivecircus.streamlined.work.scheduler.DefaultTaskScheduler
 import io.github.reactivecircus.streamlined.work.worker.StorySyncWorker
 import kotlin.reflect.KClass
 
-@Module(includes = [BackgroundWorkModule.Providers::class])
-abstract class BackgroundWorkModule {
+@Module(includes = [ScheduledTasksModule.Providers::class])
+abstract class ScheduledTasksModule {
 
     @Binds
     @Reusable
-    abstract fun backgroundWorkScheduler(impl: DefaultBackgroundWorkScheduler): BackgroundWorkScheduler
+    abstract fun taskScheduler(impl: DefaultTaskScheduler): TaskScheduler
 
     @Binds
     @IntoMap

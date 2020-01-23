@@ -11,15 +11,15 @@ import io.mockk.slot
 import io.mockk.verify
 import org.junit.Test
 
-class DefaultBackgroundWorkSchedulerTest {
+class DefaultTaskSchedulerTest {
 
     private val workManager = mockk<WorkManager>(relaxed = true)
 
-    private val backgroundWorkScheduler = DefaultBackgroundWorkScheduler(workManager)
+    private val taskScheduler = DefaultTaskScheduler(workManager)
 
     @Test
     fun `schedule hourly story sync`() {
-        backgroundWorkScheduler.scheduleHourlyStorySync()
+        taskScheduler.scheduleHourlyStorySync()
 
         val slot = slot<PeriodicWorkRequest>()
 

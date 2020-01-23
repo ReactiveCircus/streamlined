@@ -39,7 +39,7 @@ open class StreamlinedApp : Application(), Configuration.Provider {
         appComponent.analyticsApi.setEnableAnalytics(BuildConfig.ENABLE_ANALYTICS)
 
         // scheduler background sync
-        appComponent.backgroundWorkScheduler.scheduleHourlyStorySync()
+        appComponent.taskScheduler.scheduleHourlyStorySync()
     }
 
     protected open fun initializeTimber() {

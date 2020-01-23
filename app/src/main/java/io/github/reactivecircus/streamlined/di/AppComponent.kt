@@ -6,8 +6,8 @@ import androidx.work.Configuration
 import dagger.BindsInstance
 import dagger.Component
 import io.github.reactivecircus.analytics.AnalyticsApi
-import io.github.reactivecircus.streamlined.work.di.BackgroundWorkModule
-import io.github.reactivecircus.streamlined.work.scheduler.BackgroundWorkScheduler
+import io.github.reactivecircus.streamlined.work.di.ScheduledTasksModule
+import io.github.reactivecircus.streamlined.work.scheduler.TaskScheduler
 import javax.inject.Singleton
 
 @Singleton
@@ -15,7 +15,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         FeatureModule::class,
-        BackgroundWorkModule::class,
+        ScheduledTasksModule::class,
         ServiceModule::class,
         RepositoryModule::class,
         SdkModule::class
@@ -29,7 +29,7 @@ interface AppComponent {
 
     val workManagerConfiguration: Configuration
 
-    val backgroundWorkScheduler: BackgroundWorkScheduler
+    val taskScheduler: TaskScheduler
 
     @Component.Factory
     interface Factory {

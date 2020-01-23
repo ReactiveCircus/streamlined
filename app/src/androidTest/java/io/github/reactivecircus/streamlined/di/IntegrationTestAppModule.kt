@@ -7,12 +7,12 @@ import dagger.Reusable
 import io.github.reactivecircus.streamlined.StreamlinedNavigator
 import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.ui.di.DaggerFragmentFactory
-import io.github.reactivecircus.streamlined.work.di.BackgroundWorkModule
+import io.github.reactivecircus.streamlined.work.di.ScheduledTasksModule
 
 @Module(
     includes = [
         FeatureModule::class,
-        BackgroundWorkModule::class
+        ScheduledTasksModule::class
     ]
 )
 abstract class IntegrationTestAppModule {
