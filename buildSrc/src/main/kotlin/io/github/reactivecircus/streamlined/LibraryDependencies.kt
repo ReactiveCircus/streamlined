@@ -4,8 +4,8 @@ package io.github.reactivecircus.streamlined
 
 object versions {
     const val kotlin = "1.3.70-eap-42"
-    const val detekt = "1.3.1"
-    const val bugsnag = "4.22.2"
+    const val detekt = "1.4.0"
+    const val bugsnag = "4.22.3"
     const val leakCanary = "2.1"
     const val desugarLibs = "1.0.4"
 
@@ -25,16 +25,16 @@ object versions {
         const val core = "1.2.0-rc01"
         const val annotation = "1.1.0"
         const val appCompat = "1.2.0-alpha01"
-        const val activity = "1.1.0-rc03"
-        const val fragment = "1.2.0-rc05"
+        const val activity = "1.1.0"
+        const val fragment = "1.2.0"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha01"
         const val swipeRefreshLayout = "1.1.0-alpha03"
         const val constraintLayout = "1.1.3"
         const val arch = "2.1.0"
-        const val lifecycle = "2.2.0-rc03"
-        const val navigation = "2.2.0-rc04"
-        const val work = "2.3.0-rc01"
+        const val lifecycle = "2.2.0"
+        const val navigation = "2.2.0"
+        const val work = "2.3.0"
 
         object test {
             const val core = "1.3.0-alpha03"
@@ -51,7 +51,7 @@ object versions {
         }
     }
 
-    const val material = "1.2.0-alpha03"
+    const val material = "1.2.0-alpha04"
     const val dagger = "2.25.4"
     const val assistedInject = "0.5.2"
     const val okhttp = "4.3.1"
