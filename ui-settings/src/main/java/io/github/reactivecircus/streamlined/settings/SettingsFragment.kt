@@ -11,13 +11,19 @@ import javax.inject.Inject
 
 class SettingsFragment @Inject constructor(
     analyticsApi: AnalyticsApi
-) : BaseFragment<FragmentSettingsBinding>(analyticsApi) {
+) : BaseFragment(analyticsApi) {
 
-    override fun provideViewBinding(
+    private val binding get() = view?.tag as FragmentSettingsBinding
+
+    override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentSettingsBinding {
-        return FragmentSettingsBinding.inflate(inflater, container, false)
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        val view = binding.root
+        view.tag = binding
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

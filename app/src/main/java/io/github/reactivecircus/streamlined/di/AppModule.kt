@@ -9,7 +9,7 @@ import io.github.reactivecircus.streamlined.StreamlinedNavigator
 import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.configs.DefaultAnimationConfigs
-import io.github.reactivecircus.streamlined.ui.di.DaggerFragmentFactory
+import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
 import kotlinx.coroutines.Dispatchers
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
@@ -22,7 +22,7 @@ abstract class AppModule {
 
     @Binds
     @Reusable
-    abstract fun fragmentFactory(impl: DaggerFragmentFactory): FragmentFactory
+    abstract fun fragmentFactory(impl: DynamicFragmentFactory): FragmentFactory
 
     @Binds
     @Reusable

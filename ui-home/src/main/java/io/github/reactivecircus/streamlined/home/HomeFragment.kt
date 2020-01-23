@@ -16,15 +16,21 @@ class HomeFragment @Inject constructor(
     analyticsApi: AnalyticsApi,
     private val navigator: Navigator,
     private val viewModelProvider: Provider<HomeViewModel>
-) : BaseFragment<FragmentHomeBinding>(analyticsApi) {
+) : BaseFragment(analyticsApi) {
+
+    private val binding get() = view?.tag as FragmentHomeBinding
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
-    override fun provideViewBinding(
+    override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentHomeBinding {
-        return FragmentHomeBinding.inflate(inflater, container, false)
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view = binding.root
+        view.tag = binding
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

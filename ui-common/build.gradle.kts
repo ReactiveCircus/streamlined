@@ -10,7 +10,6 @@ plugins {
 android {
     @Suppress("UnstableApiUsage")
     buildFeatures {
-        viewBinding = true
         // enabled new Java 8 language APIs
         compileOptions.coreLibraryDesugaringEnabled = true
     }

@@ -14,18 +14,24 @@ import javax.inject.Provider
 class StoryDetailsFragment @Inject constructor(
     analyticsApi: AnalyticsApi,
     private val viewModelProvider: Provider<StoryDetailsViewModel.Factory>
-) : BaseFragment<FragmentStoryDetailsBinding>(analyticsApi) {
+) : BaseFragment(analyticsApi) {
+
+    private val binding get() = view?.tag as FragmentStoryDetailsBinding
 
     private val viewModel: StoryDetailsViewModel by fragmentViewModel {
         val id = requireArguments().getLong(ARG_STORY_ID)
         viewModelProvider.get().create(id)
     }
 
-    override fun provideViewBinding(
+    override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentStoryDetailsBinding {
-        return FragmentStoryDetailsBinding.inflate(inflater, container, false)
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentStoryDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
+        view.tag = binding
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

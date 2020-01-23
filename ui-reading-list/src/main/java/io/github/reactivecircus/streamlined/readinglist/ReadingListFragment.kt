@@ -13,13 +13,19 @@ import javax.inject.Inject
 class ReadingListFragment @Inject constructor(
     analyticsApi: AnalyticsApi,
     private val navigator: Navigator
-) : BaseFragment<FragmentReadingListBinding>(analyticsApi) {
+) : BaseFragment(analyticsApi) {
 
-    override fun provideViewBinding(
+    private val binding get() = view?.tag as FragmentReadingListBinding
+
+    override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentReadingListBinding {
-        return FragmentReadingListBinding.inflate(inflater, container, false)
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentReadingListBinding.inflate(inflater, container, false)
+        val view = binding.root
+        view.tag = binding
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

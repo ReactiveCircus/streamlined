@@ -8,7 +8,7 @@ import javax.inject.Provider
 /**
  * A [FragmentFactory] that instantiates [Fragment] using Dagger map multi-binding.
  */
-class DaggerFragmentFactory @Inject constructor(
+class DynamicFragmentFactory @Inject constructor(
     private val providers: Map<Class<out Fragment>, @JvmSuppressWildcards Provider<Fragment>>
 ) : FragmentFactory() {
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {

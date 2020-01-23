@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Reusable
 import io.github.reactivecircus.streamlined.StreamlinedNavigator
 import io.github.reactivecircus.streamlined.navigator.Navigator
-import io.github.reactivecircus.streamlined.ui.di.DaggerFragmentFactory
+import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
 import io.github.reactivecircus.streamlined.work.di.ScheduledTasksModule
 
 @Module(
@@ -23,5 +23,5 @@ abstract class IntegrationTestAppModule {
 
     @Binds
     @Reusable
-    abstract fun fragmentFactory(impl: DaggerFragmentFactory): FragmentFactory
+    abstract fun fragmentFactory(impl: DynamicFragmentFactory): FragmentFactory
 }
