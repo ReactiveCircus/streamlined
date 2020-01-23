@@ -25,5 +25,5 @@ internal fun Project.enableSlimTests() {
 }
 
 private const val SLIM_TESTS_PROPERTY = "slimTests"
-private const val SKIPPED_TESTS_REGEX_PATTERN = "test.*(?i)(release|dev|prod)UnitTest"
+private const val SKIPPED_TESTS_REGEX_PATTERN = "(test|connected).*(?i)(release|dev|prod)(UnitTest|AndroidTest)"
 
