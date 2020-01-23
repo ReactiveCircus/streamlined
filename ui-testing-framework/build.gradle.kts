@@ -11,9 +11,9 @@ dependencies {
     implementation(project(":analytics-api-no-op"))
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
+    implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":remote-mock"))
-    implementation(project(":background-work"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)
@@ -21,8 +21,13 @@ dependencies {
     // Dagger
     implementation(libraries.dagger.runtime)
     kapt(libraries.dagger.compiler)
+    
+    // OkHttp
+    implementation(libraries.okhttp.client)
+    implementation(libraries.okhttp.loggingInterceptor)
 
-    // retrofit-mock
+    // Retrofit
+    implementation(libraries.retrofit.client)
     implementation(libraries.retrofit.mock)
 
     // timber

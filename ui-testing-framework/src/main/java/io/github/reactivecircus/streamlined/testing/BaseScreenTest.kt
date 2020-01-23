@@ -16,7 +16,7 @@ import androidx.test.espresso.FailureHandler
 import androidx.test.espresso.base.DefaultFailureHandler
 import androidx.test.espresso.intent.Intents
 import androidx.test.runner.screenshot.Screenshot
-import io.github.reactivecircus.streamlined.testing.assumption.NetworkAssumptions
+import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
@@ -24,8 +24,10 @@ import io.github.reactivecircus.streamlined.ui.R as ResourcesR
 
 abstract class BaseScreenTest {
 
-    // TODO @Inject
-    lateinit var networkAssumptions: NetworkAssumptions
+    protected val testingFrameworkComponent = TestingFrameworkComponent.factory()
+        .create(ApplicationProvider.getApplicationContext())
+
+    private val networkAssumptions = testingFrameworkComponent.networkAssumptions
 
     @Before
     open fun setUp() {
@@ -55,8 +57,8 @@ abstract class BaseScreenTest {
     }
 
     inline fun <reified F : Fragment> launchFragmentScenario(
-        fragmentArgs: Bundle? = null,
-        factory: FragmentFactory? = null
+        factory: FragmentFactory,
+        fragmentArgs: Bundle? = null
     ): FragmentScenario<F> {
         return launchFragmentInContainer<F>(
             fragmentArgs = fragmentArgs,

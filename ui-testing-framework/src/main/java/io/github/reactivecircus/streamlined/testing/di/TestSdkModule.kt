@@ -1,3 +1,17 @@
 package io.github.reactivecircus.streamlined.testing.di
 
-// TODO
+import dagger.Module
+import dagger.Provides
+import dagger.Reusable
+import io.github.reactivecircus.analytics.AnalyticsApi
+import io.github.reactivecircus.analytics.noop.NoOpAnalyticsApi
+
+@Module
+internal object TestSdkModule {
+
+    @Provides
+    @Reusable
+    fun provideAnalyticsApi(): AnalyticsApi {
+        return NoOpAnalyticsApi()
+    }
+}

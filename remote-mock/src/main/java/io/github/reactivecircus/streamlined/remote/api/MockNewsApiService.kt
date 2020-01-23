@@ -3,7 +3,7 @@ package io.github.reactivecircus.streamlined.remote.api
 import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
 import retrofit2.mock.BehaviorDelegate
 
-internal class MockNewsApiService(
+class MockNewsApiService(
     private val delegate: BehaviorDelegate<NewsApiService>
 ) : NewsApiService {
 

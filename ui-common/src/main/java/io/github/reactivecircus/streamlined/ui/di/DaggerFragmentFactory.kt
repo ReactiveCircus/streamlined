@@ -1,4 +1,4 @@
-package io.github.reactivecircus.streamlined.di
+package io.github.reactivecircus.streamlined.ui.di
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory

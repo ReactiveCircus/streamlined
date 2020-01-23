@@ -55,4 +55,5 @@ dependencies {
     debugImplementation(libraries.androidx.fragment.testing) {
         exclude(group = "androidx.test")
     }
+    kaptAndroidTest(libraries.dagger.compiler)
 }

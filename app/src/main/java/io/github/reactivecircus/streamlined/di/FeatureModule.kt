@@ -2,7 +2,6 @@ package io.github.reactivecircus.streamlined.di
 
 import androidx.fragment.app.Fragment
 import dagger.Binds
-import dagger.MapKey
 import dagger.Module
 import dagger.multibindings.IntoMap
 import io.github.reactivecircus.streamlined.headlines.HeadlinesFragment
@@ -11,11 +10,10 @@ import io.github.reactivecircus.streamlined.readinglist.ReadingListFragment
 import io.github.reactivecircus.streamlined.settings.SettingsFragment
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsAssistedModule
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
-import kotlin.reflect.KClass
+import io.github.reactivecircus.streamlined.ui.di.FragmentKey
 
 @Module(
     includes = [
-        FragmentFactoryModule::class,
         StoryDetailsAssistedModule::class
     ]
 )
@@ -46,12 +44,3 @@ abstract class FeatureModule {
     @FragmentKey(StoryDetailsFragment::class)
     abstract fun storyDetailsFragment(fragment: StoryDetailsFragment): Fragment
 }
-
-@Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER
-)
-@Retention(AnnotationRetention.RUNTIME)
-@MapKey
-annotation class FragmentKey(val value: KClass<out Fragment>)
