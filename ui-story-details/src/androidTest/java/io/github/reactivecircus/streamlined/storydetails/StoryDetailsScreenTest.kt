@@ -14,7 +14,7 @@ class StoryDetailsScreenTest : BaseScreenTest() {
 
     @Test
     fun openStoryDetailsScreen_storyDisplayed() {
+        // TODO pass in ARG_STORY_ID
         launchFragmentScenario<StoryDetailsFragment>(fragmentFactory)
-        // TODO
     }
 }

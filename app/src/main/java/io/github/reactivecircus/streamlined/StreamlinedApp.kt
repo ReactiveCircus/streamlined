@@ -14,7 +14,7 @@ import timber.log.Timber
 @SuppressLint("Registered")
 open class StreamlinedApp : Application(), Configuration.Provider {
 
-    private val appComponent: AppComponent by lazy {
+    protected open val appComponent: AppComponent by lazy {
         AppComponent.factory().create(this)
     }
 

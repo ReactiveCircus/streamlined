@@ -13,7 +13,6 @@ import dagger.multibindings.IntoMap
 import io.github.reactivecircus.streamlined.work.scheduler.BackgroundWorkScheduler
 import io.github.reactivecircus.streamlined.work.scheduler.DefaultBackgroundWorkScheduler
 import io.github.reactivecircus.streamlined.work.worker.StorySyncWorker
-import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 @Module(includes = [BackgroundWorkModule.Providers::class])
@@ -32,7 +31,7 @@ abstract class BackgroundWorkModule {
     object Providers {
 
         @Provides
-        @Singleton
+        @Reusable
         fun provideWorkManager(context: Context): WorkManager {
             return WorkManager.getInstance(context)
         }

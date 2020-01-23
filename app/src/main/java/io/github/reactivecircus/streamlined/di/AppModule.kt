@@ -18,11 +18,11 @@ abstract class AppModule {
 
     @Binds
     @Reusable
-    abstract fun fragmentFactory(impl: DaggerFragmentFactory): FragmentFactory
+    abstract fun navigator(impl: StreamlinedNavigator): Navigator
 
     @Binds
     @Reusable
-    abstract fun navigator(impl: StreamlinedNavigator): Navigator
+    abstract fun fragmentFactory(impl: DaggerFragmentFactory): FragmentFactory
 
     @Binds
     @Reusable

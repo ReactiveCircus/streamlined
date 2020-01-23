@@ -195,6 +195,7 @@ dependencies {
 
     // Android tests
     androidTestImplementation(project(":ui-testing-framework"))
+    kaptAndroidTest(libraries.dagger.compiler)
 }
 
 tasks.configureEach {
