@@ -57,7 +57,7 @@ object versions {
     const val okhttp = "4.3.1"
     const val retrofit = "2.7.1"
     const val retrofitSerializationConverter = "0.4.0"
-    const val sqldelight = "1.2.1"
+    const val sqldelight = "1.2.2"
     const val store = "4.0.0-alpha01"
     const val coil = "0.9.1"
     const val timber = "4.7.1"
