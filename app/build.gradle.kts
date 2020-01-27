@@ -134,8 +134,12 @@ android {
 
     sourceSets {
         // common source set for dev and prod
-        getByName("dev").java.srcDir("src/online/java")
-        getByName("prod").java.srcDir("src/online/java")
+        named("dev") {
+            java.srcDir("src/online/java")
+        }
+        named("prod") {
+            java.srcDir("src/online/java")
+        }
     }
 }
 
