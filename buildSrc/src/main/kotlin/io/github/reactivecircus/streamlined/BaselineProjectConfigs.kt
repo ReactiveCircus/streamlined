@@ -10,7 +10,6 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.internal.file.impl.DefaultFileMetadata.file
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
