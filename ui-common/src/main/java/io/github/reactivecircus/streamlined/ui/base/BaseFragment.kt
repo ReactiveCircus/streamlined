@@ -1,11 +1,13 @@
 package io.github.reactivecircus.streamlined.ui.base
 
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import io.github.reactivecircus.analytics.AnalyticsApi
 
 abstract class BaseFragment(
+    @LayoutRes contentLayoutId: Int,
     private val analyticsApi: AnalyticsApi
-) : Fragment() {
+) : Fragment(contentLayoutId) {
 
     override fun onResume() {
         super.onResume()
