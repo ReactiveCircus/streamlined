@@ -10,8 +10,7 @@ import javax.inject.Inject
  */
 internal class AuthInterceptor @Inject constructor(
     @ApiKey private val apiKey: String
-) :
-    Interceptor {
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = chain.request().newBuilder()

@@ -7,6 +7,7 @@ import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -23,5 +24,9 @@ class HomeFragment @Inject constructor(
         val binding = FragmentHomeBinding.bind(view)
 
         binding.toolbar.title = getString(R.string.title_home)
+
+        viewModel.state.observeForever {
+            Timber.d(it.toString())
+        }
     }
 }

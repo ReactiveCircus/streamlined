@@ -53,12 +53,18 @@ internal abstract class DataModule {
         ): Store<Unit, List<Story>> {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
                 fetcher = {
-                    newsApiService.headlines().map { it.toEntity() }
+                    // TODO source country (hardcode ISO 3166-1 country code) from user preference
+                    val country = "au"
+                    newsApiService.headlines(country).stories.map { it.toEntity() }
                 }
             ).persister(
                 reader = {
                     storyDao.allStories().map { stories ->
-                        stories.map { it.toModel() }
+                        if (stories.isNotEmpty()) {
+                            stories.map { it.toModel() }
+                        } else {
+                            null
+                        }
                     }
                 },
                 writer = { _, stories ->

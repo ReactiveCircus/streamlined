@@ -1,10 +1,10 @@
 CREATE TABLE StoryEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    author TEXT NOT NULL,
+    author TEXT,
     description TEXT NOT NULL,
     url TEXT NOT NULL,
-    imageUrl TEXT NOT NULL,
+    imageUrl TEXT,
     publishedTime INTEGER NOT NULL,
     UNIQUE (title, publishedTime)
 );
