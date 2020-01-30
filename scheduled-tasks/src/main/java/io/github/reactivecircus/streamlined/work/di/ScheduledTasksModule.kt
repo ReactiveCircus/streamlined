@@ -15,7 +15,7 @@ import io.github.reactivecircus.streamlined.work.scheduler.DefaultTaskScheduler
 import io.github.reactivecircus.streamlined.work.worker.StorySyncWorker
 import kotlin.reflect.KClass
 
-@Module(includes = [ScheduledTasksModule.Providers::class])
+@Module
 abstract class ScheduledTasksModule {
 
     @Binds
@@ -27,8 +27,7 @@ abstract class ScheduledTasksModule {
     @WorkerKey(StorySyncWorker::class)
     abstract fun storySyncWorker(factory: StorySyncWorker.Factory): ChildWorkerFactory
 
-    @Module
-    object Providers {
+    companion object {
 
         @Provides
         @Reusable

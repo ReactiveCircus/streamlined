@@ -13,7 +13,7 @@ import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
 import kotlinx.coroutines.Dispatchers
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
-@Module(includes = [AppModule.Providers::class])
+@Module
 abstract class AppModule {
 
     @Binds
@@ -28,8 +28,7 @@ abstract class AppModule {
     @Reusable
     abstract fun animationConfigs(impl: DefaultAnimationConfigs): AnimationConfigs
 
-    @Module
-    object Providers {
+    companion object {
 
         @Provides
         @Reusable

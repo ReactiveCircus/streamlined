@@ -22,7 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.map
 
-@Module(includes = [DataModule.Providers::class])
+@Module
 internal abstract class DataModule {
 
     @Binds
@@ -33,8 +33,7 @@ internal abstract class DataModule {
     @Reusable
     abstract fun bookmarkRepository(impl: BookmarkRepositoryImpl): BookmarkRepository
 
-    @Module
-    internal object Providers {
+    internal companion object {
 
         @Provides
         @Reusable

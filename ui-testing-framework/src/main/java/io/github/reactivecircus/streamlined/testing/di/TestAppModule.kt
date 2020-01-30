@@ -11,15 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
-@Module(includes = [TestAppModule.Providers::class])
+@Module
 internal abstract class TestAppModule {
 
     @Binds
     @Reusable
     abstract fun animationConfigs(impl: TestAnimationConfigs): AnimationConfigs
 
-    @Module
-    object Providers {
+    companion object {
 
         @Provides
         @Reusable

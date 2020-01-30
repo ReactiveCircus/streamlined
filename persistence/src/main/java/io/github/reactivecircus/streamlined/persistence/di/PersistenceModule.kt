@@ -12,15 +12,14 @@ import io.github.reactivecircus.streamlined.persistence.StoryEntityQueries
 import io.github.reactivecircus.streamlined.persistence.StreamlinedDatabase
 import javax.inject.Singleton
 
-@Module(includes = [PersistenceModule.Providers::class])
+@Module
 internal abstract class PersistenceModule {
 
     @Binds
     @Reusable
     abstract fun storyDao(impl: StoryDaoImpl): StoryDao
 
-    @Module
-    internal object Providers {
+    internal companion object {
 
         @Provides
         @Singleton
