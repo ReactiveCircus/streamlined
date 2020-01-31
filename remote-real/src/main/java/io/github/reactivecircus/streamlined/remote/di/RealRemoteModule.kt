@@ -15,6 +15,7 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -22,8 +23,12 @@ internal object RealRemoteModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        @NetworkTimeoutSeconds networkTimeoutSeconds: Long,
+        authInterceptor: AuthInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .callTimeout(networkTimeoutSeconds, TimeUnit.SECONDS)
             // add interceptor for injecting API key for all requests
             .addInterceptor(authInterceptor)
             // add logging interceptor

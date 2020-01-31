@@ -14,7 +14,11 @@ object ServiceModule {
     @Reusable
     fun provideNewsApiService(): NewsApiService {
         return RealRemoteComponent.factory()
-            .create(baseUrl = BuildConfig.BASE_URL, apiKey = BuildConfig.API_KEY)
+            .create(
+                baseUrl = BuildConfig.BASE_URL,
+                apiKey = BuildConfig.API_KEY,
+                networkTimeoutSeconds = BuildConfig.NETWORK_TIMEOUT_SECONDS
+            )
             .newsApiService
     }
 }

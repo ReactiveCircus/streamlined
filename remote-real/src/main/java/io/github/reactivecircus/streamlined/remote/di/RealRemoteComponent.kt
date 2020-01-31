@@ -18,7 +18,8 @@ interface RealRemoteComponent {
 
         fun create(
             @BindsInstance @BaseUrl baseUrl: String,
-            @BindsInstance @ApiKey apiKey: String
+            @BindsInstance @ApiKey apiKey: String,
+            @BindsInstance @NetworkTimeoutSeconds networkTimeoutSeconds: Long
         ): RealRemoteComponent
     }
 

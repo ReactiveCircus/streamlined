@@ -33,6 +33,8 @@ android {
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.IntegrationTestRunner"
 
+        buildConfigField("long", "NETWORK_TIMEOUT_SECONDS", "10")
+
         // only support English for now
         resConfigs("en")
 
