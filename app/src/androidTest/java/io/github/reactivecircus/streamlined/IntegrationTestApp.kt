@@ -8,13 +8,12 @@ import timber.log.Timber
 
 class IntegrationTestApp : StreamlinedApp() {
 
-    override val appComponent: AppComponent
-        get() = IntegrationTestAppComponent.factory()
-            .create(
-                context = this,
-                testingFrameworkComponent = TestingFrameworkComponent.factory()
-                    .create(ApplicationProvider.getApplicationContext())
-            )
+    override val appComponent: AppComponent = IntegrationTestAppComponent.factory()
+        .create(
+            context = this,
+            testingFrameworkComponent = TestingFrameworkComponent.factory()
+                .create(ApplicationProvider.getApplicationContext())
+        )
 
     override fun onCreate() {
         // initialize Timber
