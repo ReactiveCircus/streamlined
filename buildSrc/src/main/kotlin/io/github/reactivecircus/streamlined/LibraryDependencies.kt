@@ -20,6 +20,7 @@ object versions {
 
     const val blueprint = "1.4.0"
     const val flowbinding = "0.9.0"
+    const val flowRedux = "0.2.1"
 
     object androidx {
         const val core = "1.3.0-alpha01"
@@ -96,6 +97,10 @@ object libraries {
     object flowbinding {
         const val android = "io.github.reactivecircus.flowbinding:flowbinding-android:${versions.flowbinding}"
         const val material = "io.github.reactivecircus.flowbinding:flowbinding-material:${versions.flowbinding}"
+    }
+
+    object flowRedux {
+        const val dsl = "com.freeletics.flowredux:dsl:${versions.flowRedux}"
     }
 
     object androidx {

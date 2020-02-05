@@ -28,6 +28,9 @@ dependencies {
     api(libraries.flowbinding.android)
     api(libraries.flowbinding.material)
 
+    // FlowRedux
+    api(libraries.flowRedux.dsl)
+
     // AndroidX
     api(libraries.androidx.annotation)
     api(libraries.androidx.appCompat)
