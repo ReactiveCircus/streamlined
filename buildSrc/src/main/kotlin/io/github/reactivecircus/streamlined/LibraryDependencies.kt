@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object versions {
-    const val kotlin = "1.3.70-eap-42"
+    const val kotlin = "1.3.70-eap-184"
     const val detekt = "1.4.0"
     const val bugsnag = "4.22.3"
     const val leakCanary = "2.1"
