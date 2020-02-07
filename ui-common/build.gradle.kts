@@ -29,7 +29,7 @@ dependencies {
     api(libraries.flowbinding.material)
 
     // FlowRedux
-    api(libraries.flowRedux.dsl)
+    // api(libraries.flowRedux.dsl)
 
     // AndroidX
     api(libraries.androidx.annotation)
