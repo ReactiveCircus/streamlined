@@ -10,7 +10,7 @@ import io.github.reactivecircus.streamlined.persistence.StoryDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class StoryRepositoryImpl @Inject constructor(
+internal class StoryRepositoryImpl @Inject constructor(
     private val storyStore: Store<Unit, List<Story>>,
     private val storyDao: StoryDao
 ) : StoryRepository {
