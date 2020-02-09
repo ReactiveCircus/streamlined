@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.remote.api
 
-import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
+import io.github.reactivecircus.streamlined.remote.MockData
 import io.github.reactivecircus.streamlined.remote.dto.StoryListResponse
 import retrofit2.mock.BehaviorDelegate
 
@@ -9,14 +9,20 @@ class MockNewsApiService(
 ) : NewsApiService {
 
     override suspend fun headlines(country: String): StoryListResponse {
-        // TODO MockData
-        return delegate.returningResponse(emptyList<StoryDTO>())
+        val headlineStoriesResponse = StoryListResponse(
+            totalResults = MockData.mockHeadlineStories.size,
+            stories = MockData.mockHeadlineStories
+        )
+        return delegate.returningResponse(headlineStoriesResponse)
             .headlines(country)
     }
 
     override suspend fun everything(): StoryListResponse {
-        // TODO MockData
-        return delegate.returningResponse(emptyList<StoryDTO>())
+        val allStoriesResponse = StoryListResponse(
+            totalResults = MockData.mockAllStories.size,
+            stories = MockData.mockAllStories
+        )
+        return delegate.returningResponse(allStoriesResponse)
             .everything()
     }
 }

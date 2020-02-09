@@ -2,7 +2,10 @@ package io.github.reactivecircus.streamlined.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.observe
+import com.dropbox.android.external.store4.StoreResponse
 import io.github.reactivecircus.analytics.AnalyticsApi
+import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
@@ -25,7 +28,7 @@ class HomeFragment @Inject constructor(
 
         binding.toolbar.title = getString(R.string.title_home)
 
-        viewModel.state.observeForever {
+        viewModel.state.observe<StoreResponse<List<Story>>>(this) {
             Timber.d(it.toString())
         }
     }
