@@ -60,7 +60,7 @@ object versions {
     const val retrofitSerializationConverter = "0.4.0"
     const val sqldelight = "1.2.2"
     const val store = "4.0.0-alpha02"
-    const val coil = "0.9.1"
+    const val coil = "0.9.5"
     const val timber = "4.7.1"
     const val junit = "4.13"
     const val mockk = "1.9.3"
