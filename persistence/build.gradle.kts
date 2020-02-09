@@ -37,4 +37,5 @@ dependencies {
     testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
     testImplementation(libraries.sqldelight.driver.jvm)
+    testImplementation(project(":coroutines-test-ext"))
 }

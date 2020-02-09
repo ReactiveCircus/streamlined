@@ -27,6 +27,14 @@ insertStory:
 INSERT OR FAIL INTO StoryEntity(title, author, description, url, imageUrl, publishedTime)
 VALUES (?, ?, ?, ?, ?, ?);
 
+updateStory:
+UPDATE StoryEntity
+SET author = ?3,
+    description = ?4,
+    url = ?5,
+    imageUrl = ?6
+WHERE title = ?1 AND publishedTime = ?2;
+
 deleteAll:
 DELETE FROM StoryEntity;
 

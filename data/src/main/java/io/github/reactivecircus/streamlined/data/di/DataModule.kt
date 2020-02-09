@@ -21,6 +21,7 @@ import io.github.reactivecircus.streamlined.remote.api.NewsApiService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.map
+import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
 @Module
 internal abstract class DataModule {
@@ -37,9 +38,15 @@ internal abstract class DataModule {
 
         @Provides
         @Reusable
-        fun storyDao(context: Context): StoryDao {
+        fun storyDao(
+            context: Context,
+            coroutineDispatcherProvider: CoroutineDispatcherProvider
+        ): StoryDao {
             return PersistenceComponent.factory()
-                .create(context)
+                .create(
+                    context = context,
+                    coroutineContext = coroutineDispatcherProvider.io
+                )
                 .storyDao
         }
 

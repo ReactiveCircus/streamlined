@@ -4,13 +4,15 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 internal class StoryDaoImpl @Inject constructor(
-    private val queries: StoryEntityQueries
+    private val queries: StoryEntityQueries,
+    private val context: CoroutineContext
 ) : StoryDao {
     override fun allStories(): Flow<List<StoryEntity>> {
         // TODO replace with allStoriesByFilter(...)
-        return queries.findAllStories().asFlow().mapToList()
+        return queries.findAllStories().asFlow().mapToList(context)
     }
 
     override fun storyById(id: Long): StoryEntity? {
@@ -29,6 +31,14 @@ internal class StoryDaoImpl @Inject constructor(
 
                 if (existingStoryId != null) {
                     ids -= existingStoryId
+                    queries.updateStory(
+                        title = it.title,
+                        publishedTime = it.publishedTime,
+                        author = it.author,
+                        description = it.description,
+                        url = it.url,
+                        imageUrl = it.imageUrl
+                    )
                 } else {
                     queries.insertStory(
                         title = it.title,
