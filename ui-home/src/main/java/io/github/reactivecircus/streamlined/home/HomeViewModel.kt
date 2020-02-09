@@ -12,7 +12,7 @@ import reactivecircus.blueprint.interactor.EmptyParams
 import timber.log.Timber
 import javax.inject.Inject
 
-@UseExperimental(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories
 ) : ViewModel() {
