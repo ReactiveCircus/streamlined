@@ -6,7 +6,7 @@ object versions {
     const val kotlin = "1.3.70-eap-184"
     const val detekt = "1.5.1"
     const val bugsnag = "4.22.3"
-    const val leakCanary = "2.1"
+    const val leakCanary = "2.2"
     const val desugarLibs = "1.0.4"
 
     object kotlinx {
