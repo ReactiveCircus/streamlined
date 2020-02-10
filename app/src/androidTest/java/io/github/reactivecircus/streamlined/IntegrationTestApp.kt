@@ -12,7 +12,7 @@ class IntegrationTestApp : StreamlinedApp() {
         .create(
             context = this,
             testingFrameworkComponent = TestingFrameworkComponent.factory()
-                .create(ApplicationProvider.getApplicationContext())
+                .create(this)
         )
 
     override fun onCreate() {
