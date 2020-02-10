@@ -3,6 +3,7 @@ package io.github.reactivecircus.streamlined.data.mapper
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
 import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
+import io.github.reactivecircus.streamlined.remote.helper.toTimestamp
 
 internal fun StoryDTO.toEntity(): StoryEntity {
     return StoryEntity.Impl(
@@ -12,7 +13,7 @@ internal fun StoryDTO.toEntity(): StoryEntity {
         description = description,
         url = url,
         imageUrl = urlToImage,
-        publishedTime = 0L // TODO add publishedTime.toTimestamp() extension in remote-base
+        publishedTime = publishedAt.toTimestamp()
     )
 }
 
