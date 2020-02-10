@@ -1,6 +1,5 @@
 package io.github.reactivecircus.streamlined
 
-import androidx.test.core.app.ApplicationProvider
 import io.github.reactivecircus.streamlined.di.AppComponent
 import io.github.reactivecircus.streamlined.di.IntegrationTestAppComponent
 import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent

@@ -7,13 +7,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-android {
-    defaultConfig {
-        testApplicationId = "io.github.reactivecircus.streamlined.work.test"
-        testInstrumentationRunner = "io.github.reactivecircus.streamlined.work.ScreenTestRunner"
-    }
-}
-
 dependencies {
     implementation(project(":domain"))
 

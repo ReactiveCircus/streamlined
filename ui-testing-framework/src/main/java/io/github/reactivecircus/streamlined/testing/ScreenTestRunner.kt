@@ -1,4 +1,4 @@
-package io.github.reactivecircus.streamlined.readinglist
+package io.github.reactivecircus.streamlined.testing
 
 import android.app.Application
 import android.content.Context
@@ -12,6 +12,6 @@ class ScreenTestRunner : AndroidJUnitRunner() {
         ClassNotFoundException::class
     )
     override fun newApplication(cl: ClassLoader, className: String, context: Context): Application {
-        return super.newApplication(cl, ReadingListTestApp::class.java.name, context)
+        return super.newApplication(cl, ScreenTestApp::class.java.name, context)
     }
 }

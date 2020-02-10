@@ -4,7 +4,7 @@ import android.app.Application
 import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
 import timber.log.Timber
 
-abstract class BaseTestApp : Application() {
+internal class ScreenTestApp : Application() {
 
     private val testingFrameworkComponent: TestingFrameworkComponent by lazy {
         TestingFrameworkComponent.factory().create(this)

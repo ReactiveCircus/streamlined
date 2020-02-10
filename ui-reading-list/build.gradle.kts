@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         testApplicationId = "io.github.reactivecircus.streamlined.readinglist.test"
-        testInstrumentationRunner = "io.github.reactivecircus.streamlined.readinglist.ScreenTestRunner"
+        testInstrumentationRunner = "io.github.reactivecircus.streamlined.testing.ScreenTestRunner"
     }
 }
 
