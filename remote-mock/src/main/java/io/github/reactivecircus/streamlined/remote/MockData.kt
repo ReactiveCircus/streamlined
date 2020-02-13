@@ -99,7 +99,7 @@ internal object MockData {
         )
     )
 
-    val mockAllStories = listOf(
+    val mockPersonalizedStories = listOf(
         StoryDTO(
             source = SourceDTO("mock-source"),
             author = "Jennifer Jackson",

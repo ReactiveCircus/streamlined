@@ -54,7 +54,7 @@ internal abstract class DataModule {
         @Reusable
         @FlowPreview
         @ExperimentalCoroutinesApi
-        fun storyStore(
+        fun headlineStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao
         ): Store<Unit, List<Story>> {
@@ -66,6 +66,7 @@ internal abstract class DataModule {
                 }
             ).persister(
                 reader = {
+                    // TODO filter out non-headline stories (separate DAO query)
                     storyDao.allStories().map { stories ->
                         if (stories.isNotEmpty()) {
                             stories.map { it.toModel() }
@@ -77,7 +78,42 @@ internal abstract class DataModule {
                 writer = { _, stories ->
                     storyDao.updateStories(stories)
                 },
-                delete = {
+                deleteAll = {
+                    // TODO only delete headline stories
+                    storyDao.deleteAll()
+                }
+            ).build()
+        }
+
+        @Provides
+        @Reusable
+        @FlowPreview
+        @ExperimentalCoroutinesApi
+        fun personalizedStore(
+            newsApiService: NewsApiService,
+            storyDao: StoryDao
+        ): Store<String, List<Story>> {
+            return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
+                fetcher = { query ->
+                    // TODO use custom query type instead of string
+                    newsApiService.everything(query).stories.map { it.toEntity() }
+                }
+            ).persister(
+                reader = {
+                    // TODO filter out headline stories (separate DAO query)
+                    storyDao.allStories().map { stories ->
+                        if (stories.isNotEmpty()) {
+                            stories.map { it.toModel() }
+                        } else {
+                            null
+                        }
+                    }
+                },
+                writer = { _, stories ->
+                    storyDao.updateStories(stories)
+                },
+                deleteAll = {
+                    // TODO only delete non=headline stories
                     storyDao.deleteAll()
                 }
             ).build()

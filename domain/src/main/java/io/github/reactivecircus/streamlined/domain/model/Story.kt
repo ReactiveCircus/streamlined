@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.domain.model
 
-class Story(
+data class Story(
     val id: Long,
     val author: String?,
     val title: String,

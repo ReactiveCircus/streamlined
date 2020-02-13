@@ -6,7 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface StoryRepository {
 
-    fun streamStories(): Flow<StoreResponse<List<Story>>>
+    fun streamHeadlineStories(): Flow<StoreResponse<List<Story>>>
+
+    // TODO use custom query type
+    fun streamPersonalizedStories(query: String): Flow<StoreResponse<List<Story>>>
 
     suspend fun getStoryById(id: Long): Story?
 }

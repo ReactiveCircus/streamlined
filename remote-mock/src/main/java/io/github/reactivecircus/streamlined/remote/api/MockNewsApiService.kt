@@ -17,12 +17,12 @@ class MockNewsApiService(
             .headlines(country)
     }
 
-    override suspend fun everything(): StoryListResponse {
-        val allStoriesResponse = StoryListResponse(
-            totalResults = MockData.mockAllStories.size,
-            stories = MockData.mockAllStories
+    override suspend fun everything(query: String): StoryListResponse {
+        val personalizedStoriesResponse = StoryListResponse(
+            totalResults = MockData.mockPersonalizedStories.size,
+            stories = MockData.mockPersonalizedStories
         )
-        return delegate.returningResponse(allStoriesResponse)
-            .everything()
+        return delegate.returningResponse(personalizedStoriesResponse)
+            .everything(query)
     }
 }

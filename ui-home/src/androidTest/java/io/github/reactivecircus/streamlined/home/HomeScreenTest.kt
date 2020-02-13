@@ -13,7 +13,7 @@ class HomeScreenTest : BaseScreenTest() {
         .fragmentFactory
 
     @Test
-    fun openHomeScreen_personalizedContentDisplayed() {
+    fun openHomeScreen_headlinesAndPersonalizedContentDisplayed() {
         launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
         // TODO
     }

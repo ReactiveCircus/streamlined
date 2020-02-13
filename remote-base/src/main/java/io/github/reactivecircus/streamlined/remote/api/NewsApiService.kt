@@ -10,5 +10,5 @@ interface NewsApiService {
     suspend fun headlines(@Query("country") country: String): StoryListResponse
 
     @GET("everything")
-    suspend fun everything(): StoryListResponse
+    suspend fun everything(@Query("q") query: String): StoryListResponse
 }

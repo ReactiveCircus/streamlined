@@ -18,6 +18,6 @@ class StreamHeadlineStories @Inject constructor(
     override val dispatcher: CoroutineDispatcher = dispatcherProvider.io
 
     override fun createFlow(params: EmptyParams): Flow<StoreResponse<List<Story>>> {
-        return storyRepository.streamStories()
+        return storyRepository.streamHeadlineStories()
     }
 }

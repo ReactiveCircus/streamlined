@@ -11,12 +11,17 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class StoryRepositoryImpl @Inject constructor(
-    private val storyStore: Store<Unit, List<Story>>,
+    private val headlineStoryStore: Store<Unit, List<Story>>,
+    private val personalizedStoryStore: Store<String, List<Story>>,
     private val storyDao: StoryDao
 ) : StoryRepository {
 
-    override fun streamStories(): Flow<StoreResponse<List<Story>>> {
-        return storyStore.stream(StoreRequest.cached(Unit, refresh = true))
+    override fun streamHeadlineStories(): Flow<StoreResponse<List<Story>>> {
+        return headlineStoryStore.stream(StoreRequest.cached(Unit, refresh = true))
+    }
+
+    override fun streamPersonalizedStories(query: String): Flow<StoreResponse<List<Story>>> {
+        return personalizedStoryStore.stream(StoreRequest.cached(query, refresh = true))
     }
 
     override suspend fun getStoryById(id: Long): Story? {
