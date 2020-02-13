@@ -15,6 +15,6 @@ class SyncStories @Inject constructor(
     override val dispatcher: CoroutineDispatcher = dispatcherProvider.io
 
     override suspend fun doWork(params: EmptyParams) {
-        // TODO sync stories (headlines and "for you") based on applied filters
+        // TODO sync stories (headlines and personalized stories) based on applied filters
     }
 }
