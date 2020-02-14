@@ -30,6 +30,9 @@ dependencies {
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 
+    // FlowBinding
+    implementation(libraries.flowbinding.swipeRefreshLayout)
+
     // AndroidX
     implementation(libraries.androidx.swipeRefreshLayout)
     implementation(libraries.androidx.archCore.runtime)

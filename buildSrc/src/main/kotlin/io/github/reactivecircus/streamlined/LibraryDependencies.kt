@@ -97,6 +97,7 @@ object libraries {
     object flowbinding {
         const val android = "io.github.reactivecircus.flowbinding:flowbinding-android:${versions.flowbinding}"
         const val material = "io.github.reactivecircus.flowbinding:flowbinding-material:${versions.flowbinding}"
+        const val swipeRefreshLayout = "io.github.reactivecircus.flowbinding:flowbinding-swiperefreshlayout:${versions.flowbinding}"
     }
 
     object flowRedux {
