@@ -40,6 +40,11 @@ open class StreamlinedApp : Application(), Configuration.Provider {
 
         // scheduler background sync
         appComponent.taskScheduler.scheduleHourlyStorySync()
+
+        // register lifecycle hook for NavigatorProvider
+        registerActivityLifecycleCallbacks(
+            appComponent.navigatorProvider as StreamlinedNavigatorProvider
+        )
     }
 
     protected open fun initializeTimber() {

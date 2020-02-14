@@ -7,7 +7,7 @@ import com.dropbox.android.external.store4.StoreResponse
 import io.github.reactivecircus.analytics.AnalyticsApi
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
-import io.github.reactivecircus.streamlined.navigator.Navigator
+import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.base.BaseFragment
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import timber.log.Timber
@@ -16,7 +16,7 @@ import javax.inject.Provider
 
 class HomeFragment @Inject constructor(
     analyticsApi: AnalyticsApi,
-    private val navigator: Navigator,
+    private val navigatorProvider: NavigatorProvider,
     private val viewModelProvider: Provider<HomeViewModel>
 ) : BaseFragment(R.layout.fragment_home, analyticsApi) {
 

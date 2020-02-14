@@ -5,8 +5,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.github.reactivecircus.streamlined.StreamlinedNavigator
-import io.github.reactivecircus.streamlined.navigator.Navigator
+import io.github.reactivecircus.streamlined.StreamlinedNavigatorProvider
+import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.configs.DefaultAnimationConfigs
 import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
@@ -18,11 +18,11 @@ abstract class AppModule {
 
     @Binds
     @Reusable
-    abstract fun navigator(impl: StreamlinedNavigator): Navigator
+    abstract fun fragmentFactory(impl: DynamicFragmentFactory): FragmentFactory
 
     @Binds
     @Reusable
-    abstract fun fragmentFactory(impl: DynamicFragmentFactory): FragmentFactory
+    abstract fun navigatorProvider(impl: StreamlinedNavigatorProvider): NavigatorProvider
 
     @Binds
     @Reusable

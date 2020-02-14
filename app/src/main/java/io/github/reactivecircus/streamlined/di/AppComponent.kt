@@ -6,6 +6,7 @@ import androidx.work.Configuration
 import dagger.BindsInstance
 import dagger.Component
 import io.github.reactivecircus.analytics.AnalyticsApi
+import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.work.di.ScheduledTasksModule
 import io.github.reactivecircus.streamlined.work.scheduler.TaskScheduler
 import javax.inject.Singleton
@@ -24,6 +25,8 @@ import javax.inject.Singleton
 interface AppComponent {
 
     val fragmentFactory: FragmentFactory
+
+    val navigatorProvider: NavigatorProvider
 
     val analyticsApi: AnalyticsApi
 
