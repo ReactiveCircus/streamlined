@@ -17,6 +17,7 @@ android {
 
 dependencies {
     api(project(":analytics-api-base"))
+    api(project(":design-themes"))
 
     // Java 8 desugaring
     coreLibraryDesugaring(libraries.desugarLibs)
