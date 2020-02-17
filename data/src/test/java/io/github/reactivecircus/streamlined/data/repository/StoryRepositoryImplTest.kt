@@ -1,11 +1,12 @@
 package io.github.reactivecircus.streamlined.data.repository
 
 import com.dropbox.android.external.store4.ResponseOrigin
-import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.assertThat
+import io.github.reactivecircus.streamlined.data.HeadlineStoryStore
+import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
 import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.persistence.StoryDao
@@ -63,9 +64,9 @@ class StoryRepositoryImplTest {
         )
     )
 
-    private val headlineStoryStore = mockk<Store<Unit, List<Story>>>()
+    private val headlineStoryStore = mockk<HeadlineStoryStore>()
 
-    private val personalizedStoryStore = mockk<Store<String, List<Story>>>()
+    private val personalizedStoryStore = mockk<PersonalizedStoryStore>()
 
     private val storyDao = mockk<StoryDao>()
 

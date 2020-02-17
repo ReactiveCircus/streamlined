@@ -1,8 +1,9 @@
 package io.github.reactivecircus.streamlined.data.repository
 
-import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
+import io.github.reactivecircus.streamlined.data.HeadlineStoryStore
+import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
 import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
@@ -11,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class StoryRepositoryImpl @Inject constructor(
-    private val headlineStoryStore: Store<Unit, List<Story>>,
-    private val personalizedStoryStore: Store<String, List<Story>>,
+    private val headlineStoryStore: HeadlineStoryStore,
+    private val personalizedStoryStore: PersonalizedStoryStore,
     private val storyDao: StoryDao
 ) : StoryRepository {
 

@@ -1,17 +1,17 @@
 package io.github.reactivecircus.streamlined.data.di
 
 import android.content.Context
-import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import io.github.reactivecircus.streamlined.data.HeadlineStoryStore
+import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
 import io.github.reactivecircus.streamlined.data.mapper.toEntity
 import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.data.repository.BookmarkRepositoryImpl
 import io.github.reactivecircus.streamlined.data.repository.StoryRepositoryImpl
-import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.persistence.StoryDao
@@ -57,7 +57,7 @@ internal abstract class DataModule {
         fun headlineStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao
-        ): Store<Unit, List<Story>> {
+        ): HeadlineStoryStore {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
                 fetcher = {
                     // TODO source country (hardcode ISO 3166-1 country code) from user preference
@@ -89,10 +89,10 @@ internal abstract class DataModule {
         @Reusable
         @FlowPreview
         @ExperimentalCoroutinesApi
-        fun personalizedStore(
+        fun personalizedStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao
-        ): Store<String, List<Story>> {
+        ): PersonalizedStoryStore {
             return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
                 fetcher = { query ->
                     // TODO use custom query type instead of string
@@ -113,7 +113,7 @@ internal abstract class DataModule {
                     storyDao.updateStories(stories)
                 },
                 deleteAll = {
-                    // TODO only delete non=headline stories
+                    // TODO only delete non-headline stories
                     storyDao.deleteAll()
                 }
             ).build()
