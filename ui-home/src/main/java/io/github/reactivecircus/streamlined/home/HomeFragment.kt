@@ -28,7 +28,7 @@ class HomeFragment @Inject constructor(
 
         binding.toolbar.title = getString(R.string.title_home)
 
-        viewModel.state.observe<StoreResponse<List<Story>>>(this) {
+        viewModel.state.observe<StoreResponse<List<Story>>>(viewLifecycleOwner) {
             Timber.d(it.toString())
         }
     }
