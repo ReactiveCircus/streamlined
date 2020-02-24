@@ -23,6 +23,7 @@ class StoryDaoTest {
 
     private val story1 = StoryEntity.Impl(
         id = 1,
+        source = "source1",
         title = "Article 1",
         author = "Yang",
         description = "Description...",
@@ -33,6 +34,7 @@ class StoryDaoTest {
 
     private val story2 = StoryEntity.Impl(
         id = 2,
+        source = "source2",
         title = "Article 2",
         author = "Yang",
         description = "Description...",
@@ -48,6 +50,7 @@ class StoryDaoTest {
 
         queries.insertStory(
             title = story1.title,
+            source = story1.source,
             author = story1.author,
             description = story1.description,
             url = story1.url,
@@ -56,6 +59,7 @@ class StoryDaoTest {
         )
         queries.insertStory(
             title = story2.title,
+            source = story2.source,
             author = story2.author,
             description = story2.description,
             url = story2.url,
@@ -73,6 +77,7 @@ class StoryDaoTest {
     fun storyById() = runBlockingTest {
         queries.insertStory(
             title = story1.title,
+            source = story1.source,
             author = story1.author,
             description = story1.description,
             url = story1.url,
@@ -101,6 +106,7 @@ class StoryDaoTest {
     fun updateStories_existingItems() = runBlockingTest {
         queries.insertStory(
             title = story1.title,
+            source = story1.source,
             author = story1.author,
             description = story1.description,
             url = story1.url,
@@ -120,6 +126,7 @@ class StoryDaoTest {
     fun deleteAll() = runBlockingTest {
         queries.insertStory(
             title = story1.title,
+            source = story1.source,
             author = story1.author,
             description = story1.description,
             url = story1.url,
@@ -128,6 +135,7 @@ class StoryDaoTest {
         )
         queries.insertStory(
             title = story2.title,
+            source = story2.source,
             author = story2.author,
             description = story2.description,
             url = story2.url,

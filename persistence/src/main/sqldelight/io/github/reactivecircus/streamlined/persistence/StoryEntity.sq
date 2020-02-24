@@ -1,5 +1,6 @@
 CREATE TABLE StoryEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    source TEXT NOT NULL,
     title TEXT NOT NULL,
     author TEXT,
     description TEXT NOT NULL,
@@ -24,8 +25,8 @@ SELECT id FROM StoryEntity
 WHERE title = ?1 AND publishedTime = ?2;
 
 insertStory:
-INSERT OR FAIL INTO StoryEntity(title, author, description, url, imageUrl, publishedTime)
-VALUES (?, ?, ?, ?, ?, ?);
+INSERT OR FAIL INTO StoryEntity(title, source, author, description, url, imageUrl, publishedTime)
+VALUES (?, ?, ?, ?, ?, ?, ?);
 
 updateStory:
 UPDATE StoryEntity

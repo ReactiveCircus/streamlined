@@ -6,4 +6,6 @@ package io.github.reactivecircus.streamlined.navigator
 interface Navigator {
 
     fun navigateToStoryDetailsScreen(storyId: Long)
+
+    fun navigateToHeadlinesScreen()
 }

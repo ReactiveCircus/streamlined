@@ -21,6 +21,7 @@ class StreamHeadlineStoriesTest {
     private val dummyHeadlineStoryList = listOf(
         Story(
             id = 1,
+            source = "source1",
             title = "Article 1",
             author = "Yang",
             description = "Description...",
@@ -30,6 +31,7 @@ class StreamHeadlineStoriesTest {
         ),
         Story(
             id = 2,
+            source = "source2",
             title = "Article 2",
             author = "Yang",
             description = "Description...",

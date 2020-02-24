@@ -2,4 +2,9 @@
 
     <string name="title_home">Streamlined.</string>
 
+    <string name="more_headlines">Read more headlines</string>
+
+    <string name="feed_type_top_headlines">Top headlines</string>
+    <string name="feed_type_for_you">For you</string>
+
 </resources>

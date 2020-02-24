@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/storyImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_16"
+        android:background="?colorControlHighlight"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="H,2:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/storySourceTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_24"
+        android:alpha="?alphaEmphasisHigh"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/storyImageView"
+        tools:text="dev.to" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/storyTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:maxLines="3"
+        android:textAppearance="?textAppearanceHeadline5"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/storySourceTextView"
+        tools:text="Testing Kotlin Lambda Invocations without Mocking" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/publishedTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_16"
+        android:alpha="?alphaEmphasisMedium"
+        android:textAppearance="?textAppearanceSubtitle2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/storyTitleTextView"
+        tools:text="2 hours ago" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bookmarkButton"
+        style="@style/Widget.AppTheme.Button.IconOnlyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dimen_8"
+        app:icon="@drawable/ic_twotone_bookmark_border_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moreButton"
+        app:layout_constraintTop_toBottomOf="@id/storyTitleTextView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/moreButton"
+        style="@style/Widget.AppTheme.Button.IconOnlyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_16"
+        app:icon="@drawable/ic_twotone_more_horiz_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/storyTitleTextView" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        android:background="?colorControlHighlight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

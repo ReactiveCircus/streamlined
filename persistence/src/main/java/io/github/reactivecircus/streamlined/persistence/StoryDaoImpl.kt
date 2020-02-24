@@ -42,6 +42,7 @@ internal class StoryDaoImpl @Inject constructor(
                 } else {
                     queries.insertStory(
                         title = it.title,
+                        source = it.source,
                         author = it.author,
                         description = it.description,
                         url = it.url,

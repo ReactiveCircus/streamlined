@@ -16,6 +16,7 @@ import org.junit.Test
 class GetStoryByIdTest {
     private val dummyStory = Story(
         id = 1,
+        source = "source",
         title = "Article 1",
         author = "Yang",
         description = "Description...",

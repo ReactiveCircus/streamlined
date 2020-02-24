@@ -8,6 +8,7 @@ import io.github.reactivecircus.streamlined.remote.helper.toTimestamp
 internal fun StoryDTO.toEntity(): StoryEntity {
     return StoryEntity.Impl(
         id = -1,
+        source = source.name,
         title = title,
         author = author,
         description = description,
@@ -20,6 +21,7 @@ internal fun StoryDTO.toEntity(): StoryEntity {
 internal fun StoryEntity.toModel(): Story {
     return Story(
         id = id,
+        source = source,
         title = title,
         author = author,
         description = description,

@@ -25,6 +25,7 @@ class StoryRepositoryImplTest {
     private val dummyHeadlineStoryList = listOf(
         Story(
             id = 1,
+            source = "source1",
             title = "Article 1",
             author = "Yang",
             description = "Description...",
@@ -34,6 +35,7 @@ class StoryRepositoryImplTest {
         ),
         Story(
             id = 2,
+            source = "source2",
             title = "Article 2",
             author = "Yang",
             description = "Description...",
@@ -46,6 +48,7 @@ class StoryRepositoryImplTest {
     private val dummyPersonalizedStoryList = listOf(
         Story(
             id = 3,
+            source = "source3",
             title = "Article 3",
             author = "Yang",
             description = "Description...",
@@ -55,6 +58,7 @@ class StoryRepositoryImplTest {
         ),
         Story(
             id = 4,
+            source = "source4",
             title = "Article 4",
             author = "Yang",
             description = "Description...",
@@ -113,6 +117,7 @@ class StoryRepositoryImplTest {
         val dummyStoryEntity = StoryEntity.Impl(
             id = 1,
             title = "Article",
+            source = "source",
             author = "author",
             description = "Description...",
             url = "url",
