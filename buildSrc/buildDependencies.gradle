@@ -1,10 +1,10 @@
 rootProject.ext.versions = [
-        agp           : '4.0.0-alpha09',
+        agp           : '4.0.0-beta01',
         googleServices: '4.3.3',
         dexcount      : '1.0.2',
         kotlin        : '1.3.70-eap-274',
         detekt        : '1.5.1',
-        sqldelight    : '1.2.1',
+        sqldelight    : '1.2.2',
 ]
 
 rootProject.ext.build = [
