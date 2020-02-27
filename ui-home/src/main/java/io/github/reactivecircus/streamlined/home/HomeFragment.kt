@@ -51,7 +51,7 @@ class HomeFragment @Inject constructor(
             adapter = homeFeedsListAdapter
         }
 
-        viewModel.state.observe<State>(viewLifecycleOwner) {
+        viewModel.state.observe<HomeState>(viewLifecycleOwner) {
             homeFeedsListAdapter.submitList(it.items)
         }
     }

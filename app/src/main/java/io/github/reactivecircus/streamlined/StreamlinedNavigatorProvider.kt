@@ -3,7 +3,6 @@ package io.github.reactivecircus.streamlined
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import javax.inject.Inject
@@ -22,7 +21,9 @@ class StreamlinedNavigatorProvider @Inject constructor() :
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        navigator = StreamlinedNavigator { activity as AppCompatActivity }
+        if (activity is StreamlinedActivity) {
+            navigator = StreamlinedNavigator { activity }
+        }
     }
 
     override fun onActivityDestroyed(activity: Activity) {

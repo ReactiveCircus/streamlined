@@ -18,7 +18,7 @@ class HomeViewModel @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories
 ) : ViewModel() {
 
-    val state: LiveData<State> = flow {
+    val state: LiveData<HomeState> = flow {
         val headlines = listOf(
             Story(
                 id = 1,
@@ -105,7 +105,7 @@ class HomeViewModel @Inject constructor(
 
         emit(items)
     }
-        .mapLatest { State.Idle(it) }
+        .mapLatest { HomeState.Idle(it) }
         .catch { Timber.e(it, "flow cancelled") }
         .asLiveData()
 
@@ -115,10 +115,10 @@ class HomeViewModel @Inject constructor(
 }
 
 // TODO move to HomeStateMachine
-sealed class State {
+sealed class HomeState {
     abstract val items: List<AdapterItem<Story, FeedType, Unit>>
 
-    data class Idle(override val items: List<AdapterItem<Story, FeedType, Unit>>) : State()
-    data class InFlight(override val items: List<AdapterItem<Story, FeedType, Unit>>) : State()
-    data class Error(override val items: List<AdapterItem<Story, FeedType, Unit>>) : State()
+    data class Idle(override val items: List<AdapterItem<Story, FeedType, Unit>>) : HomeState()
+    data class InFlight(override val items: List<AdapterItem<Story, FeedType, Unit>>) : HomeState()
+    data class Error(override val items: List<AdapterItem<Story, FeedType, Unit>>) : HomeState()
 }
