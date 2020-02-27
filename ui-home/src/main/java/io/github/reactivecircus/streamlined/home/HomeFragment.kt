@@ -21,10 +21,10 @@ import javax.inject.Provider
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeFragment @Inject constructor(
-        analyticsApi: AnalyticsApi,
-        private val navigatorProvider: NavigatorProvider,
-        private val viewModelProvider: Provider<HomeViewModel>,
-        private val animationConfigs: AnimationConfigs
+    analyticsApi: AnalyticsApi,
+    private val navigatorProvider: NavigatorProvider,
+    private val viewModelProvider: Provider<HomeViewModel>,
+    private val animationConfigs: AnimationConfigs
 ) : BaseFragment(R.layout.fragment_home, analyticsApi) {
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
@@ -38,12 +38,12 @@ class HomeFragment @Inject constructor(
         binding.toolbar.title = getString(R.string.title_home)
 
         binding.swipeRefreshLayout.refreshes()
-                .onEach { viewModel.refreshHomeFeeds() }
-                .launchIn(lifecycleScope)
+            .onEach { viewModel.refreshHomeFeeds() }
+            .launchIn(lifecycleScope)
 
         homeFeedsListAdapter = HomeFeedsListAdapter(
-                actionListener = actionListener,
-                animationConfigs = if (savedInstanceState == null) animationConfigs else null
+            actionListener = actionListener,
+            animationConfigs = if (savedInstanceState == null) animationConfigs else null
         )
 
         binding.homeFeedsRecyclerView.apply {
