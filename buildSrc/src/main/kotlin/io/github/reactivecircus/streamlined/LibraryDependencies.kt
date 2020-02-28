@@ -15,7 +15,7 @@ object versions {
     }
 
     object firebase {
-        const val core = "17.2.1"
+        const val analytics = "17.2.3"
     }
 
     const val blueprint = "1.4.0"
@@ -74,7 +74,7 @@ object libraries {
     const val desugarLibs = "com.android.tools:desugar_jdk_libs:${versions.desugarLibs}"
 
     object firebase {
-        const val core = "com.google.firebase:firebase-core:${versions.firebase.core}"
+        const val analytics = "com.google.firebase:firebase-analytics:${versions.firebase.analytics}"
     }
 
     object kotlinx {
