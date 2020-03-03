@@ -6,6 +6,7 @@ import androidx.work.Configuration
 import dagger.BindsInstance
 import dagger.Component
 import io.github.reactivecircus.analytics.AnalyticsApi
+import io.github.reactivecircus.streamlined.ScreenNameNotifier
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.work.di.ScheduledTasksModule
 import io.github.reactivecircus.streamlined.work.scheduler.TaskScheduler
@@ -29,6 +30,8 @@ interface AppComponent {
     val navigatorProvider: NavigatorProvider
 
     val analyticsApi: AnalyticsApi
+
+    val screenNameNotifier: ScreenNameNotifier
 
     val workManagerConfiguration: Configuration
 

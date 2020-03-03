@@ -2,14 +2,12 @@ package io.github.reactivecircus.streamlined.settings
 
 import android.os.Bundle
 import android.view.View
-import io.github.reactivecircus.analytics.AnalyticsApi
+import androidx.fragment.app.Fragment
 import io.github.reactivecircus.streamlined.settings.databinding.FragmentSettingsBinding
-import io.github.reactivecircus.streamlined.ui.base.BaseFragment
+import io.github.reactivecircus.streamlined.ui.Screen
 import javax.inject.Inject
 
-class SettingsFragment @Inject constructor(
-    analyticsApi: AnalyticsApi
-) : BaseFragment(R.layout.fragment_settings, analyticsApi) {
+class SettingsFragment @Inject constructor() : Fragment(R.layout.fragment_settings), Screen {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

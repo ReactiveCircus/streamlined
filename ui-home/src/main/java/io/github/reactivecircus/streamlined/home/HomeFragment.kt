@@ -3,16 +3,16 @@ package io.github.reactivecircus.streamlined.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import io.github.reactivecircus.analytics.AnalyticsApi
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
-import io.github.reactivecircus.streamlined.ui.base.BaseFragment
+import io.github.reactivecircus.streamlined.ui.Screen
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,11 +27,10 @@ import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 
 @UseExperimental(ExperimentalCoroutinesApi::class)
 class HomeFragment @Inject constructor(
-    analyticsApi: AnalyticsApi,
     private val navigatorProvider: NavigatorProvider,
     private val viewModelProvider: Provider<HomeViewModel>,
     private val animationConfigs: AnimationConfigs
-) : BaseFragment(R.layout.fragment_home, analyticsApi) {
+) : Fragment(R.layout.fragment_home), Screen {
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
@@ -124,8 +123,10 @@ class HomeFragment @Inject constructor(
     }
 
     private val actionListener = object : FeedsListAdapter.ActionListener {
-        // TODO
-        override fun storyClicked(story: Story) = Unit
+
+        override fun storyClicked(story: Story) {
+            navigatorProvider.get().navigateToStoryDetailsScreen(story.id)
+        }
 
         // TODO
         override fun bookmarkToggled(story: Story) = Unit

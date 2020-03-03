@@ -7,9 +7,12 @@ import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 class StreamlinedActivity : AppCompatActivity(R.layout.activity_streamlined) {
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = appComponent.fragmentFactory
         setTheme(ThemeResource.style.Theme_Streamlined_DayNight)
         setDefaultTaskBarColor()
+        supportFragmentManager.fragmentFactory = appComponent.fragmentFactory
+        supportFragmentManager.registerFragmentLifecycleCallbacks(
+            appComponent.screenNameNotifier, true
+        )
         super.onCreate(savedInstanceState)
     }
 }

@@ -2,16 +2,15 @@ package io.github.reactivecircus.streamlined.readinglist
 
 import android.os.Bundle
 import android.view.View
-import io.github.reactivecircus.analytics.AnalyticsApi
+import androidx.fragment.app.Fragment
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.readinglist.databinding.FragmentReadingListBinding
-import io.github.reactivecircus.streamlined.ui.base.BaseFragment
+import io.github.reactivecircus.streamlined.ui.Screen
 import javax.inject.Inject
 
 class ReadingListFragment @Inject constructor(
-    analyticsApi: AnalyticsApi,
     private val navigatorProvider: NavigatorProvider
-) : BaseFragment(R.layout.fragment_reading_list, analyticsApi) {
+) : Fragment(R.layout.fragment_reading_list), Screen {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
