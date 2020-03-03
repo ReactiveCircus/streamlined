@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import io.github.reactivecircus.streamlined.BuildConfig
 import io.github.reactivecircus.streamlined.data.di.DataComponent
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
@@ -24,7 +25,8 @@ object RepositoryModule {
             .create(
                 context = context,
                 coroutineDispatcherProvider = coroutineDispatcherProvider,
-                newsApiService = newsApiService
+                newsApiService = newsApiService,
+                databaseName = BuildConfig.DATABASE_NAME
             )
             .storyRepository
     }
@@ -40,7 +42,8 @@ object RepositoryModule {
             .create(
                 context = context,
                 coroutineDispatcherProvider = coroutineDispatcherProvider,
-                newsApiService = newsApiService
+                newsApiService = newsApiService,
+                databaseName = BuildConfig.DATABASE_NAME
             )
             .bookmarkRepository
     }

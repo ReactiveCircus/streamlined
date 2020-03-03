@@ -23,8 +23,14 @@ internal abstract class PersistenceModule {
 
         @Provides
         @Singleton
-        fun database(context: Context): StreamlinedDatabase {
-            return StreamlinedDatabase(AndroidSqliteDriver(StreamlinedDatabase.Schema, context))
+        fun database(context: Context, databaseName: String?): StreamlinedDatabase {
+            return StreamlinedDatabase(
+                AndroidSqliteDriver(
+                    StreamlinedDatabase.Schema,
+                    context,
+                    databaseName
+                )
+            )
         }
 
         @Provides

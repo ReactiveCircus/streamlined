@@ -12,6 +12,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    compileOptions.coreLibraryDesugaringEnabled = true
 
     defaultConfig {
         testApplicationId = "io.github.reactivecircus.streamlined.home.test"
@@ -23,6 +24,9 @@ dependencies {
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":domain"))
+
+    // Java 8 desugaring
+    coreLibraryDesugaring(libraries.desugarLibs)
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

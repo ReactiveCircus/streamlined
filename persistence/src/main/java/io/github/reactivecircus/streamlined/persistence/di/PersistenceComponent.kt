@@ -20,7 +20,8 @@ interface PersistenceComponent {
 
         fun create(
             @BindsInstance context: Context,
-            @BindsInstance coroutineContext: CoroutineContext
+            @BindsInstance coroutineContext: CoroutineContext,
+            @BindsInstance databaseName: String?
         ): PersistenceComponent
     }
 

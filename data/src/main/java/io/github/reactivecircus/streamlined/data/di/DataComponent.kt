@@ -25,7 +25,8 @@ interface DataComponent {
         fun create(
             @BindsInstance context: Context,
             @BindsInstance coroutineDispatcherProvider: CoroutineDispatcherProvider,
-            @BindsInstance newsApiService: NewsApiService
+            @BindsInstance newsApiService: NewsApiService,
+            @BindsInstance databaseName: String?
         ): DataComponent
     }
 

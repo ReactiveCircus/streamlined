@@ -20,7 +20,7 @@ import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
-import io.github.reactivecircus.streamlined.design.R as ThemeR
+import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 abstract class BaseScreenTest {
 
@@ -62,7 +62,7 @@ abstract class BaseScreenTest {
     ): FragmentScenario<F> {
         return launchFragmentInContainer<F>(
             fragmentArgs = fragmentArgs,
-            themeResId = ThemeR.style.Theme_Streamlined_DayNight,
+            themeResId = ThemeResource.style.Theme_Streamlined_DayNight,
             factory = factory
         ).also {
             Espresso.onIdle()

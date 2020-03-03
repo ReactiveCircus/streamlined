@@ -1,35 +1,43 @@
-CREATE TABLE StoryEntity (
+CREATE TABLE storyEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     source TEXT NOT NULL,
     title TEXT NOT NULL,
     author TEXT,
-    description TEXT NOT NULL,
+    description TEXT,
     url TEXT NOT NULL,
     imageUrl TEXT,
     publishedTime INTEGER NOT NULL,
+    isHeadline INTEGER AS Boolean NOT NULL,
     UNIQUE (title, publishedTime)
 );
 
-findAllStories:
-SELECT * FROM StoryEntity;
+CREATE INDEX storyEntity_title_publishedTime ON storyEntity(title, publishedTime);
 
-findAllStoryIds:
-SELECT id FROM StoryEntity;
+findAllStories:
+SELECT * FROM storyEntity;
+
+findStories:
+SELECT * FROM storyEntity
+WHERE isHeadline = ?1;
+
+findStoryIds:
+SELECT id FROM storyEntity
+WHERE isHeadline = ?1;
 
 findStoryById:
 SELECT * FROM
-StoryEntity WHERE id = ?;
+storyEntity WHERE id = ?;
 
 findStoryIdByTitleAndPublishedTime:
-SELECT id FROM StoryEntity
+SELECT id FROM storyEntity
 WHERE title = ?1 AND publishedTime = ?2;
 
 insertStory:
-INSERT OR FAIL INTO StoryEntity(title, source, author, description, url, imageUrl, publishedTime)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT OR FAIL INTO storyEntity(title, source, author, description, url, imageUrl, publishedTime, isHeadline)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 updateStory:
-UPDATE StoryEntity
+UPDATE storyEntity
 SET author = ?3,
     description = ?4,
     url = ?5,
@@ -37,8 +45,16 @@ SET author = ?3,
 WHERE title = ?1 AND publishedTime = ?2;
 
 deleteAll:
-DELETE FROM StoryEntity;
+DELETE FROM storyEntity;
+
+deleteHeadlineStories:
+DELETE FROM storyEntity
+WHERE isHeadline = 1;
+
+deleteNonHeadlineStories:
+DELETE FROM storyEntity
+WHERE isHeadline = 0;
 
 deleteStoriesByIds:
-DELETE FROM StoryEntity
+DELETE FROM storyEntity
 WHERE id IN ?;

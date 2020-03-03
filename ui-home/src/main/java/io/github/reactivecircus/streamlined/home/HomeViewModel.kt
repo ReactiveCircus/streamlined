@@ -1,46 +1,44 @@
 package io.github.reactivecircus.streamlined.home
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStories
-import io.github.reactivecircus.streamlined.domain.model.Story
-import io.github.reactivecircus.streamlined.ui.util.AdapterItem
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@UseExperimental(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class HomeViewModel @Inject constructor(
-    streamHeadlineStories: StreamHeadlineStories
+    private val homeStateMachine: HomeStateMachine
 ) : ViewModel() {
 
-    val state: LiveData<HomeState> = flow {
-        val items = mutableListOf<AdapterItem<Story, FeedType, Unit>>().apply {
-            add(AdapterItem.Header(FeedType.TopHeadlines))
-            add(AdapterItem.Footer(Unit))
-            add(AdapterItem.Header(FeedType.ForYou))
-        }
+    private val mutableState = MutableLiveData<HomeState>()
 
-        emit(items)
+    val state: LiveData<HomeState> = mutableState
+
+    val effect: Flow<HomeEffect> = homeStateMachine.effect
+
+    init {
+        homeStateMachine.state
+            .distinctUntilChanged()
+            .onEach { newState ->
+                mutableState.value = newState
+            }
+            .catch { Timber.e(it, "state machine flow cancelled") }
+            .launchIn(viewModelScope)
     }
-        .mapLatest { HomeState.Idle(it) }
-        .catch { Timber.e(it, "flow cancelled") }
-        .asLiveData()
 
     fun refreshHomeFeeds() {
-        // TODO
+        viewModelScope.launch {
+            homeStateMachine.dispatch(HomeAction.Refresh)
+        }
     }
-}
-
-// TODO move to HomeStateMachine
-sealed class HomeState {
-    abstract val items: List<AdapterItem<Story, FeedType, Unit>>
-
-    data class Idle(override val items: List<AdapterItem<Story, FeedType, Unit>>) : HomeState()
-    data class InFlight(override val items: List<AdapterItem<Story, FeedType, Unit>>) : HomeState()
-    data class Error(override val items: List<AdapterItem<Story, FeedType, Unit>>) : HomeState()
 }

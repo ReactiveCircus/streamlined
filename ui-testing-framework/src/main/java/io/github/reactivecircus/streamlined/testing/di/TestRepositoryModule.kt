@@ -24,7 +24,8 @@ internal object TestRepositoryModule {
             .create(
                 context = context,
                 coroutineDispatcherProvider = coroutineDispatcherProvider,
-                newsApiService = newsApiService
+                newsApiService = newsApiService,
+                databaseName = null
             )
             .storyRepository
     }
@@ -40,7 +41,8 @@ internal object TestRepositoryModule {
             .create(
                 context = context,
                 coroutineDispatcherProvider = coroutineDispatcherProvider,
-                newsApiService = newsApiService
+                newsApiService = newsApiService,
+                databaseName = null
             )
             .bookmarkRepository
     }

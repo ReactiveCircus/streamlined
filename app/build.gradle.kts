@@ -20,8 +20,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
-    // enabled new Java 8 language APIs
     compileOptions.coreLibraryDesugaringEnabled = true
 
     defaultConfig {
@@ -33,13 +31,14 @@ android {
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.IntegrationTestRunner"
 
-        buildConfigField("long", "NETWORK_TIMEOUT_SECONDS", "10")
-
         // only support English for now
         resConfigs("en")
 
         // app name
         resValue("string", "app_name", "streamlined.")
+
+        // database name
+        buildConfigField("String", "DATABASE_NAME", "\"streamlined.db\"")
     }
 
     signingConfigs {
@@ -73,7 +72,6 @@ android {
 
             // override app name for LeakCanary
             resValue("string", "leak_canary_display_activity_label", "streamlined leaks")
-
         }
         named("release") {
             if (rootProject.file("secrets/streamlined.keystore").exists()) {

@@ -16,6 +16,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class StreamPersonalizedStoriesTest {
+
     private val dummyPersonalizedStoryList = listOf(
         Story(
             id = 1,
@@ -49,17 +50,18 @@ class StreamPersonalizedStoriesTest {
     @Test
     fun `streamPersonalizedStories from repository`() = runBlockingTest {
         val query = "query"
-        every { storyRepository.streamPersonalizedStories(query) } returns flowOf(
+        val refresh = true
+        every { storyRepository.streamPersonalizedStories(query, refresh) } returns flowOf(
             StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
         )
 
-        val params = StreamPersonalizedStories.Params(query)
+        val params = StreamPersonalizedStories.Params(query, refresh)
         assertThat(streamPersonalizedStories.buildFlow(params)).emitsExactly(
             StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
         )
 
         verifyAll {
-            storyRepository.streamPersonalizedStories(query)
+            storyRepository.streamPersonalizedStories(query, refresh)
         }
     }
 }

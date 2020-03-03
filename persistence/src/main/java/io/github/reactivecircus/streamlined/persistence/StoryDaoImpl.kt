@@ -11,17 +11,24 @@ internal class StoryDaoImpl @Inject constructor(
     private val context: CoroutineContext
 ) : StoryDao {
     override fun allStories(): Flow<List<StoryEntity>> {
-        // TODO replace with allStoriesByFilter(...)
         return queries.findAllStories().asFlow().mapToList(context)
+    }
+
+    override fun headlineStories(): Flow<List<StoryEntity>> {
+        return queries.findStories(isHeadline = true).asFlow().mapToList(context)
+    }
+
+    override fun nonHeadlineStories(): Flow<List<StoryEntity>> {
+        return queries.findStories(isHeadline = false).asFlow().mapToList(context)
     }
 
     override fun storyById(id: Long): StoryEntity? {
         return queries.findStoryById(id).executeAsOneOrNull()
     }
 
-    override suspend fun updateStories(stories: List<StoryEntity>) {
+    override suspend fun updateStories(forHeadlines: Boolean, stories: List<StoryEntity>) {
         queries.transaction {
-            val ids = queries.findAllStoryIds().executeAsList().toMutableSet()
+            val ids = queries.findStoryIds(isHeadline = forHeadlines).executeAsList().toMutableSet()
 
             stories.forEach {
                 val existingStoryId = queries.findStoryIdByTitleAndPublishedTime(
@@ -47,7 +54,8 @@ internal class StoryDaoImpl @Inject constructor(
                         description = it.description,
                         url = it.url,
                         imageUrl = it.imageUrl,
-                        publishedTime = it.publishedTime
+                        publishedTime = it.publishedTime,
+                        isHeadline = forHeadlines
                     )
                 }
             }
@@ -62,6 +70,14 @@ internal class StoryDaoImpl @Inject constructor(
     }
 
     override suspend fun deleteAll() {
-        return queries.deleteAll()
+        queries.deleteAll()
+    }
+
+    override suspend fun deleteHeadlineStories() {
+        queries.deleteHeadlineStories()
+    }
+
+    override suspend fun deleteNonHeadlineStories() {
+        queries.deleteNonHeadlineStories()
     }
 }

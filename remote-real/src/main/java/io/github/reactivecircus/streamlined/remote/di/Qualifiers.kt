@@ -9,7 +9,3 @@ internal annotation class BaseUrl
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 internal annotation class ApiKey
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-internal annotation class NetworkTimeoutSeconds

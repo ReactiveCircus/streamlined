@@ -5,7 +5,7 @@ import io.github.reactivecircus.streamlined.persistence.StoryEntity
 import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
 import io.github.reactivecircus.streamlined.remote.helper.toTimestamp
 
-internal fun StoryDTO.toEntity(): StoryEntity {
+internal fun StoryDTO.toEntity(isHeadline: Boolean): StoryEntity {
     return StoryEntity.Impl(
         id = -1,
         source = source.name,
@@ -14,7 +14,8 @@ internal fun StoryDTO.toEntity(): StoryEntity {
         description = description,
         url = url,
         imageUrl = urlToImage,
-        publishedTime = publishedAt.toTimestamp()
+        publishedTime = publishedAt.toTimestamp(),
+        isHeadline = isHeadline
     )
 }
 

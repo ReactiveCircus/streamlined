@@ -9,6 +9,8 @@ import org.junit.Test
 
 class StoryMappersTest {
 
+    private val isHeadline = true
+
     @Test
     fun `StoryDTO to entity()`() {
         val storyDTO = StoryDTO(
@@ -29,10 +31,11 @@ class StoryMappersTest {
             description = "Description...",
             url = "url",
             imageUrl = "image-url",
-            publishedTime = 1581115043000L
+            publishedTime = 1581115043000L,
+            isHeadline = isHeadline
         )
 
-        assertThat(storyDTO.toEntity())
+        assertThat(storyDTO.toEntity(isHeadline))
             .isEqualTo(expected)
     }
 
@@ -46,7 +49,8 @@ class StoryMappersTest {
             description = "Description...",
             url = "url",
             imageUrl = "image-url",
-            publishedTime = 1234L
+            publishedTime = 1234L,
+            isHeadline = isHeadline
         )
 
         val expected = Story(

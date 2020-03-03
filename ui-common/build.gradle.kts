@@ -8,11 +8,7 @@ plugins {
 }
 
 android {
-    @Suppress("UnstableApiUsage")
-    buildFeatures {
-        // enabled new Java 8 language APIs
-        compileOptions.coreLibraryDesugaringEnabled = true
-    }
+    compileOptions.coreLibraryDesugaringEnabled = true
 }
 
 dependencies {

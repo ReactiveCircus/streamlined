@@ -11,6 +11,7 @@ import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.persistence.StoryDao
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
+import io.mockk.coVerifyAll
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifyAll
@@ -68,9 +69,9 @@ class StoryRepositoryImplTest {
         )
     )
 
-    private val headlineStoryStore = mockk<HeadlineStoryStore>()
+    private val headlineStoryStore = mockk<HeadlineStoryStore>(relaxed = true)
 
-    private val personalizedStoryStore = mockk<PersonalizedStoryStore>()
+    private val personalizedStoryStore = mockk<PersonalizedStoryStore>(relaxed = true)
 
     private val storyDao = mockk<StoryDao>()
 
@@ -83,34 +84,70 @@ class StoryRepositoryImplTest {
     @Test
     fun `streamHeadlineStories() starts streaming from Store and fetches from API immediately`() =
         runBlockingTest {
+            val shouldRefresh = true
+
             every { headlineStoryStore.stream(any()) } returns flowOf(
                 StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
             )
 
-            assertThat(storyRepository.streamHeadlineStories()).emitsExactly(
+            assertThat(storyRepository.streamHeadlineStories(shouldRefresh)).emitsExactly(
                 StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
             )
 
             verifyAll {
-                headlineStoryStore.stream(StoreRequest.cached(Unit, refresh = true))
+                headlineStoryStore.stream(StoreRequest.cached(Unit, shouldRefresh))
             }
         }
 
     @Test
     fun `streamPersonalizedStories() starts streaming from Store and fetches from API immediately`() =
         runBlockingTest {
+            val query = "query"
+            val shouldRefresh = false
+
             every { personalizedStoryStore.stream(any()) } returns flowOf(
                 StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Persister)
             )
 
-            assertThat(storyRepository.streamPersonalizedStories("query")).emitsExactly(
+            assertThat(
+                storyRepository.streamPersonalizedStories(query, shouldRefresh)
+            ).emitsExactly(
                 StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Persister)
             )
 
             verifyAll {
-                personalizedStoryStore.stream(StoreRequest.cached("query", refresh = true))
+                personalizedStoryStore.stream(StoreRequest.cached(query, shouldRefresh))
             }
         }
+
+    @Test
+    fun `fetchHeadlineStories() fetches fresh data from API via Store`() = runBlockingTest {
+        every { headlineStoryStore.stream(StoreRequest.fresh(Unit)) } returns flowOf(
+            StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
+        )
+
+        assertThat(storyRepository.fetchHeadlineStories())
+            .isEqualTo(dummyHeadlineStoryList)
+
+        coVerifyAll {
+            headlineStoryStore.stream(StoreRequest.fresh(Unit))
+        }
+    }
+
+    @Test
+    fun `fetchPersonalizedStories() fetches fresh data from API via Store`() = runBlockingTest {
+        val query = "query"
+        every { personalizedStoryStore.stream(StoreRequest.fresh(query)) } returns flowOf(
+            StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
+        )
+
+        assertThat(storyRepository.fetchPersonalizedStories(query))
+            .isEqualTo(dummyPersonalizedStoryList)
+
+        coVerifyAll {
+            personalizedStoryStore.stream(StoreRequest.fresh(query))
+        }
+    }
 
     @Test
     fun `storyById() gets Story from DAO`() = runBlockingTest {
@@ -122,7 +159,8 @@ class StoryRepositoryImplTest {
             description = "Description...",
             url = "url",
             imageUrl = "image-url",
-            publishedTime = 1234L
+            publishedTime = 1234L,
+            isHeadline = false
         )
 
         every { storyDao.storyById(1) } returns dummyStoryEntity

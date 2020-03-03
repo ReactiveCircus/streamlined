@@ -1,6 +1,8 @@
 <resources>
 
     <string name="error_message_could_not_load_content">Looks like you\'re offline.\nPlease connect to the Internet and try again.</string>
-    <string name="error_message_could_not_fetch_content">Looks like you\'re offline. Some content may be out of date.</string>
+    <string name="error_message_could_not_refresh_content">Looks like you\'re offline. Content may be out of date.</string>
+
+    <string name="retry">Retry</string>
 
 </resources>

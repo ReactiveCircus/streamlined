@@ -7,4 +7,7 @@
     <string name="feed_type_top_headlines">Top headlines</string>
     <string name="feed_type_for_you">For you</string>
 
+    <string name="no_headline_stories_found">No headlines found.</string>
+    <string name="no_personalized_stories_found">No stories found.</string>
+
 </resources>

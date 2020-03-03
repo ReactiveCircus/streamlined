@@ -11,7 +11,7 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@UseExperimental(ExperimentalCoroutinesApi::class)
 class FlowAssertionsTest {
 
     private val testScope = TestCoroutineScope()

@@ -1,23 +1,20 @@
 package io.github.reactivecircus.streamlined.domain.interactor
 
-import com.dropbox.android.external.store4.ResponseOrigin
-import com.dropbox.android.external.store4.StoreResponse
-import io.github.reactivecircus.coroutines.test.ext.assertThat
+import com.google.common.truth.Truth
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.domain.testCoroutineDispatcherProvider
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verifyAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class StreamHeadlineStoriesTest {
+class FetchPersonalizedStoriesTest {
 
-    private val dummyHeadlineStoryList = listOf(
+    private val dummyPersonalizedStoryList = listOf(
         Story(
             id = 1,
             source = "source1",
@@ -42,24 +39,22 @@ class StreamHeadlineStoriesTest {
 
     private val storyRepository = mockk<StoryRepository>()
 
-    private val streamHeadlineStories = StreamHeadlineStories(
+    private val fetchPersonalizedStories = FetchPersonalizedStories(
         storyRepository = storyRepository,
         dispatcherProvider = testCoroutineDispatcherProvider
     )
 
     @Test
-    fun `streamHeadlineStories from repository`() = runBlockingTest {
-        val refresh = true
-        every { storyRepository.streamHeadlineStories(refresh) } returns flowOf(
-            StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
-        )
+    fun `personalized stories fetched from repository are returned`() = runBlockingTest {
+        val query = "query"
+        coEvery { storyRepository.fetchPersonalizedStories(query) } returns dummyPersonalizedStoryList
 
-        assertThat(streamHeadlineStories.buildFlow(StreamHeadlineStories.Params(refresh))).emitsExactly(
-            StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
-        )
+        val result = fetchPersonalizedStories
+            .execute(FetchPersonalizedStories.Params(query))
 
-        verifyAll {
-            storyRepository.streamHeadlineStories(refresh)
-        }
+        Truth.assertThat(result)
+            .isEqualTo(dummyPersonalizedStoryList)
+
+        coVerify { storyRepository.fetchPersonalizedStories(query) }
     }
 }

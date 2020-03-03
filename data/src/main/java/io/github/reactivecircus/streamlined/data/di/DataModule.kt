@@ -40,12 +40,14 @@ internal abstract class DataModule {
         @Reusable
         fun storyDao(
             context: Context,
-            coroutineDispatcherProvider: CoroutineDispatcherProvider
+            coroutineDispatcherProvider: CoroutineDispatcherProvider,
+            databaseName: String?
         ): StoryDao {
             return PersistenceComponent.factory()
                 .create(
                     context = context,
-                    coroutineContext = coroutineDispatcherProvider.io
+                    coroutineContext = coroutineDispatcherProvider.io,
+                    databaseName = databaseName
                 )
                 .storyDao
         }
@@ -62,12 +64,11 @@ internal abstract class DataModule {
                 fetcher = {
                     // TODO source country (hardcode ISO 3166-1 country code) from user preference
                     val country = "au"
-                    newsApiService.headlines(country).stories.map { it.toEntity() }
+                    newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
                 }
             ).persister(
                 reader = {
-                    // TODO filter out non-headline stories (separate DAO query)
-                    storyDao.allStories().map { stories ->
+                    storyDao.headlineStories().map { stories ->
                         if (stories.isNotEmpty()) {
                             stories.map { it.toModel() }
                         } else {
@@ -76,11 +77,10 @@ internal abstract class DataModule {
                     }
                 },
                 writer = { _, stories ->
-                    storyDao.updateStories(stories)
+                    storyDao.updateStories(forHeadlines = true, stories = stories)
                 },
                 deleteAll = {
-                    // TODO only delete headline stories
-                    storyDao.deleteAll()
+                    storyDao.deleteHeadlineStories()
                 }
             ).build()
         }
@@ -96,12 +96,11 @@ internal abstract class DataModule {
             return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
                 fetcher = { query ->
                     // TODO use custom query type instead of string
-                    newsApiService.everything(query).stories.map { it.toEntity() }
+                    newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
                 }
             ).persister(
                 reader = {
-                    // TODO filter out headline stories (separate DAO query)
-                    storyDao.allStories().map { stories ->
+                    storyDao.nonHeadlineStories().map { stories ->
                         if (stories.isNotEmpty()) {
                             stories.map { it.toModel() }
                         } else {
@@ -110,11 +109,10 @@ internal abstract class DataModule {
                     }
                 },
                 writer = { _, stories ->
-                    storyDao.updateStories(stories)
+                    storyDao.updateStories(forHeadlines = false, stories = stories)
                 },
                 deleteAll = {
-                    // TODO only delete non-headline stories
-                    storyDao.deleteAll()
+                    storyDao.deleteNonHeadlineStories()
                 }
             ).build()
         }

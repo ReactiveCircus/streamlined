@@ -12,23 +12,23 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import io.github.reactivecircus.streamlined.design.enableDefaultCornerRadius
 import io.github.reactivecircus.streamlined.domain.model.Story
+import io.github.reactivecircus.streamlined.home.databinding.ItemEmptyPlaceholderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemMainStoryBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemReadMoreHeadlinesBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemSectionHeaderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemStoryBinding
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
-import io.github.reactivecircus.streamlined.ui.util.AdapterItem
 import io.github.reactivecircus.streamlined.ui.util.toFormattedDateString
 import reactivecircus.blueprint.ui.extension.isAnimationOn
 import reactivecircus.blueprint.ui.extension.setPrecomputedTextFuture
-import io.github.reactivecircus.streamlined.design.R as ThemeR
+import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 internal const val PUBLISHED_TIME_DATE_PATTERN = "MMM dd"
 
-internal class HomeFeedsListAdapter(
+internal class FeedsListAdapter(
     private val actionListener: ActionListener,
     private val animationConfigs: AnimationConfigs?
-) : ListAdapter<AdapterItem<Story, FeedType, Unit>, HomeFeedsViewHolder>(diffCallback) {
+) : ListAdapter<FeedItem, FeedViewHolder>(diffCallback) {
 
     private var lastAnimatedPosition = -1
 
@@ -41,20 +41,21 @@ internal class HomeFeedsListAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is AdapterItem.Content -> {
-                if (position > 0 && getItem(position - 1) is AdapterItem.Header<FeedType>) {
+            is FeedItem.Content -> {
+                if (position > 0 && getItem(position - 1) is FeedItem.Header) {
                     R.layout.item_main_story
                 } else {
                     R.layout.item_story
                 }
             }
-            is AdapterItem.Header -> R.layout.item_section_header
-            is AdapterItem.Footer -> R.layout.item_read_more_headlines
+            is FeedItem.Header -> R.layout.item_section_header
+            is FeedItem.TopHeadlinesFooter -> R.layout.item_read_more_headlines
+            is FeedItem.Empty -> R.layout.item_empty_placeholder
             else -> throw IllegalArgumentException("Unknown view type at position: $position")
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeFeedsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         return when (viewType) {
             R.layout.item_main_story -> {
                 val binding = ItemMainStoryBinding.inflate(
@@ -88,31 +89,42 @@ internal class HomeFeedsListAdapter(
                 )
                 ReadMoreHeadlinesViewHolder(binding)
             }
+            R.layout.item_empty_placeholder -> {
+                val binding = ItemEmptyPlaceholderBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                EmptyPlaceholderViewHolder(binding)
+            }
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
     }
 
-    override fun onBindViewHolder(holder: HomeFeedsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         when (holder) {
             is MainStoryViewHolder -> {
                 holder.bind(
-                    story = (getItem(position) as AdapterItem.Content<Story>).data,
+                    story = (getItem(position) as FeedItem.Content).story,
                     isLastItem = position == itemCount - 1,
                     actionListener = actionListener
                 )
             }
             is StoryViewHolder -> {
                 holder.bind(
-                    story = (getItem(position) as AdapterItem.Content<Story>).data,
+                    story = (getItem(position) as FeedItem.Content).story,
                     isLastItem = position == itemCount - 1,
                     actionListener = actionListener
                 )
             }
             is SectionHeaderViewHolder -> {
-                holder.bind((getItem(position) as AdapterItem.Header<FeedType>).headerData)
+                holder.bind((getItem(position) as FeedItem.Header).feedType)
             }
             is ReadMoreHeadlinesViewHolder -> {
                 holder.bind(actionListener)
+            }
+            is EmptyPlaceholderViewHolder -> {
+                holder.bind((getItem(position) as FeedItem.Empty).feedType)
             }
         }
 
@@ -121,7 +133,7 @@ internal class HomeFeedsListAdapter(
         ) {
             val animation = AnimationUtils.loadAnimation(
                 holder.itemView.context,
-                ThemeR.anim.slide_in_and_fade_in
+                ThemeResource.anim.slide_in_and_fade_in
             )
             animation.startOffset = (animationConfigs.defaultListItemAnimationStartOffset *
                     holder.adapterPosition).toLong()
@@ -131,15 +143,15 @@ internal class HomeFeedsListAdapter(
     }
 }
 
-internal sealed class HomeFeedsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+internal sealed class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 private class MainStoryViewHolder(
     private val binding: ItemMainStoryBinding
-) : HomeFeedsViewHolder(binding.root) {
+) : FeedViewHolder(binding.root) {
     fun bind(
         story: Story,
         isLastItem: Boolean,
-        actionListener: HomeFeedsListAdapter.ActionListener
+        actionListener: FeedsListAdapter.ActionListener
     ) {
         binding.storyImageView.run {
             enableDefaultCornerRadius()
@@ -158,7 +170,7 @@ private class MainStoryViewHolder(
             story.publishedTime.toFormattedDateString(PUBLISHED_TIME_DATE_PATTERN)
         )
         binding.bookmarkButton.run {
-            setIconResource(ThemeR.drawable.ic_twotone_bookmark_border_24)
+            setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
             setOnClickListener {
                 actionListener.bookmarkToggled(story)
             }
@@ -173,11 +185,11 @@ private class MainStoryViewHolder(
 
 private class StoryViewHolder(
     private val binding: ItemStoryBinding
-) : HomeFeedsViewHolder(binding.root) {
+) : FeedViewHolder(binding.root) {
     fun bind(
         story: Story,
         isLastItem: Boolean,
-        actionListener: HomeFeedsListAdapter.ActionListener
+        actionListener: FeedsListAdapter.ActionListener
     ) {
         binding.storyImageView.run {
             enableDefaultCornerRadius()
@@ -195,7 +207,7 @@ private class StoryViewHolder(
             // TODO convert to pretty time e.g. Xx minute(s) / hour(s) / day(s) ago
             story.publishedTime.toFormattedDateString(PUBLISHED_TIME_DATE_PATTERN)
         )
-        binding.bookmarkButton.setIconResource(ThemeR.drawable.ic_twotone_bookmark_border_24)
+        binding.bookmarkButton.setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
         binding.bookmarkButton.setOnClickListener {
             actionListener.bookmarkToggled(story)
         }
@@ -209,7 +221,7 @@ private class StoryViewHolder(
 
 private class SectionHeaderViewHolder(
     private val binding: ItemSectionHeaderBinding
-) : HomeFeedsViewHolder(binding.root) {
+) : FeedViewHolder(binding.root) {
     fun bind(feedType: FeedType) {
         binding.titleTextView.setPrecomputedTextFuture(
             if (feedType is FeedType.TopHeadlines) {
@@ -223,29 +235,46 @@ private class SectionHeaderViewHolder(
 
 private class ReadMoreHeadlinesViewHolder(
     binding: ItemReadMoreHeadlinesBinding
-) : HomeFeedsViewHolder(binding.root) {
-    fun bind(actionListener: HomeFeedsListAdapter.ActionListener) {
+) : FeedViewHolder(binding.root) {
+    fun bind(actionListener: FeedsListAdapter.ActionListener) {
         itemView.setOnClickListener { actionListener.readMoreHeadlinesButtonClicked() }
     }
 }
 
-private val diffCallback: DiffUtil.ItemCallback<AdapterItem<Story, FeedType, Unit>> =
-    object : DiffUtil.ItemCallback<AdapterItem<Story, FeedType, Unit>>() {
-
-        override fun areItemsTheSame(
-            oldItem: AdapterItem<Story, FeedType, Unit>,
-            newItem: AdapterItem<Story, FeedType, Unit>
-        ) = when (oldItem) {
-            is AdapterItem.Content -> {
-                newItem is AdapterItem.Content && oldItem.data.id == oldItem.data.id
+private class EmptyPlaceholderViewHolder(
+    private val binding: ItemEmptyPlaceholderBinding
+) : FeedViewHolder(binding.root) {
+    fun bind(feedType: FeedType) {
+        binding.noStoriesTextView.setPrecomputedTextFuture(
+            if (feedType is FeedType.TopHeadlines) {
+                itemView.context.getString(R.string.no_headline_stories_found)
+            } else {
+                itemView.context.getString(R.string.no_personalized_stories_found)
             }
-            is AdapterItem.Header -> newItem is AdapterItem.Header
-            is AdapterItem.Footer -> newItem is AdapterItem.Footer
+        )
+        binding.divider.isVisible = feedType is FeedType.TopHeadlines
+    }
+}
+
+private val diffCallback: DiffUtil.ItemCallback<FeedItem> =
+    object : DiffUtil.ItemCallback<FeedItem>() {
+        override fun areItemsTheSame(
+            oldItem: FeedItem,
+            newItem: FeedItem
+        ) = when (oldItem) {
+            is FeedItem.Content -> {
+                newItem is FeedItem.Content &&
+                        oldItem.story.id == newItem.story.id &&
+                        oldItem.feedType == newItem.feedType
+            }
+            is FeedItem.Header -> newItem is FeedItem.Header && oldItem.feedType == newItem.feedType
+            is FeedItem.TopHeadlinesFooter -> newItem is FeedItem.TopHeadlinesFooter
+            is FeedItem.Empty -> newItem is FeedItem.Empty && oldItem.feedType == newItem.feedType
         }
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(
-            oldItem: AdapterItem<Story, FeedType, Unit>,
-            newItem: AdapterItem<Story, FeedType, Unit>
+            oldItem: FeedItem,
+            newItem: FeedItem
         ) = oldItem == newItem
     }

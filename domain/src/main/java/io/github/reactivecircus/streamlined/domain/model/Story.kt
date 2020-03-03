@@ -5,7 +5,7 @@ data class Story(
     val source: String,
     val author: String?,
     val title: String,
-    val description: String,
+    val description: String?,
     val url: String,
     val imageUrl: String?,
     val publishedTime: Long
