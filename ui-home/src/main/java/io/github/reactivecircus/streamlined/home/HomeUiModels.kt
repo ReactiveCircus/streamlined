@@ -1,19 +1,21 @@
 package io.github.reactivecircus.streamlined.home
 
 sealed class HomeState {
-    abstract val items: List<FeedItem>?
+    data class Idle(val items: List<FeedItem>) : HomeState()
 
-    data class Idle(
-        override val items: List<FeedItem>
-    ) : HomeState()
+    sealed class InFlight : HomeState() {
+        object FirstTime : InFlight()
+        data class Subsequent(val items: List<FeedItem>?) : InFlight()
+    }
 
-    data class InFlight(
-        override val items: List<FeedItem>? = null
-    ) : HomeState()
+    object Error : HomeState()
 
-    data class Error(
-        override val items: List<FeedItem>? = null
-    ) : HomeState()
+    internal val itemsOrNull: List<FeedItem>?
+        get() = when (this) {
+            is Idle -> items
+            is InFlight.Subsequent -> items
+            else -> null
+        }
 }
 
 sealed class HomeAction {

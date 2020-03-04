@@ -6,7 +6,7 @@ import io.github.reactivecircus.streamlined.domain.model.Story
  * Merges headline stories and personalized stories into a single list of [FeedItem]s,
  * adding the appropriate headers and footers.
  */
-fun generateFeedItems(
+internal fun generateFeedItems(
     maxNumberOfHeadlines: Int,
     headlineStories: List<Story>,
     personalizedStories: List<Story>

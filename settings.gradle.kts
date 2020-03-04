@@ -22,6 +22,7 @@ includeProject(":analytics-api-base", "libraries/analytics/analytics-api-base")
 includeProject(":analytics-api-firebase", "libraries/analytics/analytics-api-firebase")
 includeProject(":analytics-api-no-op", "libraries/analytics/analytics-api-no-op")
 includeProject(":coroutines-test-ext", "libraries/coroutines-test-ext")
+includeProject(":livedata-test-ext", "libraries/livedata-test-ext")
 
 fun includeProject(name: String, filePath: String) {
     include(name)

@@ -46,11 +46,11 @@ class HomeFragment @Inject constructor(
 
         binding.swipeRefreshLayout.refreshes()
             .onEach { viewModel.refreshHomeFeeds() }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
         binding.retryButton.clicks()
             .onEach { viewModel.refreshHomeFeeds() }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
         feedsListAdapter = FeedsListAdapter(
             actionListener = actionListener,
@@ -65,10 +65,10 @@ class HomeFragment @Inject constructor(
         viewModel.state.observe<HomeState>(viewLifecycleOwner) { state ->
             when (state) {
                 is HomeState.Idle -> binding.showIdleState()
-                is HomeState.InFlight -> binding.showInFlightState(state.items)
+                is HomeState.InFlight -> binding.showInFlightState(state.itemsOrNull)
                 is HomeState.Error -> binding.showErrorState()
             }
-            state.items?.run {
+            state.itemsOrNull?.run {
                 feedsListAdapter.submitList(this)
             }
         }
@@ -76,7 +76,7 @@ class HomeFragment @Inject constructor(
         viewModel.effect
             .filterIsInstance<HomeEffect.ShowTransientError>()
             .onEach { binding.showErrorSnackbarOnce() }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     override fun onDestroyView() {

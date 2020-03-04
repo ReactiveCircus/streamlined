@@ -19,7 +19,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.flow.combine
 import reactivecircus.blueprint.interactor.EmptyParams
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class HomeStateMachine @Inject constructor(
     streamPersonalizedStories: StreamPersonalizedStories,
     private val fetchHeadlineStories: FetchHeadlineStories,
     private val fetchPersonalizedStories: FetchPersonalizedStories
-) : FlowReduxStateMachine<HomeState, HomeAction>(HomeState.InFlight()) {
+) : FlowReduxStateMachine<HomeState, HomeAction>(HomeState.InFlight.FirstTime) {
 
     // TODO replace with currently applied filters / configs
     private val query = "android"
@@ -49,16 +49,17 @@ class HomeStateMachine @Inject constructor(
                 on<HomeAction.Refresh>(FlatMapPolicy.LATEST, ::fetchStoriesFromNetwork)
             }
 
-            // TODO set refresh dynamically
+            // TODO set refresh dynamically for both sources
+
             val headlineStoriesFlow = streamHeadlineStories
                 .buildFlow(StreamHeadlineStories.Params(refresh = true))
 
-            // TODO set refresh dynamically
             val personalizedStoriesFlow = streamPersonalizedStories
                 .buildFlow(StreamPersonalizedStories.Params(query, refresh = true))
 
-            val combinedStories = headlineStoriesFlow
-                .zip(personalizedStoriesFlow) { source1, source2 -> source1 to source2 }
+            val combinedStories = combine(
+                headlineStoriesFlow, personalizedStoriesFlow
+            ) { source1, source2 -> source1 to source2 }
 
             collectWhileInAnyState(
                 combinedStories,
@@ -79,8 +80,10 @@ class HomeStateMachine @Inject constructor(
         getState: GetState<HomeState>,
         setState: SetState<HomeState>
     ) {
-        setState {
-            HomeState.InFlight(getState().items)
+        setState(runIf = { state ->
+            state !is HomeState.InFlight
+        }) {
+            HomeState.InFlight.Subsequent(getState().itemsOrNull)
         }
 
         val result = runCatching {
@@ -97,10 +100,10 @@ class HomeStateMachine @Inject constructor(
 
         // when refresh fails, transition to Error state if no existing data is available,
         // otherwise transition back to Idle state and emit an Effect for showing transient error
-        val currentItems = getState().items
+        val currentItems = getState().itemsOrNull
         setState(runIf = { result.isFailure }) {
             if (currentItems == null) {
-                HomeState.Error(null)
+                HomeState.Error
             } else {
                 HomeState.Idle(currentItems)
             }
@@ -124,12 +127,15 @@ class HomeStateMachine @Inject constructor(
 
         when {
             headlines is StoreResponse.Error || personalized is StoreResponse.Error -> {
-                // when either response is error, transition to Error state if no existing data is available,
+                // when either response is an error and we are not loading for the first time,
+                // transition to Error state if no existing data is available,
                 // otherwise transition back to Idle state and emit an Effect for showing transient error
-                val currentItems = getState().items
-                setState {
+                val currentItems = getState().itemsOrNull
+                setState(runIf = { state ->
+                    state is HomeState.InFlight.FirstTime
+                }) {
                     if (currentItems == null) {
-                        HomeState.Error(null)
+                        HomeState.Error
                     } else {
                         HomeState.Idle(currentItems)
                     }
@@ -138,7 +144,7 @@ class HomeStateMachine @Inject constructor(
                     effectEmitter.offer(HomeEffect.ShowTransientError)
                 }
             }
-            headlines is StoreResponse.Data || personalized is StoreResponse.Data -> {
+            headlines is StoreResponse.Data && personalized is StoreResponse.Data -> {
                 val feedItems = generateFeedItems(
                     maxNumberOfHeadlines = NUMBER_OF_HEADLINES_DISPLAYED,
                     headlineStories = headlines.requireData(),
