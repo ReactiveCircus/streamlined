@@ -1,6 +1,9 @@
 package io.github.reactivecircus.streamlined.di
 
+import android.content.Context
 import androidx.fragment.app.FragmentFactory
+import coil.ImageLoader
+import coil.ImageLoaderBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -38,6 +41,12 @@ abstract class AppModule {
                 computation = Dispatchers.Default,
                 ui = Dispatchers.Main.immediate
             )
+        }
+
+        @Provides
+        @Reusable
+        fun provideImageLoader(context: Context): ImageLoader {
+            return ImageLoaderBuilder(context).build()
         }
     }
 }

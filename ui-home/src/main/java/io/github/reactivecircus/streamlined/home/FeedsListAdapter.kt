@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
 import coil.api.load
 import io.github.reactivecircus.streamlined.design.enableDefaultCornerRadius
 import io.github.reactivecircus.streamlined.domain.model.Story
@@ -27,6 +28,7 @@ internal const val PUBLISHED_TIME_DATE_PATTERN = "MMM dd"
 
 internal class FeedsListAdapter(
     private val actionListener: ActionListener,
+    private val imageLoader: ImageLoader,
     private val animationConfigs: AnimationConfigs?
 ) : ListAdapter<FeedItem, FeedViewHolder>(diffCallback) {
 
@@ -63,7 +65,7 @@ internal class FeedsListAdapter(
                     parent,
                     false
                 )
-                MainStoryViewHolder(binding)
+                MainStoryViewHolder(binding, imageLoader)
             }
             R.layout.item_story -> {
                 val binding = ItemStoryBinding.inflate(
@@ -71,7 +73,7 @@ internal class FeedsListAdapter(
                     parent,
                     false
                 )
-                StoryViewHolder(binding)
+                StoryViewHolder(binding, imageLoader)
             }
             R.layout.item_section_header -> {
                 val binding = ItemSectionHeaderBinding.inflate(
@@ -146,7 +148,8 @@ internal class FeedsListAdapter(
 internal sealed class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 private class MainStoryViewHolder(
-    private val binding: ItemMainStoryBinding
+    private val binding: ItemMainStoryBinding,
+    private val imageLoader: ImageLoader
 ) : FeedViewHolder(binding.root) {
     fun bind(
         story: Story,
@@ -157,10 +160,10 @@ private class MainStoryViewHolder(
             enableDefaultCornerRadius()
             if (story.imageUrl != null) {
                 isVisible = true
-                load(story.imageUrl)
+                load(story.imageUrl, imageLoader)
             } else {
                 isVisible = false
-                load(story.imageUrl)
+                load(story.imageUrl, imageLoader)
             }
         }
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)
@@ -184,7 +187,8 @@ private class MainStoryViewHolder(
 }
 
 private class StoryViewHolder(
-    private val binding: ItemStoryBinding
+    private val binding: ItemStoryBinding,
+    private val imageLoader: ImageLoader
 ) : FeedViewHolder(binding.root) {
     fun bind(
         story: Story,
@@ -195,10 +199,10 @@ private class StoryViewHolder(
             enableDefaultCornerRadius()
             if (story.imageUrl != null) {
                 isVisible = true
-                load(story.imageUrl)
+                load(story.imageUrl, imageLoader)
             } else {
                 isVisible = false
-                load(story.imageUrl)
+                load(story.imageUrl, imageLoader)
             }
         }
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)

@@ -13,7 +13,7 @@ internal object MockData {
             title = "Testing Kotlin Lambda Invocations without Mocking",
             description = "In this post I want to share a simple technique for verifying the invocation of a Kotlin lambda function without mocking it.",
             url = "https://dev.to/ychescale9/testing-kotlin-lambda-invocations-without-mocking-3n32",
-            urlToImage = null,
+            urlToImage = "https://example.com/",
             publishedAt = "2020-02-08T20:30:02Z"
         ),
         StoryDTO(
@@ -22,7 +22,7 @@ internal object MockData {
             title = "Exploring Cirrus CI for Android",
             description = "I recently wrote about my experience using various cloud-based CI services for running Android instrumented tests on CI for opensource projects, and how I landed on a solution using a custom GitHub Action.",
             url = "https://dev.to/ychescale9/exploring-cirrus-ci-for-android-434",
-            urlToImage = null,
+            urlToImage = "https://example.com/",
             publishedAt = "2020-02-08T19:20:00Z"
         ),
         StoryDTO(
@@ -106,7 +106,7 @@ internal object MockData {
             title = "Et egestas quis ipsum suspendisse ultrices gravida.",
             description = "Lacus laoreet non curabitur gravida arcu.",
             url = "1.mockarticles.com",
-            urlToImage = null,
+            urlToImage = "https://example.com/",
             publishedAt = "2020-02-08T15:15:00Z"
         ),
         StoryDTO(
@@ -115,7 +115,7 @@ internal object MockData {
             title = "Vestibulum lorem sed risus ultricies tristique nulla.",
             description = "Arcu risus quis varius quam quisque id diam vel quam.",
             url = "2.mockarticles.com",
-            urlToImage = null,
+            urlToImage = "https://example.com/",
             publishedAt = "2020-02-08T15:10:00Z"
         ),
         StoryDTO(
@@ -124,7 +124,7 @@ internal object MockData {
             title = "Nunc eget lorem dolor sed viverra ipsum nunc aliquet.",
             description = "Risus quis varius quam quisque id. Aenean et tortor at risus.",
             url = "3.mockarticles.com",
-            urlToImage = null,
+            urlToImage = "https://example.com/",
             publishedAt = "2020-02-08T15:05:00Z"
         ),
         StoryDTO(

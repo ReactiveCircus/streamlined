@@ -1,6 +1,7 @@
 package io.github.reactivecircus.streamlined.testing.di
 
 import android.content.Context
+import coil.ImageLoader
 import dagger.BindsInstance
 import dagger.Component
 import io.github.reactivecircus.analytics.AnalyticsApi
@@ -21,6 +22,8 @@ import javax.inject.Singleton
     ]
 )
 interface TestingFrameworkComponent {
+
+    val imageLoader: ImageLoader
 
     val animationConfigs: AnimationConfigs
 

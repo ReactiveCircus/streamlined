@@ -1,6 +1,15 @@
 package io.github.reactivecircus.streamlined.testing.di
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
+import coil.DefaultRequestOptions
+import coil.ImageLoader
+import coil.annotation.ExperimentalCoil
+import coil.request.GetRequest
+import coil.request.LoadRequest
+import coil.request.RequestDisposable
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -29,6 +38,38 @@ internal abstract class TestAppModule {
                 computation = Dispatchers.Default,
                 ui = Dispatchers.Main.immediate
             )
+        }
+
+        @Provides
+        @Reusable
+        fun provideImageLoader(context: Context): ImageLoader {
+            return object : ImageLoader {
+
+                private val drawable = ColorDrawable(Color.LTGRAY)
+
+                private val disposable = object : RequestDisposable {
+                    override val isDisposed = true
+
+                    @UseExperimental(ExperimentalCoil::class)
+                    override suspend fun await() = Unit
+
+                    override fun dispose() = Unit
+                }
+
+                override val defaults = DefaultRequestOptions()
+
+                override suspend fun get(request: GetRequest) = drawable
+
+                override fun load(request: LoadRequest): RequestDisposable {
+                    request.target?.onStart(drawable)
+                    request.target?.onSuccess(drawable)
+                    return disposable
+                }
+
+                override fun clearMemory() = Unit
+
+                override fun shutdown() = Unit
+            }
         }
     }
 }
