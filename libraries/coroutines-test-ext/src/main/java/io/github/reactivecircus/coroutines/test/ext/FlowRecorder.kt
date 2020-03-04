@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@UseExperimental(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> Flow<T>.recordWith(recorder: FlowRecorder<T>) {
     onEach { recorder.values.add(it) }.launchIn(recorder.coroutineScope)
 }

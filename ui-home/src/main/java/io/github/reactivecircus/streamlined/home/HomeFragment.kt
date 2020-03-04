@@ -26,7 +26,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 
-@UseExperimental(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeFragment @Inject constructor(
     private val navigatorProvider: NavigatorProvider,
     private val viewModelProvider: Provider<HomeViewModel>,

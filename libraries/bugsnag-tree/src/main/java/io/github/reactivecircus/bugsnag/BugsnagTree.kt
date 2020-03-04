@@ -7,13 +7,13 @@ import android.util.Log.WARN
 import com.bugsnag.android.Client
 import com.bugsnag.android.Error
 import com.bugsnag.android.Severity
-import java.util.ArrayDeque
 import java.util.Locale
 import timber.log.Timber
 
 /**
  * A logging implementation which buffers the last 200 messages and notifies on error exceptions.
  */
+@OptIn(ExperimentalStdlibApi::class)
 class BugsnagTree(private val client: Client) : Timber.Tree() {
 
     // Adding one to the initial size accounts for the add before remove.

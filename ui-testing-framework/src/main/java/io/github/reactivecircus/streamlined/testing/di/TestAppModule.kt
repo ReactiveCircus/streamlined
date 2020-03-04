@@ -42,7 +42,7 @@ internal abstract class TestAppModule {
 
         @Provides
         @Reusable
-        fun provideImageLoader(context: Context): ImageLoader {
+        fun provideImageLoader(): ImageLoader {
             return object : ImageLoader {
 
                 private val drawable = ColorDrawable(Color.LTGRAY)
@@ -50,7 +50,7 @@ internal abstract class TestAppModule {
                 private val disposable = object : RequestDisposable {
                     override val isDisposed = true
 
-                    @UseExperimental(ExperimentalCoil::class)
+                    @OptIn(ExperimentalCoil::class)
                     override suspend fun await() = Unit
 
                     override fun dispose() = Unit

@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-@UseExperimental(FlowPreview::class, ExperimentalCoroutinesApi::class)
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class HomeViewModel @Inject constructor(
     private val homeStateMachine: HomeStateMachine
 ) : ViewModel() {
