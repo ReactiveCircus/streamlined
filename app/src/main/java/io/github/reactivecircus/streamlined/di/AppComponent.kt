@@ -3,6 +3,7 @@ package io.github.reactivecircus.streamlined.di
 import android.content.Context
 import androidx.fragment.app.FragmentFactory
 import androidx.work.Configuration
+import coil.ImageLoader
 import dagger.BindsInstance
 import dagger.Component
 import io.github.reactivecircus.analytics.AnalyticsApi
@@ -32,6 +33,8 @@ interface AppComponent {
     val analyticsApi: AnalyticsApi
 
     val screenNameNotifier: ScreenNameNotifier
+
+    val imageLoader: ImageLoader
 
     val workManagerConfiguration: Configuration
 

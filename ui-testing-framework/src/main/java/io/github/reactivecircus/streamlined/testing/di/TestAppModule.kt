@@ -1,6 +1,5 @@
 package io.github.reactivecircus.streamlined.testing.di
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask

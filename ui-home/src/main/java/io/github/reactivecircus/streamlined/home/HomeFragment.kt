@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.ImageLoader
 import com.google.android.material.snackbar.Snackbar
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.domain.model.Story
@@ -30,7 +29,6 @@ import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 class HomeFragment @Inject constructor(
     private val navigatorProvider: NavigatorProvider,
     private val viewModelProvider: Provider<HomeViewModel>,
-    private val imageLoader: ImageLoader,
     private val animationConfigs: AnimationConfigs
 ) : Fragment(R.layout.fragment_home), Screen {
 
@@ -56,7 +54,6 @@ class HomeFragment @Inject constructor(
 
         feedsListAdapter = FeedsListAdapter(
             actionListener = actionListener,
-            imageLoader = imageLoader,
             animationConfigs = if (savedInstanceState == null) animationConfigs else null
         )
 
