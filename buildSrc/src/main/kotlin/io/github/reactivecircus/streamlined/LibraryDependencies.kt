@@ -11,7 +11,7 @@ object versions {
 
     object kotlinx {
         const val coroutines = "1.3.3"
-        const val serialization = "0.14.0"
+        const val serialization = "0.20.0"
     }
 
     object firebase {
@@ -23,19 +23,19 @@ object versions {
     const val flowRedux = "0.3.0"
 
     object androidx {
-        const val core = "1.3.0-alpha01"
+        const val core = "1.3.0-alpha02"
         const val annotation = "1.1.0"
-        const val appCompat = "1.2.0-alpha02"
-        const val activity = "1.1.0"
-        const val fragment = "1.2.2"
+        const val appCompat = "1.2.0-alpha03"
+        const val activity = "1.2.0-alpha01"
+        const val fragment = "1.3.0-alpha01"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha01"
-        const val swipeRefreshLayout = "1.1.0-alpha03"
+        const val swipeRefreshLayout = "1.1.0-beta01"
         const val constraintLayout = "2.0.0-beta4"
         const val arch = "2.1.0"
-        const val lifecycle = "2.2.0"
-        const val navigation = "2.3.0-alpha02"
-        const val work = "2.3.2"
+        const val lifecycle = "2.3.0-alpha01"
+        const val navigation = "2.3.0-alpha03"
+        const val work = "2.4.0-alpha01"
 
         object test {
             const val core = "1.3.0-alpha04"
