@@ -18,6 +18,11 @@ class StreamlinedWorkerFactory @Inject constructor(
         val entry = workerFactories.entries.find {
             Class.forName(workerClassName).isAssignableFrom(it.key)
         }
-        return entry?.value?.get()?.create(appContext, workerParameters)
+
+        val factoryProvider = requireNotNull(entry?.value) {
+            "Unknown worker class name: $workerClassName"
+        }
+
+        return factoryProvider.get().create(appContext, workerParameters)
     }
 }
