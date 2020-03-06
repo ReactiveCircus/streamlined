@@ -7,6 +7,7 @@ import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`
+    `core-library-desugaring`
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -20,7 +21,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    compileOptions.coreLibraryDesugaringEnabled = true
 
     defaultConfig {
         applicationId = "io.github.reactivecircus.streamlined"
@@ -164,9 +164,6 @@ dependencies {
     prodImplementation(project(":remote-real"))
 
     implementation(project(":scheduled-tasks"))
-
-    // Java 8 desugaring
-    coreLibraryDesugaring(libraries.desugarLibs)
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

@@ -26,5 +26,9 @@ gradlePlugin {
             id = "streamlined-plugin"
             implementationClass = "io.github.reactivecircus.streamlined.StreamlinedPlugin"
         }
+        register("coreLibraryDesugaring") {
+            id = "core-library-desugaring"
+            implementationClass = "io.github.reactivecircus.streamlined.CoreLibraryDesugaringPlugin"
+        }
     }
 }

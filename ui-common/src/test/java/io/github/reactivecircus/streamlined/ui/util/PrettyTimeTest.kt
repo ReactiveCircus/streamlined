@@ -3,8 +3,6 @@ package io.github.reactivecircus.streamlined.ui.util
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant.ofEpochMilli
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
@@ -44,7 +42,7 @@ class PrettyTimeTest {
     @Test
     fun `timeAgo() returns "Moments ago" when given time from now is less than 1 minute`() {
         val nowMillis = 61.seconds.inMilliseconds.toLong()
-        val fixedClock = Clock.fixed(ofEpochMilli(nowMillis), ZoneId.systemDefault())
+        val fixedClock = FixedClock(nowMillis)
 
         assertThat(1.seconds.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
             .isEqualTo("1 minute ago")
@@ -59,7 +57,7 @@ class PrettyTimeTest {
     @Test
     fun `timeAgo() returns "x minute(s) ago" when given time from now is between 1 hour and 1 minute`() {
         val nowMillis = 61.minutes.inMilliseconds.toLong()
-        val fixedClock = Clock.fixed(ofEpochMilli(nowMillis), ZoneId.systemDefault())
+        val fixedClock = FixedClock(nowMillis)
 
         assertThat(1.minutes.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
             .isEqualTo("1 hour ago")
@@ -72,7 +70,7 @@ class PrettyTimeTest {
     @Test
     fun `timeAgo() returns "x hour(s) ago" when given time from now is between 1 day and 1 hour`() {
         val nowMillis = 25.hours.inMilliseconds.toLong()
-        val fixedClock = Clock.fixed(ofEpochMilli(nowMillis), ZoneId.systemDefault())
+        val fixedClock = FixedClock(nowMillis)
 
         assertThat(1.hours.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
             .isEqualTo("Yesterday")
@@ -85,7 +83,7 @@ class PrettyTimeTest {
     @Test
     fun `timeAgo() returns "Yesterday" or "x days ago" when given time from now is between 1 week and 1 day`() {
         val nowMillis = 8.days.inMilliseconds.toLong()
-        val fixedClock = Clock.fixed(ofEpochMilli(nowMillis), ZoneId.systemDefault())
+        val fixedClock = FixedClock(nowMillis)
 
         assertThat(1.days.inMilliseconds.toLong().timeAgo(pattern, Locale.ENGLISH, fixedClock))
             .isEqualTo("Fri 2 Jan at 10:00 AM")
@@ -98,7 +96,7 @@ class PrettyTimeTest {
     @Test
     fun `timeAgo() returns formatted date string when given time from now is between at least 1 week`() {
         val nowMillis = 10.days.inMilliseconds.toLong()
-        val fixedClock = Clock.fixed(ofEpochMilli(nowMillis), ZoneId.systemDefault())
+        val fixedClock = FixedClock(nowMillis)
 
         assertThat(3.days.inMilliseconds.toLong().timeAgo(pattern, Locale.ENGLISH, fixedClock))
             .isEqualTo("Sun 4 Jan at 10:00 AM")
@@ -117,3 +115,5 @@ class PrettyTimeTest {
         }
     }
 }
+
+private class FixedClock(override val currentTimeMillis: Long) : Clock

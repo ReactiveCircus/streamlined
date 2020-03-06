@@ -68,7 +68,3 @@ class StreamlinedPlugin : Plugin<Project> {
         }
     }
 }
-
-private val Project.isRoot get() = this == this.rootProject
-private val Project.appExtension: AppExtension get() = extensions.getByType(AppExtension::class.java)
-private val Project.libraryExtension: LibraryExtension get() = extensions.getByType(LibraryExtension::class.java)

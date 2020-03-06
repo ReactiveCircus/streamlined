@@ -2,8 +2,6 @@
 
 package io.github.reactivecircus.streamlined.ui.util
 
-import android.annotation.SuppressLint
-import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -18,7 +16,6 @@ import kotlin.time.toDuration
 /**
  * Converts the timestamp to a formatted String
  */
-@SuppressLint("NewApi")
 fun Long.toFormattedDateString(pattern: String, locale: Locale = Locale.getDefault()): String {
     require(this > 0) { "Timestamp must be positive." }
     val formatter = DateTimeFormatter.ofPattern(pattern).withLocale(locale)
@@ -30,15 +27,14 @@ fun Long.toFormattedDateString(pattern: String, locale: Locale = Locale.getDefau
 /**
  * Returns prettified duration between a previous timestamp and now.
  */
-@SuppressLint("NewApi")
 @OptIn(ExperimentalTime::class)
 fun Long.timeAgo(
     fallbackDatePattern: String,
     locale: Locale = Locale.getDefault(),
-    clock: Clock = Clock.systemUTC()
+    clock: Clock = RealClock()
 ): String {
     require(this > 0) { "Timestamp must be positive." }
-    val timeAgo = (Instant.now(clock).toEpochMilli() - this)
+    val timeAgo = (clock.currentTimeMillis - this)
         .toDuration(DurationUnit.MILLISECONDS)
     return when {
         timeAgo < 1.minutes -> "Moments ago"
@@ -65,4 +61,13 @@ fun Long.timeAgo(
         }
         else -> this.toFormattedDateString(fallbackDatePattern, locale)
     }
+}
+
+interface Clock {
+    val currentTimeMillis: Long
+}
+
+internal class RealClock : Clock {
+    override val currentTimeMillis: Long
+        get() = System.currentTimeMillis()
 }
