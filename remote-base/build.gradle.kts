@@ -15,8 +15,4 @@ dependencies {
 
     // Serialization
     implementation(libraries.kotlinx.serialization)
-
-    // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
 }

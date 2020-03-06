@@ -3,7 +3,6 @@ package io.github.reactivecircus.streamlined.data.mapper
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
 import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
-import io.github.reactivecircus.streamlined.remote.helper.toTimestamp
 
 internal fun StoryDTO.toEntity(isHeadline: Boolean): StoryEntity {
     return StoryEntity.Impl(

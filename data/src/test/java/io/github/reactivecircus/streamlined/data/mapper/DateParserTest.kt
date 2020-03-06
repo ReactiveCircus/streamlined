@@ -1,11 +1,11 @@
-package io.github.reactivecircus.streamlined.remote.helper
+package io.github.reactivecircus.streamlined.data.mapper
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import java.text.ParseException
+import java.time.format.DateTimeParseException
 
-class NewsApiDateParserTest {
+class DateParserTest {
 
     @Test
     fun `converts valid date time string to UTC timestamp`() {
@@ -17,7 +17,7 @@ class NewsApiDateParserTest {
 
     @Test
     fun `throws exception when converting an invalid date time string to UTC timestamp`() {
-        assertThrows(ParseException::class.java) {
+        assertThrows(DateTimeParseException::class.java) {
             "2020/02/07 22:37:23".toTimestamp()
         }
     }

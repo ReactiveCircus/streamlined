@@ -44,7 +44,7 @@ internal abstract class TestAppModule {
         fun provideImageLoader(): ImageLoader {
             return object : ImageLoader {
 
-                private val drawable = ColorDrawable(Color.LTGRAY)
+                private val drawable = ColorDrawable(Color.TRANSPARENT)
 
                 private val disposable = object : RequestDisposable {
                     override val isDisposed = true

@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.domain.interactor
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.domain.testCoroutineDispatcherProvider
@@ -52,7 +52,7 @@ class FetchPersonalizedStoriesTest {
         val result = fetchPersonalizedStories
             .execute(FetchPersonalizedStories.Params(query))
 
-        Truth.assertThat(result)
+        assertThat(result)
             .isEqualTo(dummyPersonalizedStoryList)
 
         coVerify { storyRepository.fetchPersonalizedStories(query) }

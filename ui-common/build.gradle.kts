@@ -7,16 +7,9 @@ plugins {
     id("kotlin-kapt")
 }
 
-android {
-    compileOptions.coreLibraryDesugaringEnabled = true
-}
-
 dependencies {
     api(project(":analytics-api-base"))
     api(project(":design-themes"))
-
-    // Java 8 desugaring
-    coreLibraryDesugaring(libraries.desugarLibs)
 
     // Blueprint
     api(libraries.blueprint.ui)

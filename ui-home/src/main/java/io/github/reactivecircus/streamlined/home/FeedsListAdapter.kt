@@ -18,12 +18,12 @@ import io.github.reactivecircus.streamlined.home.databinding.ItemReadMoreHeadlin
 import io.github.reactivecircus.streamlined.home.databinding.ItemSectionHeaderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemStoryBinding
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
-import io.github.reactivecircus.streamlined.ui.util.toFormattedDateString
+import io.github.reactivecircus.streamlined.ui.util.timeAgo
 import reactivecircus.blueprint.ui.extension.isAnimationOn
 import reactivecircus.blueprint.ui.extension.setPrecomputedTextFuture
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
-internal const val PUBLISHED_TIME_DATE_PATTERN = "MMM dd"
+internal const val PUBLISHED_TIME_DATE_PATTERN = "MMM dd, YYYY"
 
 internal class FeedsListAdapter(
     private val actionListener: ActionListener,
@@ -166,8 +166,7 @@ private class MainStoryViewHolder(
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)
         binding.storyTitleTextView.setPrecomputedTextFuture(story.title)
         binding.publishedTimeTextView.setPrecomputedTextFuture(
-            // TODO convert to pretty time e.g. Xx minute(s) / hour(s) / day(s) ago
-            story.publishedTime.toFormattedDateString(PUBLISHED_TIME_DATE_PATTERN)
+            story.publishedTime.timeAgo(PUBLISHED_TIME_DATE_PATTERN)
         )
         binding.bookmarkButton.run {
             setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
@@ -204,8 +203,7 @@ private class StoryViewHolder(
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)
         binding.storyTitleTextView.setPrecomputedTextFuture(story.title)
         binding.publishedTimeTextView.setPrecomputedTextFuture(
-            // TODO convert to pretty time e.g. Xx minute(s) / hour(s) / day(s) ago
-            story.publishedTime.toFormattedDateString(PUBLISHED_TIME_DATE_PATTERN)
+            story.publishedTime.timeAgo(PUBLISHED_TIME_DATE_PATTERN)
         )
         binding.bookmarkButton.setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
         binding.bookmarkButton.setOnClickListener {
