@@ -57,7 +57,7 @@ object versions {
     const val assistedInject = "0.5.2"
     const val okhttp = "4.4.0"
     const val retrofit = "2.7.2"
-    const val retrofitSerializationConverter = "0.4.0"
+    const val retrofitSerializationConverter = "0.5.0"
     const val sqldelight = "1.2.2"
     const val store = "4.0.0-alpha03"
     const val coil = "0.9.5"
