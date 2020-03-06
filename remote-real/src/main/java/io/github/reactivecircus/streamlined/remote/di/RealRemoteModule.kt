@@ -8,6 +8,7 @@ import io.github.reactivecircus.streamlined.remote.AuthInterceptor
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -47,7 +48,10 @@ internal object RealRemoteModule {
                     return okhttpClient.get().newCall(request)
                 }
             })
-            .addConverterFactory(Json.nonstrict.asConverterFactory(contentType))
+            .addConverterFactory(
+                Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true))
+                    .asConverterFactory(contentType)
+            )
             .build()
     }
 
