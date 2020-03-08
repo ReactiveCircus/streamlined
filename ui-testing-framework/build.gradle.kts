@@ -36,9 +36,7 @@ dependencies {
     // timber
     implementation(libraries.timber)
 
-    implementation(libraries.androidx.fragment.testing) {
-        exclude(group = "androidx.test")
-    }
+    implementation(libraries.androidx.fragment.testing)
     api(libraries.blueprint.testingRobot)
     api(libraries.androidx.test.coreKtx)
     api(libraries.androidx.test.monitor)
