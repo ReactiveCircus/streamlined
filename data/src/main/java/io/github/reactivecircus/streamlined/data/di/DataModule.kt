@@ -68,7 +68,7 @@ internal abstract class DataModule {
         fun headlineStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            dispatcherProvider: CoroutineDispatcherProvider
+            coroutineScope: CoroutineScope
         ): HeadlineStoryStore {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
                 fetcher = {
@@ -77,7 +77,7 @@ internal abstract class DataModule {
                     newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
                 }
             )
-                .scope(CoroutineScope(dispatcherProvider.ui))
+                .scope(coroutineScope)
                 .persister(
                 reader = {
                     storyDao.headlineStories().map { stories ->
@@ -104,7 +104,7 @@ internal abstract class DataModule {
         fun personalizedStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            dispatcherProvider: CoroutineDispatcherProvider
+            coroutineScope: CoroutineScope
         ): PersonalizedStoryStore {
             return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
                     fetcher = { query ->
@@ -112,7 +112,7 @@ internal abstract class DataModule {
                         newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
                     }
                 )
-                .scope(CoroutineScope(dispatcherProvider.ui))
+                .scope(coroutineScope)
                 .persister(
                     reader = {
                         storyDao.nonHeadlineStories().map { stories ->

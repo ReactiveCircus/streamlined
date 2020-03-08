@@ -3,6 +3,8 @@ package io.github.reactivecircus.streamlined.testing.di
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.coroutineScope
 import coil.DefaultRequestOptions
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoil
@@ -15,6 +17,8 @@ import dagger.Provides
 import dagger.Reusable
 import io.github.reactivecircus.streamlined.testing.TestAnimationConfigs
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
+import io.github.reactivecircus.streamlined.ui.di.ProcessLifetime
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
@@ -37,6 +41,13 @@ internal abstract class TestAppModule {
                 computation = Dispatchers.Default,
                 ui = Dispatchers.Main.immediate
             )
+        }
+
+        @Provides
+        @Reusable
+        @ProcessLifetime
+        fun provideAppCoroutineScope(): CoroutineScope {
+            return ProcessLifecycleOwner.get().lifecycle.coroutineScope
         }
 
         @Provides

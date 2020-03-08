@@ -8,6 +8,7 @@ import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
+import kotlinx.coroutines.CoroutineScope
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import javax.inject.Singleton
 
@@ -31,6 +32,7 @@ interface DataComponent {
         fun create(
             @BindsInstance context: Context,
             @BindsInstance coroutineDispatcherProvider: CoroutineDispatcherProvider,
+            @BindsInstance coroutineScope: CoroutineScope,
             @BindsInstance newsApiService: NewsApiService,
             @BindsInstance databaseName: String?
         ): DataComponent

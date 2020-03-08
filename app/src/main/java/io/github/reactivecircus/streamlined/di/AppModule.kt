@@ -2,6 +2,8 @@ package io.github.reactivecircus.streamlined.di
 
 import android.content.Context
 import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.coroutineScope
 import coil.ImageLoader
 import coil.ImageLoaderBuilder
 import dagger.Binds
@@ -13,6 +15,8 @@ import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.configs.DefaultAnimationConfigs
 import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
+import io.github.reactivecircus.streamlined.ui.di.ProcessLifetime
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
@@ -41,6 +45,13 @@ abstract class AppModule {
                 computation = Dispatchers.Default,
                 ui = Dispatchers.Main.immediate
             )
+        }
+
+        @Provides
+        @Reusable
+        @ProcessLifetime
+        fun provideAppCoroutineScope(): CoroutineScope {
+            return ProcessLifecycleOwner.get().lifecycle.coroutineScope
         }
 
         @Provides
