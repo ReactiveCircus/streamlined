@@ -17,13 +17,13 @@ class DataAssumptions @Inject constructor(
     private val personalizedStoryStore: PersonalizedStoryStore,
     private val dispatcherProvider: CoroutineDispatcherProvider
 ) {
-    internal fun assumeNoPersistedHeadlineStories() = runBlocking {
+    internal fun assumeNoCachedHeadlineStories() = runBlocking {
         withContext(dispatcherProvider.io) {
             headlineStoryStore.clearAll()
         }
     }
 
-    internal fun assumeNoPersistedPersonalizedStories() = runBlocking {
+    internal fun assumeNoCachedPersonalizedStories() = runBlocking {
         withContext(dispatcherProvider.io) {
             personalizedStoryStore.clearAll()
         }
@@ -48,12 +48,12 @@ private val dataAssumptions: DataAssumptions = TestingFrameworkComponent
     .getOrCreate(ApplicationProvider.getApplicationContext())
     .dataAssumptions
 
-fun assumeNoPersistedHeadlineStories() {
-    dataAssumptions.assumeNoPersistedHeadlineStories()
+fun assumeNoCachedHeadlineStories() {
+    dataAssumptions.assumeNoCachedHeadlineStories()
 }
 
-fun assumeNoPersistedPersonalizedStories() {
-    dataAssumptions.assumeNoPersistedPersonalizedStories()
+fun assumeNoCachedPersonalizedStories() {
+    dataAssumptions.assumeNoCachedPersonalizedStories()
 }
 
 fun populateHeadlineStories() {

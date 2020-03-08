@@ -11,7 +11,7 @@ class StoryDetailsScreenTest : BaseScreenTest() {
     private val fragmentFactory = StoryDetailsTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
-    fun openStoryDetailsScreen_storyDisplayed() {
+    fun launchStoryDetailsScreen_storyDisplayed() {
         // TODO pass in ARG_STORY_ID
         launchFragmentScenario<StoryDetailsFragment>(fragmentFactory)
     }

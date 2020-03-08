@@ -11,7 +11,7 @@ class SettingsScreenTest : BaseScreenTest() {
     private val fragmentFactory = SettingsTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
-    fun openSettingsScreen_settingsDisplayed() {
+    fun launchSettingsScreen_settingsDisplayed() {
         launchFragmentScenario<SettingsFragment>(fragmentFactory)
         // TODO
     }

@@ -18,6 +18,7 @@ import io.github.reactivecircus.streamlined.persistence.StoryDao
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
 import io.github.reactivecircus.streamlined.persistence.di.PersistenceComponent
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.map
@@ -66,7 +67,8 @@ internal abstract class DataModule {
         @ExperimentalCoroutinesApi
         fun headlineStoryStore(
             newsApiService: NewsApiService,
-            storyDao: StoryDao
+            storyDao: StoryDao,
+            dispatcherProvider: CoroutineDispatcherProvider
         ): HeadlineStoryStore {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
                 fetcher = {
@@ -74,7 +76,9 @@ internal abstract class DataModule {
                     val country = "au"
                     newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
                 }
-            ).persister(
+            )
+                .scope(CoroutineScope(dispatcherProvider.ui))
+                .persister(
                 reader = {
                     storyDao.headlineStories().map { stories ->
                         if (stories.isNotEmpty()) {
@@ -99,30 +103,34 @@ internal abstract class DataModule {
         @ExperimentalCoroutinesApi
         fun personalizedStoryStore(
             newsApiService: NewsApiService,
-            storyDao: StoryDao
+            storyDao: StoryDao,
+            dispatcherProvider: CoroutineDispatcherProvider
         ): PersonalizedStoryStore {
             return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
-                fetcher = { query ->
-                    // TODO use custom query type instead of string
-                    newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
-                }
-            ).persister(
-                reader = {
-                    storyDao.nonHeadlineStories().map { stories ->
-                        if (stories.isNotEmpty()) {
-                            stories.map { it.toModel() }
-                        } else {
-                            null
-                        }
+                    fetcher = { query ->
+                        // TODO use custom query type instead of string
+                        newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
                     }
-                },
-                writer = { _, stories ->
-                    storyDao.updateStories(forHeadlines = false, stories = stories)
-                },
-                deleteAll = {
-                    storyDao.deleteNonHeadlineStories()
-                }
-            ).build()
+                )
+                .scope(CoroutineScope(dispatcherProvider.ui))
+                .persister(
+                    reader = {
+                        storyDao.nonHeadlineStories().map { stories ->
+                            if (stories.isNotEmpty()) {
+                                stories.map { it.toModel() }
+                            } else {
+                                null
+                            }
+                        }
+                    },
+                    writer = { _, stories ->
+                        storyDao.updateStories(forHeadlines = false, stories = stories)
+                    },
+                    deleteAll = {
+                        storyDao.deleteNonHeadlineStories()
+                    }
+                )
+                .build()
         }
     }
 }

@@ -11,7 +11,7 @@ class ReadingListScreenTest : BaseScreenTest() {
     private val fragmentFactory = ReadingListTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
-    fun openHeadlinesScreen_readingListDisplayed() {
+    fun launchHeadlinesScreen_readingListDisplayed() {
         launchFragmentScenario<ReadingListFragment>(fragmentFactory)
         // TODO
     }

@@ -5,7 +5,7 @@ package io.github.reactivecircus.streamlined.remote
 import io.github.reactivecircus.streamlined.remote.dto.SourceDTO
 import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
 
-internal object MockData {
+object MockData {
     val mockHeadlineStories = listOf(
         StoryDTO(
             source = SourceDTO("dev.to"),

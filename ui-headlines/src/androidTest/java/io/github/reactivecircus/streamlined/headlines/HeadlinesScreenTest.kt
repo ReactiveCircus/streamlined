@@ -11,7 +11,7 @@ class HeadlinesScreenTest : BaseScreenTest() {
     private val fragmentFactory = HeadlinesTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
-    fun openHeadlinesScreen_headlinesDisplayed() {
+    fun launchHeadlinesScreen_headlinesDisplayed() {
         launchFragmentScenario<HeadlinesFragment>(fragmentFactory)
         // TODO
     }
