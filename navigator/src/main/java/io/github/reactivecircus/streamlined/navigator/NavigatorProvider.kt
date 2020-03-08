@@ -5,5 +5,5 @@ package io.github.reactivecircus.streamlined.navigator
  */
 interface NavigatorProvider {
 
-    fun get(): Navigator
+    fun get(): Navigator?
 }

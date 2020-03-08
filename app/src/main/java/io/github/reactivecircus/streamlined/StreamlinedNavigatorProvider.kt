@@ -16,8 +16,8 @@ class StreamlinedNavigatorProvider @Inject constructor() :
 
     private var navigator: Navigator? = null
 
-    override fun get(): Navigator {
-        return checkNotNull(navigator)
+    override fun get(): Navigator? {
+        return navigator
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {

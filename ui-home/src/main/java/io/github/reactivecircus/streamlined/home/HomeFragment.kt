@@ -125,7 +125,7 @@ class HomeFragment @Inject constructor(
     private val actionListener = object : FeedsListAdapter.ActionListener {
 
         override fun storyClicked(story: Story) {
-            navigatorProvider.get().navigateToStoryDetailsScreen(story.id)
+            navigatorProvider.get()?.navigateToStoryDetailsScreen(story.id)
         }
 
         // TODO
@@ -135,7 +135,7 @@ class HomeFragment @Inject constructor(
         override fun moreButtonClicked(story: Story) = Unit
 
         override fun readMoreHeadlinesButtonClicked() {
-            navigatorProvider.get().navigateToHeadlinesScreen()
+            navigatorProvider.get()?.navigateToHeadlinesScreen()
         }
     }
 }
