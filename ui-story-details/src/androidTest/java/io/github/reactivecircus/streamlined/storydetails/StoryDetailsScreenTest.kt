@@ -8,9 +8,7 @@ import org.junit.Test
 @LargeTest
 class StoryDetailsScreenTest : BaseScreenTest() {
 
-    private val fragmentFactory = StoryDetailsTestAppComponent.factory()
-        .create(testingFrameworkComponent)
-        .fragmentFactory
+    private val fragmentFactory = StoryDetailsTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun openStoryDetailsScreen_storyDisplayed() {

@@ -1,6 +1,7 @@
 package io.github.reactivecircus.streamlined.headlines.di
 
 import androidx.fragment.app.FragmentFactory
+import androidx.test.core.app.ApplicationProvider
 import dagger.Component
 import io.github.reactivecircus.streamlined.testing.di.TestScope
 import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
@@ -20,6 +21,14 @@ interface HeadlinesTestAppComponent {
     }
 
     companion object {
-        fun factory(): Factory = DaggerHeadlinesTestAppComponent.factory()
+        private val instance: HeadlinesTestAppComponent by lazy {
+            DaggerHeadlinesTestAppComponent.factory().create(
+                TestingFrameworkComponent.getOrCreate(
+                    ApplicationProvider.getApplicationContext()
+                )
+            )
+        }
+
+        fun getOrCreate(): HeadlinesTestAppComponent = instance
     }
 }

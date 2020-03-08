@@ -11,8 +11,7 @@ class IntegrationTestApp : StreamlinedApp() {
     override val appComponent: AppComponent = IntegrationTestAppComponent.factory()
         .create(
             context = this,
-            testingFrameworkComponent = TestingFrameworkComponent.factory()
-                .create(this)
+            testingFrameworkComponent = TestingFrameworkComponent.getOrCreate(this)
         )
 
     override fun onCreate() {
@@ -21,6 +20,11 @@ class IntegrationTestApp : StreamlinedApp() {
 
         // initialize analytics api (disable)
         appComponent.analyticsApi.setEnableAnalytics(false)
+
+        // register lifecycle hook for NavigatorProvider
+        registerActivityLifecycleCallbacks(
+            appComponent.navigatorProvider as StreamlinedNavigatorProvider
+        )
 
         // set default image loader
         setDefaultImageLoader(appComponent.imageLoader)

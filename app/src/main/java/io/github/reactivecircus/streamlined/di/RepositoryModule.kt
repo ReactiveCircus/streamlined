@@ -16,35 +16,26 @@ object RepositoryModule {
 
     @Provides
     @Reusable
-    fun provideStoryRepository(
+    fun provideDataComponent(
         context: Context,
         coroutineDispatcherProvider: CoroutineDispatcherProvider,
         newsApiService: NewsApiService
-    ): StoryRepository {
-        return DataComponent.factory()
-            .create(
-                context = context,
-                coroutineDispatcherProvider = coroutineDispatcherProvider,
-                newsApiService = newsApiService,
-                databaseName = BuildConfig.DATABASE_NAME
-            )
-            .storyRepository
+    ): DataComponent = DataComponent.factory().create(
+        context = context,
+        coroutineDispatcherProvider = coroutineDispatcherProvider,
+        newsApiService = newsApiService,
+        databaseName = BuildConfig.DATABASE_NAME
+    )
+
+    @Provides
+    @Reusable
+    fun provideStoryRepository(dataComponent: DataComponent): StoryRepository {
+        return dataComponent.storyRepository
     }
 
     @Provides
     @Reusable
-    fun provideBookmarkRepository(
-        context: Context,
-        coroutineDispatcherProvider: CoroutineDispatcherProvider,
-        newsApiService: NewsApiService
-    ): BookmarkRepository {
-        return DataComponent.factory()
-            .create(
-                context = context,
-                coroutineDispatcherProvider = coroutineDispatcherProvider,
-                newsApiService = newsApiService,
-                databaseName = BuildConfig.DATABASE_NAME
-            )
-            .bookmarkRepository
+    fun provideBookmarkRepository(dataComponent: DataComponent): BookmarkRepository {
+        return dataComponent.bookmarkRepository
     }
 }

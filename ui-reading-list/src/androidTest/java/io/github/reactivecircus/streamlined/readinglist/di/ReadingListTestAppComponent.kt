@@ -1,6 +1,7 @@
 package io.github.reactivecircus.streamlined.readinglist.di
 
 import androidx.fragment.app.FragmentFactory
+import androidx.test.core.app.ApplicationProvider
 import dagger.Component
 import io.github.reactivecircus.streamlined.testing.di.TestScope
 import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
@@ -20,6 +21,14 @@ interface ReadingListTestAppComponent {
     }
 
     companion object {
-        fun factory(): Factory = DaggerReadingListTestAppComponent.factory()
+        private val instance: ReadingListTestAppComponent by lazy {
+            DaggerReadingListTestAppComponent.factory().create(
+                TestingFrameworkComponent.getOrCreate(
+                    ApplicationProvider.getApplicationContext()
+                )
+            )
+        }
+
+        fun getOrCreate(): ReadingListTestAppComponent = instance
     }
 }

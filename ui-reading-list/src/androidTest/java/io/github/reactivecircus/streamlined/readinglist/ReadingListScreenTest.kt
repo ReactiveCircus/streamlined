@@ -8,9 +8,7 @@ import org.junit.Test
 @LargeTest
 class ReadingListScreenTest : BaseScreenTest() {
 
-    private val fragmentFactory = ReadingListTestAppComponent.factory()
-        .create(testingFrameworkComponent)
-        .fragmentFactory
+    private val fragmentFactory = ReadingListTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun openHeadlinesScreen_readingListDisplayed() {

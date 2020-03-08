@@ -8,9 +8,7 @@ import org.junit.Test
 @LargeTest
 class SettingsScreenTest : BaseScreenTest() {
 
-    private val fragmentFactory = SettingsTestAppComponent.factory()
-        .create(testingFrameworkComponent)
-        .fragmentFactory
+    private val fragmentFactory = SettingsTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun openSettingsScreen_settingsDisplayed() {

@@ -8,9 +8,7 @@ import org.junit.Test
 @LargeTest
 class HeadlinesScreenTest : BaseScreenTest() {
 
-    private val fragmentFactory = HeadlinesTestAppComponent.factory()
-        .create(testingFrameworkComponent)
-        .fragmentFactory
+    private val fragmentFactory = HeadlinesTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun openHeadlinesScreen_headlinesDisplayed() {

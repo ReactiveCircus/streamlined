@@ -16,18 +16,13 @@ import androidx.test.espresso.FailureHandler
 import androidx.test.espresso.base.DefaultFailureHandler
 import androidx.test.espresso.intent.Intents
 import androidx.test.runner.screenshot.Screenshot
-import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
+import io.github.reactivecircus.streamlined.testing.assumption.assumeNetworkConnected
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 abstract class BaseScreenTest {
-
-    protected val testingFrameworkComponent = TestingFrameworkComponent.factory()
-        .create(ApplicationProvider.getApplicationContext())
-
-    private val networkAssumptions = testingFrameworkComponent.networkAssumptions
 
     @Before
     open fun setUp() {
@@ -45,7 +40,7 @@ abstract class BaseScreenTest {
     open fun tearDown() {
         Intents.release()
         // reset network connectivity
-        networkAssumptions.assumeNetworkConnected()
+        assumeNetworkConnected()
     }
 
     inline fun <reified A : Activity> launchActivityScenario(

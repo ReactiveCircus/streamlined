@@ -22,6 +22,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.map
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
+import javax.inject.Qualifier
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+private annotation class InternalApi
 
 @Module
 internal abstract class DataModule {
@@ -37,19 +42,22 @@ internal abstract class DataModule {
     internal companion object {
 
         @Provides
-        @Reusable
-        fun storyDao(
+        @InternalApi
+        fun providePersistenceComponent(
             context: Context,
             coroutineDispatcherProvider: CoroutineDispatcherProvider,
             databaseName: String?
-        ): StoryDao {
-            return PersistenceComponent.factory()
-                .create(
-                    context = context,
-                    coroutineContext = coroutineDispatcherProvider.io,
-                    databaseName = databaseName
-                )
-                .storyDao
+        ): PersistenceComponent = PersistenceComponent.factory()
+            .create(
+                context = context,
+                coroutineContext = coroutineDispatcherProvider.io,
+                databaseName = databaseName
+            )
+
+        @Provides
+        @Reusable
+        fun storyDao(@InternalApi persistenceComponent: PersistenceComponent): StoryDao {
+            return persistenceComponent.storyDao
         }
 
         @Provides

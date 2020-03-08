@@ -12,12 +12,16 @@ object ServiceModule {
 
     @Provides
     @Reusable
-    fun provideNewsApiService(): NewsApiService {
-        return RealRemoteComponent.factory()
-            .create(
-                baseUrl = BuildConfig.BASE_URL,
-                apiKey = BuildConfig.API_KEY
-            )
-            .newsApiService
+    fun provideRealRemoteComponent(): RealRemoteComponent {
+        return RealRemoteComponent.factory().create(
+            baseUrl = BuildConfig.BASE_URL,
+            apiKey = BuildConfig.API_KEY
+        )
+    }
+
+    @Provides
+    @Reusable
+    fun provideNewsApiService(realRemoteComponent: RealRemoteComponent): NewsApiService {
+        return realRemoteComponent.newsApiService
     }
 }

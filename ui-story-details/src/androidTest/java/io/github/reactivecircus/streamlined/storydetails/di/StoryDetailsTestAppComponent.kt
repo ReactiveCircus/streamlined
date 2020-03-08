@@ -1,6 +1,7 @@
 package io.github.reactivecircus.streamlined.storydetails.di
 
 import androidx.fragment.app.FragmentFactory
+import androidx.test.core.app.ApplicationProvider
 import dagger.Component
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsAssistedModule
 import io.github.reactivecircus.streamlined.testing.di.TestScope
@@ -24,6 +25,14 @@ interface StoryDetailsTestAppComponent {
     }
 
     companion object {
-        fun factory(): Factory = DaggerStoryDetailsTestAppComponent.factory()
+        private val instance: StoryDetailsTestAppComponent by lazy {
+            DaggerStoryDetailsTestAppComponent.factory().create(
+                TestingFrameworkComponent.getOrCreate(
+                    ApplicationProvider.getApplicationContext()
+                )
+            )
+        }
+
+        fun getOrCreate(): StoryDetailsTestAppComponent = instance
     }
 }

@@ -8,7 +8,7 @@ import timber.log.Timber
 internal class ScreenTestApp : Application() {
 
     private val testingFrameworkComponent: TestingFrameworkComponent by lazy {
-        TestingFrameworkComponent.factory().create(this)
+        TestingFrameworkComponent.getOrCreate(this)
     }
 
     override fun onCreate() {

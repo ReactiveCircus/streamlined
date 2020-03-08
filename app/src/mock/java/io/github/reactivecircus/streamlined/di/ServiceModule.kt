@@ -11,9 +11,13 @@ object ServiceModule {
 
     @Provides
     @Reusable
-    fun provideNewsApiService(): NewsApiService {
-        return MockRemoteComponent.factory()
-            .create()
-            .newsApiService
+    fun provideMockRemoteComponent(): MockRemoteComponent {
+        return MockRemoteComponent.factory().create()
+    }
+
+    @Provides
+    @Reusable
+    fun provideNewsApiService(mockRemoteComponent: MockRemoteComponent): NewsApiService {
+        return mockRemoteComponent.newsApiService
     }
 }
