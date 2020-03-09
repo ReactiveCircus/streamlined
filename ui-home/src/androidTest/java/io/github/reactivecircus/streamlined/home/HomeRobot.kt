@@ -3,7 +3,6 @@ package io.github.reactivecircus.streamlined.home
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -18,6 +17,7 @@ import reactivecircus.blueprint.testing.assertion.recyclerViewHasSize
 import reactivecircus.blueprint.testing.assertion.snackBarDisplayed
 import reactivecircus.blueprint.testing.assertion.textDisplayed
 import reactivecircus.blueprint.testing.assertion.viewDisplayed
+import reactivecircus.blueprint.testing.clearToolbarScrollFlags
 import reactivecircus.blueprint.testing.matcher.withRecyclerView
 import reactivecircus.blueprint.testing.scrollToItemInRecyclerView
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
@@ -51,6 +51,7 @@ class HomeRobot : ScreenRobot<HomeRobot.Actions, HomeRobot.Assertions>(Actions()
             val readMoreHeadlinesTextViewId = R.id.readMoreHeadlinesTextView
             val noStoriesTextViewId = R.id.noStoriesTextView
 
+            clearToolbarScrollFlags(R.id.toolbar)
             recyclerViewHasSize(recyclerViewId, feedItems.size)
 
             feedItems.forEachIndexed { index, feedItem ->
@@ -75,13 +76,6 @@ class HomeRobot : ScreenRobot<HomeRobot.Actions, HomeRobot.Assertions>(Actions()
                         )
                     }
                     is FeedItem.Content -> {
-                        // swipe up to make sure item is fully displayed
-                        onView(
-                            withRecyclerView(recyclerViewId).atPositionOnView(
-                                index, storyTitleTextViewId
-                            )
-                        ).perform(swipeUp())
-
                         // photo
                         onView(
                             withRecyclerView(recyclerViewId)
