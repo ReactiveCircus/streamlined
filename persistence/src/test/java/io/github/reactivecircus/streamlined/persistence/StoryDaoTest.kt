@@ -197,7 +197,7 @@ class StoryDaoTest {
             )
 
             assertThat(queries.findAllStories().executeAsList())
-                .isEqualTo(listOf(headlineStory1.copy(id = 1), headlineStory2.copy(id = 2)))
+                .containsExactly(headlineStory1.copy(id = 1), headlineStory2.copy(id = 2))
         }
 
     @Test
@@ -234,11 +234,9 @@ class StoryDaoTest {
             )
 
             assertThat(queries.findAllStories().executeAsList())
-                .isEqualTo(
-                    listOf(
-                        headlineStory1.copy(id = 1, description = "New description"),
-                        headlineStory2.copy(id = 3)
-                    )
+                .containsExactly(
+                    headlineStory1.copy(id = 1, description = "New description"),
+                    headlineStory2.copy(id = 3)
                 )
         }
 
@@ -251,7 +249,7 @@ class StoryDaoTest {
             )
 
             assertThat(queries.findAllStories().executeAsList())
-                .isEqualTo(listOf(nonHeadlineStory1.copy(id = 1), nonHeadlineStory2.copy(id = 2)))
+                .containsExactly(nonHeadlineStory1.copy(id = 1), nonHeadlineStory2.copy(id = 2))
         }
 
     @Test
@@ -288,11 +286,9 @@ class StoryDaoTest {
             )
 
             assertThat(queries.findAllStories().executeAsList())
-                .isEqualTo(
-                    listOf(
-                        nonHeadlineStory1.copy(id = 1, description = "New description"),
-                        nonHeadlineStory2.copy(id = 3)
-                    )
+                .containsExactly(
+                    nonHeadlineStory1.copy(id = 1, description = "New description"),
+                    nonHeadlineStory2.copy(id = 3)
                 )
         }
 
@@ -319,11 +315,9 @@ class StoryDaoTest {
             )
 
             assertThat(queries.findAllStories().executeAsList())
-                .isEqualTo(
-                    listOf(
-                        nonHeadlineStory1.copy(id = 1),
-                        headlineStory2.copy(id = 2)
-                    )
+                .containsExactly(
+                    nonHeadlineStory1.copy(id = 1),
+                    headlineStory2.copy(id = 2)
                 )
         }
 
@@ -350,11 +344,9 @@ class StoryDaoTest {
             )
 
             assertThat(queries.findAllStories().executeAsList())
-                .isEqualTo(
-                    listOf(
-                        headlineStory1.copy(id = 1),
-                        nonHeadlineStory2.copy(id = 2)
-                    )
+                .containsExactly(
+                    headlineStory1.copy(id = 1),
+                    nonHeadlineStory2.copy(id = 2)
                 )
         }
 
@@ -384,7 +376,7 @@ class StoryDaoTest {
         dao.deleteAll()
 
         assertThat(queries.findAllStories().executeAsList())
-            .isEqualTo(emptyList<StoryEntity>())
+            .isEmpty()
     }
 
     @Test
@@ -423,7 +415,7 @@ class StoryDaoTest {
         dao.deleteHeadlineStories()
 
         assertThat(queries.findAllStories().executeAsList())
-            .isEqualTo(listOf(nonHeadlineStory1.copy(id = 3)))
+            .containsExactly(nonHeadlineStory1.copy(id = 3))
     }
 
     @Test
@@ -462,6 +454,6 @@ class StoryDaoTest {
         dao.deleteNonHeadlineStories()
 
         assertThat(queries.findAllStories().executeAsList())
-            .isEqualTo(listOf(headlineStory1.copy(id = 1)))
+            .containsExactly(headlineStory1.copy(id = 1))
     }
 }

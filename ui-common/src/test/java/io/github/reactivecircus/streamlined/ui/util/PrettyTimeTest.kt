@@ -13,7 +13,7 @@ import kotlin.time.hours
 import kotlin.time.minutes
 import kotlin.time.seconds
 
-@OptIn(ExperimentalTime::class)
+@ExperimentalTime
 class PrettyTimeTest {
 
     private val pattern = "EEE d MMM 'at' h:mm a"

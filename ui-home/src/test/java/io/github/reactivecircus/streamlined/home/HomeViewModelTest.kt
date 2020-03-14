@@ -1,14 +1,13 @@
 package io.github.reactivecircus.streamlined.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.StoreResponse
 import com.google.common.truth.Truth.assertThat
-import emitted
 import io.github.reactivecircus.coroutines.test.ext.CoroutinesTestRule
 import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
 import io.github.reactivecircus.coroutines.test.ext.recordWith
+import io.github.reactivecircus.livedata.test.ext.TestObserver
 import io.github.reactivecircus.streamlined.domain.interactor.FetchHeadlineStories
 import io.github.reactivecircus.streamlined.domain.interactor.FetchPersonalizedStories
 import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStories
@@ -19,7 +18,6 @@ import io.mockk.coVerifyAll
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifyAll
-import io.mockk.verifySequence
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -33,6 +31,7 @@ import org.junit.Test
 import java.io.IOException
 
 @FlowPreview
+@ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
 class HomeViewModelTest {
 
@@ -96,7 +95,7 @@ class HomeViewModelTest {
 
     private val fetchPersonalizedStories = mockk<FetchPersonalizedStories>()
 
-    private val stateObserver = mockk<Observer<HomeState>>(relaxed = true)
+    private val stateObserver = TestObserver<HomeState>()
 
     private val effectFlowRecorder = FlowRecorder<HomeEffect>(TestCoroutineScope())
 
@@ -123,11 +122,10 @@ class HomeViewModelTest {
             streamPersonalizedStories.buildFlow(any())
         }
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.InFlight.FirstTime
             )
-        }
     }
 
     @Test
@@ -141,13 +139,10 @@ class HomeViewModelTest {
 
         viewModel.state.observeForever(stateObserver)
 
-        verifySequence {
-            stateObserver.emitted(
-                HomeState.Idle(
-                    expectedFeedItems(headlineStories, personalizedStories)
-                )
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
+                HomeState.Idle(expectedFeedItems(headlineStories, personalizedStories))
             )
-        }
     }
 
     @Test
@@ -161,11 +156,10 @@ class HomeViewModelTest {
 
         viewModel.state.observeForever(stateObserver)
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.Error
             )
-        }
     }
 
     @Test
@@ -179,11 +173,10 @@ class HomeViewModelTest {
 
         viewModel.state.observeForever(stateObserver)
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.Error
             )
-        }
     }
 
     @Test
@@ -197,11 +190,10 @@ class HomeViewModelTest {
 
         viewModel.state.observeForever(stateObserver)
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.Error
             )
-        }
     }
 
     @Test
@@ -245,16 +237,15 @@ class HomeViewModelTest {
             )
         )
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.InFlight.FirstTime,
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
                 )
             )
-        }
 
-        assertThat(effectFlowRecorder.recordedValues)
+        assertThat(effectFlowRecorder.takeAll())
             .containsExactly(HomeEffect.ShowTransientError)
     }
 
@@ -296,8 +287,8 @@ class HomeViewModelTest {
             fetchPersonalizedStories.execute(any())
         }
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.InFlight.FirstTime,
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
@@ -312,7 +303,6 @@ class HomeViewModelTest {
                     expectedFeedItems(headlineStories.subList(0, 1), emptyList())
                 )
             )
-        }
     }
 
     @Test
@@ -351,8 +341,8 @@ class HomeViewModelTest {
             fetchHeadlineStories.execute(any())
         }
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.InFlight.FirstTime,
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
@@ -367,9 +357,8 @@ class HomeViewModelTest {
                     expectedFeedItems(headlineStories, emptyList())
                 )
             )
-        }
 
-        assertThat(effectFlowRecorder.recordedValues)
+        assertThat(effectFlowRecorder.takeAll())
             .containsExactly(HomeEffect.ShowTransientError)
     }
 
@@ -409,8 +398,8 @@ class HomeViewModelTest {
             fetchPersonalizedStories.execute(any())
         }
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.InFlight.FirstTime,
                 HomeState.Error,
                 HomeState.InFlight.Subsequent(null),
@@ -421,7 +410,6 @@ class HomeViewModelTest {
                     )
                 )
             )
-        }
     }
 
     @Test
@@ -454,16 +442,15 @@ class HomeViewModelTest {
             fetchPersonalizedStories.execute(any())
         }
 
-        verifySequence {
-            stateObserver.emitted(
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
                 HomeState.InFlight.FirstTime,
                 HomeState.Error,
                 HomeState.InFlight.Subsequent(null),
                 HomeState.Error
             )
-        }
 
-        assertThat(effectFlowRecorder.recordedValues)
+        assertThat(effectFlowRecorder.takeAll())
             .isEmpty()
     }
 }

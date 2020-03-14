@@ -60,16 +60,14 @@ class FeedItemsGeneratorTest {
             personalizedStories = personalizedStories
         )
         assertThat(feedItems)
-            .isEqualTo(
-                listOf(
-                    FeedItem.Header(FeedType.TopHeadlines),
-                    FeedItem.Content(FeedType.TopHeadlines, headlineStories[0]),
-                    FeedItem.Content(FeedType.TopHeadlines, headlineStories[1]),
-                    FeedItem.TopHeadlinesFooter,
-                    FeedItem.Header(FeedType.ForYou),
-                    FeedItem.Content(FeedType.ForYou, personalizedStories[0]),
-                    FeedItem.Content(FeedType.ForYou, personalizedStories[1])
-                )
+            .containsExactly(
+                FeedItem.Header(FeedType.TopHeadlines),
+                FeedItem.Content(FeedType.TopHeadlines, headlineStories[0]),
+                FeedItem.Content(FeedType.TopHeadlines, headlineStories[1]),
+                FeedItem.TopHeadlinesFooter,
+                FeedItem.Header(FeedType.ForYou),
+                FeedItem.Content(FeedType.ForYou, personalizedStories[0]),
+                FeedItem.Content(FeedType.ForYou, personalizedStories[1])
             )
     }
 
@@ -81,15 +79,13 @@ class FeedItemsGeneratorTest {
             personalizedStories = personalizedStories
         )
         assertThat(feedItems)
-            .isEqualTo(
-                listOf(
-                    FeedItem.Header(FeedType.TopHeadlines),
-                    FeedItem.Content(FeedType.TopHeadlines, headlineStories[0]),
-                    FeedItem.TopHeadlinesFooter,
-                    FeedItem.Header(FeedType.ForYou),
-                    FeedItem.Content(FeedType.ForYou, personalizedStories[0]),
-                    FeedItem.Content(FeedType.ForYou, personalizedStories[1])
-                )
+            .containsExactly(
+                FeedItem.Header(FeedType.TopHeadlines),
+                FeedItem.Content(FeedType.TopHeadlines, headlineStories[0]),
+                FeedItem.TopHeadlinesFooter,
+                FeedItem.Header(FeedType.ForYou),
+                FeedItem.Content(FeedType.ForYou, personalizedStories[0]),
+                FeedItem.Content(FeedType.ForYou, personalizedStories[1])
             )
     }
 
@@ -101,13 +97,11 @@ class FeedItemsGeneratorTest {
             personalizedStories = emptyList()
         )
         assertThat(feedItems)
-            .isEqualTo(
-                listOf(
-                    FeedItem.Header(FeedType.TopHeadlines),
-                    FeedItem.Empty(FeedType.TopHeadlines),
-                    FeedItem.Header(FeedType.ForYou),
-                    FeedItem.Empty(FeedType.ForYou)
-                )
+            .containsExactly(
+                FeedItem.Header(FeedType.TopHeadlines),
+                FeedItem.Empty(FeedType.TopHeadlines),
+                FeedItem.Header(FeedType.ForYou),
+                FeedItem.Empty(FeedType.ForYou)
             )
     }
 }

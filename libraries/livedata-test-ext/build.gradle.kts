@@ -7,6 +7,15 @@ plugins {
 }
 
 dependencies {
+    // Kotlin stdlib
     implementation(libraries.kotlinStdlib)
+
+    // AndroidX
+    implementation(libraries.androidx.annotation)
     implementation(libraries.androidx.lifecycle.liveDataKtx)
+
+    // Unit tests
+    testImplementation(libraries.junit)
+    testImplementation(libraries.truth)
+    testImplementation(libraries.androidx.archCore.testing)
 }
