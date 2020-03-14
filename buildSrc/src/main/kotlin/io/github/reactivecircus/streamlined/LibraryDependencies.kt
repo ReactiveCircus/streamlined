@@ -53,7 +53,7 @@ object versions {
     }
 
     const val material = "1.2.0-alpha05"
-    const val dagger = "2.26"
+    const val dagger = "2.27"
     const val assistedInject = "0.5.2"
     const val okhttp = "4.4.1"
     const val retrofit = "2.7.2"
