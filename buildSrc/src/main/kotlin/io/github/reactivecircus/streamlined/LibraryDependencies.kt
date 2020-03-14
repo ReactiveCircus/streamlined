@@ -19,7 +19,7 @@ object versions {
     }
 
     const val blueprint = "1.6.0"
-    const val flowbinding = "0.10.1"
+    const val flowbinding = "0.10.2"
     const val flowRedux = "0.3.0"
 
     object androidx {
