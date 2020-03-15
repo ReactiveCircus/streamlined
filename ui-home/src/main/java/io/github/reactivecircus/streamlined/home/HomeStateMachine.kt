@@ -30,7 +30,7 @@ class HomeStateMachine @Inject constructor(
     streamPersonalizedStories: StreamPersonalizedStories,
     private val fetchHeadlineStories: FetchHeadlineStories,
     private val fetchPersonalizedStories: FetchPersonalizedStories
-) : FlowReduxStateMachine<HomeState, HomeAction>(HomeState.InFlight.FirstTime) {
+) : FlowReduxStateMachine<HomeState, HomeAction>(HomeState.InFlight.FirstTime(null)) {
 
     // TODO replace with currently applied filters / configs
     private val query = "android"
@@ -126,8 +126,20 @@ class HomeStateMachine @Inject constructor(
         val personalized = combinedStoryResponses.second
 
         when {
+            headlines is StoreResponse.Loading || personalized is StoreResponse.Loading -> {
+                // when either response is loading, transition to InFlight.FirstTime state
+                // if not already in InFlight state. This is needed when cached data is being displayed first
+                // while waiting for fresh data from network to be emitted.
+                // The sequence of responses looks like this:
+                // Data response cache / disk -> Loading -> Error or Data response from network
+                setState(runIf = { state ->
+                    state !is HomeState.InFlight
+                }) {
+                    HomeState.InFlight.FirstTime(getState().itemsOrNull)
+                }
+            }
             headlines is StoreResponse.Error || personalized is StoreResponse.Error -> {
-                // when either response is an error and we are not loading for the first time,
+                // when either response is an error and we are loading for the first time,
                 // transition to Error state if no existing data is available,
                 // otherwise transition back to Idle state and emit an Effect for showing transient error
                 val currentItems = getState().itemsOrNull

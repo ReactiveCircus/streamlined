@@ -4,8 +4,10 @@ sealed class HomeState {
     data class Idle(val items: List<FeedItem>) : HomeState()
 
     sealed class InFlight : HomeState() {
-        object FirstTime : InFlight()
-        data class Subsequent(val items: List<FeedItem>?) : InFlight()
+        abstract val items: List<FeedItem>?
+
+        data class FirstTime(override val items: List<FeedItem>?) : InFlight()
+        data class Subsequent(override val items: List<FeedItem>?) : InFlight()
     }
 
     object Error : HomeState()
@@ -13,7 +15,7 @@ sealed class HomeState {
     internal val itemsOrNull: List<FeedItem>?
         get() = when (this) {
             is Idle -> items
-            is InFlight.Subsequent -> items
+            is InFlight -> items
             else -> null
         }
 }

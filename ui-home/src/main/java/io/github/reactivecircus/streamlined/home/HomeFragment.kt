@@ -98,7 +98,6 @@ class HomeFragment @Inject constructor(
         swipeRefreshLayout.isRefreshing = items != null
         swipeRefreshLayout.isEnabled = items != null
         homeFeedsRecyclerView.isVisible = items != null
-        errorSnackbar?.dismiss()
     }
 
     private fun FragmentHomeBinding.showErrorState() {

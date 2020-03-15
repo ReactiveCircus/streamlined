@@ -111,7 +111,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `starts streaming headline and personalized stories and emits InFlight state when initialized`() {
+    fun `starts streaming headline and personalized stories and emits InFlight#FirstTime state when initialized`() {
         every { streamHeadlineStories.buildFlow(any()) } returns emptyFlow()
         every { streamPersonalizedStories.buildFlow(any()) } returns emptyFlow()
 
@@ -124,17 +124,17 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime
+                HomeState.InFlight.FirstTime(null)
             )
     }
 
     @Test
     fun `emits Idle state with generated feed items when headline and personalized stories streams emit Data responses`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher)
+            StoreResponse.Data(headlineStories, ResponseOrigin.Persister)
         )
         every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher)
+            StoreResponse.Data(personalizedStories, ResponseOrigin.Persister)
         )
 
         viewModel.state.observeForever(stateObserver)
@@ -176,6 +176,53 @@ class HomeViewModelTest {
         assertThat(stateObserver.takeAll())
             .containsExactly(
                 HomeState.Error
+            )
+    }
+
+    @Test
+    fun `emits InFlight#FirstTime state when either stories stream emits Loading response while not already in InFlight state`() {
+        val headlineStoriesResponseEmitter =
+            BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
+        val personalizedStoriesResponseEmitter =
+            BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
+
+        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
+        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
+
+        viewModel.state.observeForever(stateObserver)
+
+        // cached data is emitted first
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                headlineStories,
+                ResponseOrigin.Persister
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                personalizedStories,
+                ResponseOrigin.Persister
+            )
+        )
+
+        // then loading responses are emitted while fetching data from network
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Loading(ResponseOrigin.Fetcher)
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Loading(ResponseOrigin.Fetcher)
+        )
+
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
+                HomeState.InFlight.FirstTime(null),
+                HomeState.Idle(expectedFeedItems(headlineStories, personalizedStories)),
+                HomeState.InFlight.FirstTime(
+                    expectedFeedItems(
+                        headlineStories,
+                        personalizedStories
+                    )
+                )
             )
     }
 
@@ -239,7 +286,7 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime,
+                HomeState.InFlight.FirstTime(null),
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
                 )
@@ -289,7 +336,7 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime,
+                HomeState.InFlight.FirstTime(null),
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
@@ -343,7 +390,7 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime,
+                HomeState.InFlight.FirstTime(null),
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
@@ -400,7 +447,7 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime,
+                HomeState.InFlight.FirstTime(null),
                 HomeState.Error,
                 HomeState.InFlight.Subsequent(null),
                 HomeState.Idle(
@@ -444,7 +491,7 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime,
+                HomeState.InFlight.FirstTime(null),
                 HomeState.Error,
                 HomeState.InFlight.Subsequent(null),
                 HomeState.Error
