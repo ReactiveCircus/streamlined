@@ -1,6 +1,8 @@
 package io.github.reactivecircus.streamlined.data.di
 
 import android.content.Context
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.coroutineScope
 import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Binds
 import dagger.Module
@@ -44,6 +46,12 @@ internal abstract class DataModule {
 
         @Provides
         @InternalApi
+        fun provideProcessLifetimeCoroutineScope(): CoroutineScope {
+            return ProcessLifecycleOwner.get().lifecycle.coroutineScope
+        }
+
+        @Provides
+        @InternalApi
         fun providePersistenceComponent(
             context: Context,
             coroutineDispatcherProvider: CoroutineDispatcherProvider,
@@ -68,33 +76,33 @@ internal abstract class DataModule {
         fun headlineStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            coroutineScope: CoroutineScope
+            @InternalApi processLifetimeCoroutineScope: CoroutineScope
         ): HeadlineStoryStore {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
-                fetcher = {
-                    // TODO source country (hardcode ISO 3166-1 country code) from user preference
-                    val country = "au"
-                    newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
-                }
-            )
-                .scope(coroutineScope)
-                .persister(
-                reader = {
-                    storyDao.headlineStories().map { stories ->
-                        if (stories.isNotEmpty()) {
-                            stories.map { it.toModel() }
-                        } else {
-                            null
-                        }
+                    fetcher = {
+                        // TODO source country (hardcode ISO 3166-1 country code) from user preference
+                        val country = "au"
+                        newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
                     }
-                },
-                writer = { _, stories ->
-                    storyDao.updateStories(forHeadlines = true, stories = stories)
-                },
-                deleteAll = {
-                    storyDao.deleteHeadlineStories()
-                }
-            ).build()
+                )
+                .scope(processLifetimeCoroutineScope)
+                .persister(
+                    reader = {
+                        storyDao.headlineStories().map { stories ->
+                            if (stories.isNotEmpty()) {
+                                stories.map { it.toModel() }
+                            } else {
+                                null
+                            }
+                        }
+                    },
+                    writer = { _, stories ->
+                        storyDao.updateStories(forHeadlines = true, stories = stories)
+                    },
+                    deleteAll = {
+                        storyDao.deleteHeadlineStories()
+                    }
+                ).build()
         }
 
         @Provides
@@ -104,7 +112,7 @@ internal abstract class DataModule {
         fun personalizedStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            coroutineScope: CoroutineScope
+            @InternalApi processLifetimeCoroutineScope: CoroutineScope
         ): PersonalizedStoryStore {
             return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
                     fetcher = { query ->
@@ -112,7 +120,7 @@ internal abstract class DataModule {
                         newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
                     }
                 )
-                .scope(coroutineScope)
+                .scope(processLifetimeCoroutineScope)
                 .persister(
                     reader = {
                         storyDao.nonHeadlineStories().map { stories ->
