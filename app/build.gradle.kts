@@ -63,8 +63,6 @@ android {
 
     buildTypes {
         named("debug") {
-            extra.set("alwaysUpdateBuildId", false)
-
             signingConfig = signingConfigs.getByName("debug")
 
             // turn on strict mode for non-CI debug builds
