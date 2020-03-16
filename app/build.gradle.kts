@@ -178,6 +178,9 @@ dependencies {
     // Work manager
     implementation(libraries.androidx.work.runtimeKtx)
 
+    // process lifecycle
+    implementation(libraries.androidx.lifecycle.process)
+
     // Dagger
     implementation(libraries.dagger.runtime)
     kapt(libraries.dagger.compiler)

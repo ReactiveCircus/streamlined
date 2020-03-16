@@ -1,8 +1,6 @@
 package io.github.reactivecircus.streamlined.data.di
 
 import android.content.Context
-import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.coroutineScope
 import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Binds
 import dagger.Module
@@ -46,12 +44,6 @@ internal abstract class DataModule {
 
         @Provides
         @InternalApi
-        fun provideProcessLifetimeCoroutineScope(): CoroutineScope {
-            return ProcessLifecycleOwner.get().lifecycle.coroutineScope
-        }
-
-        @Provides
-        @InternalApi
         fun providePersistenceComponent(
             context: Context,
             coroutineDispatcherProvider: CoroutineDispatcherProvider,
@@ -76,7 +68,7 @@ internal abstract class DataModule {
         fun headlineStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            @InternalApi processLifetimeCoroutineScope: CoroutineScope
+            processLifetimeCoroutineScope: CoroutineScope
         ): HeadlineStoryStore {
             return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
                     fetcher = {
@@ -112,7 +104,7 @@ internal abstract class DataModule {
         fun personalizedStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            @InternalApi processLifetimeCoroutineScope: CoroutineScope
+            processLifetimeCoroutineScope: CoroutineScope
         ): PersonalizedStoryStore {
             return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
                     fetcher = { query ->

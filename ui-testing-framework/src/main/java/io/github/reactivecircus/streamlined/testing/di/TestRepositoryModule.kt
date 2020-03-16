@@ -1,6 +1,8 @@
 package io.github.reactivecircus.streamlined.testing.di
 
 import android.content.Context
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.coroutineScope
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -24,6 +26,7 @@ internal object TestRepositoryModule {
     ): DataComponent = DataComponent.factory().create(
         context = context,
         coroutineDispatcherProvider = coroutineDispatcherProvider,
+        processLifetimeCoroutineScope = ProcessLifecycleOwner.get().lifecycle.coroutineScope,
         newsApiService = newsApiService,
         databaseName = null
     )

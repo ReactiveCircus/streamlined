@@ -132,7 +132,6 @@ object libraries {
         }
 
         object lifecycle {
-            const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidx.lifecycle}"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}"
             const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:${versions.androidx.lifecycle}"

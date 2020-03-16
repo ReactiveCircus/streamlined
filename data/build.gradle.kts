@@ -16,10 +16,6 @@ dependencies {
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)
 
-    // process lifecycle
-    implementation(libraries.androidx.lifecycle.process)
-    implementation(libraries.androidx.lifecycle.runtimeKtx)
-
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 
