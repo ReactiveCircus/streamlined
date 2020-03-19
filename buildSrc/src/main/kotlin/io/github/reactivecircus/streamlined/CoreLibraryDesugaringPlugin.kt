@@ -26,7 +26,7 @@ class CoreLibraryDesugaringPlugin : Plugin<Project> {
             }
 
             baseExtension.apply {
-                compileOptions.coreLibraryDesugaringEnabled = true
+                compileOptions.isCoreLibraryDesugaringEnabled = true
                 project.dependencies.add("coreLibraryDesugaring", libraries.desugarLibs)
             }
         }
