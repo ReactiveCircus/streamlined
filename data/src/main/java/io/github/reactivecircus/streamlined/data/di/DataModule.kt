@@ -43,6 +43,7 @@ internal abstract class DataModule {
     internal companion object {
 
         @Provides
+        @Reusable
         @InternalApi
         fun providePersistenceComponent(
             context: Context,

@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":remote-base"))
     api(project(":persistence"))
+    api(project(":store-ext"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

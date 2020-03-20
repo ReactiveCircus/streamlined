@@ -185,15 +185,15 @@ class StreamWithRefreshCriteriaTest {
 
 private class TestRefreshCriteria(
     private val shouldRefresh: Boolean
-) : RefreshCriteria<String, Int> {
+) : RefreshCriteria {
 
     private var _refreshCounts = 0
 
     val refreshCounts get() = _refreshCounts
 
-    override suspend fun shouldRefresh(key: String): Boolean = shouldRefresh
+    override suspend fun shouldRefresh(refreshScope: RefreshScope): Boolean = shouldRefresh
 
-    override suspend fun onRefreshed(key: String, output: Int) {
+    override suspend fun onRefreshed(refreshScope: RefreshScope) {
         _refreshCounts++
     }
 }

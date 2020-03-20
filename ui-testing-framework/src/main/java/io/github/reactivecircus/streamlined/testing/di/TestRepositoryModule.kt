@@ -12,6 +12,7 @@ import io.github.reactivecircus.streamlined.data.di.DataComponent
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
+import io.github.reactivecircus.streamlined.testing.NoOpRefreshCriteria
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
 @Module
@@ -27,6 +28,7 @@ internal object TestRepositoryModule {
         context = context,
         coroutineDispatcherProvider = coroutineDispatcherProvider,
         processLifetimeCoroutineScope = ProcessLifecycleOwner.get().lifecycle.coroutineScope,
+        refreshCriteria = NoOpRefreshCriteria,
         newsApiService = newsApiService,
         databaseName = null
     )

@@ -17,17 +17,28 @@ import kotlinx.coroutines.flow.onEach
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-fun <Key : Any, Output : Any> Store<Key, Output>.streamWithRefreshCriteria(
+inline fun <reified Key : Any, reified Output : Any> Store<Key, Output>.streamWithRefreshCriteria(
     key: Key,
-    refreshCriteria: RefreshCriteria<Key, Output>
+    refreshCriteria: RefreshCriteria
 ): Flow<StoreResponse<Output>> {
-    return flow { emit(refreshCriteria.shouldRefresh(key)) }
+    val refreshScope = getRefreshScope<Key, Output>(key)
+    return flow { emit(refreshCriteria.shouldRefresh(refreshScope)) }
         .flatMapConcat { shouldRefresh ->
             stream(StoreRequest.cached(key, refresh = shouldRefresh))
         }
         .onEach { response ->
             if (response is StoreResponse.Data && response.origin == ResponseOrigin.Fetcher) {
-                refreshCriteria.onRefreshed(key, response.value)
+                refreshCriteria.onRefreshed(refreshScope)
             }
         }
+}
+
+/**
+ * Generates the refreshScope of the [RefreshCriteria] from a [Store]'s Output type and a [key].
+ */
+@PublishedApi
+internal inline fun <reified Key : Any, reified Output : Any> getRefreshScope(
+    key: Key
+): RefreshScope {
+    return RefreshScope("$key ${Output::class.java}")
 }

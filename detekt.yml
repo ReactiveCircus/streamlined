@@ -11,6 +11,8 @@ complexity:
   active: true
   LongMethod:
     active: false
+  LongParameterList:
+    active : false
 
 empty-blocks:
   active: true

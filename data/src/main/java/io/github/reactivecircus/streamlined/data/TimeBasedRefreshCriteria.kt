@@ -1,0 +1,63 @@
+package io.github.reactivecircus.streamlined.data
+
+import io.github.reactivecircus.store.ext.RefreshCriteria
+import io.github.reactivecircus.store.ext.RefreshScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
+import kotlin.time.minutes
+
+/**
+ * A [RefreshCriteria] implementation which determines whether data should be refreshed
+ * for a [RefreshScope] based on the duration since a refresh was last recorded for the same [RefreshScope].
+ * Once a refresh has been recorded for a [RefreshScope], refresh won't be necessary for new quests
+ * until [expiration] time has passed where the [expiration] is updated / extended each time a refresh
+ * is recorded, effectively debouncing the expiration of a data set for the given [RefreshScope].
+ */
+@OptIn(ExperimentalTime::class)
+class TimeBasedRefreshCriteria(
+    private val expiration: Duration = DEFAULT_EXPIRATION,
+    private val timeSource: TimeSource = TimeSource.Monotonic
+) : RefreshCriteria {
+
+    init {
+        require(expiration.isPositive()) { "Expiration for refresh criteria must be positive." }
+    }
+
+    private val lock = Mutex()
+
+    private val refreshLog = mutableMapOf<RefreshScope, TimeMark>()
+
+    override suspend fun shouldRefresh(refreshScope: RefreshScope): Boolean {
+        return lock.withLock {
+            val expirationMark = refreshLog[refreshScope]
+            expirationMark == null || expirationMark.hasPassedNow()
+        }
+    }
+
+    override suspend fun onRefreshed(refreshScope: RefreshScope) {
+        lock.withLock {
+            val expirationMark = refreshLog[refreshScope]
+            if (expirationMark != null) {
+                refreshLog[refreshScope] = expirationMark + expiration
+            } else {
+                refreshLog[refreshScope] = timeSource.markNow() + expiration
+            }
+        }
+    }
+
+    /**
+     * Clears the refresh logs for all [RefreshScope]s which means [shouldRefresh] will return true
+     * for all [RefreshScope]s until [onRefreshed] is invoked again.
+     */
+    suspend fun reset() {
+        lock.withLock { refreshLog.clear() }
+    }
+
+    companion object {
+        val DEFAULT_EXPIRATION = 5.minutes
+    }
+}
