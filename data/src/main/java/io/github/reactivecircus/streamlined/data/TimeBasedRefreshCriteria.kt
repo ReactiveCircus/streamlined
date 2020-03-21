@@ -34,7 +34,7 @@ class TimeBasedRefreshCriteria(
     override suspend fun shouldRefresh(refreshScope: RefreshScope): Boolean {
         return lock.withLock {
             val expirationMark = refreshLog[refreshScope]
-            expirationMark == null || expirationMark.hasPassedNow()
+            expirationMark == null || (expirationMark + expiration).hasPassedNow()
         }
     }
 
@@ -42,9 +42,9 @@ class TimeBasedRefreshCriteria(
         lock.withLock {
             val expirationMark = refreshLog[refreshScope]
             if (expirationMark != null) {
-                refreshLog[refreshScope] = expirationMark + expiration
+                refreshLog[refreshScope] = expirationMark + expirationMark.elapsedNow()
             } else {
-                refreshLog[refreshScope] = timeSource.markNow() + expiration
+                refreshLog[refreshScope] = timeSource.markNow()
             }
         }
     }

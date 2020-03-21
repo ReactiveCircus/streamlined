@@ -92,18 +92,28 @@ class TimeBasedRefreshCriteriaTest {
 
         testTimeSource += 9.seconds
 
-        // should extend expiry for another 10 seconds
-        refreshCriteria.onRefreshed(scope)
-
         assertThat(refreshCriteria.shouldRefresh(scope))
             .isFalse()
+
+        // expiry is updated to 10 seconds from now
+        refreshCriteria.onRefreshed(scope)
 
         testTimeSource += 1.seconds
 
         assertThat(refreshCriteria.shouldRefresh(scope))
             .isFalse()
 
-        testTimeSource += 9.seconds
+        testTimeSource += 8.seconds
+
+        // expiry is updated again to 10 seconds from now
+        refreshCriteria.onRefreshed(scope)
+
+        testTimeSource += 1.seconds
+
+        assertThat(refreshCriteria.shouldRefresh(scope))
+            .isFalse()
+
+        testTimeSource += 8.seconds
 
         assertThat(refreshCriteria.shouldRefresh(scope))
             .isFalse()
