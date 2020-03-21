@@ -13,6 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
+import reactivecircus.blueprint.interactor.EmptyParams
 
 @ExperimentalCoroutinesApi
 class StreamHeadlineStoriesTest {
@@ -49,17 +50,16 @@ class StreamHeadlineStoriesTest {
 
     @Test
     fun `streamHeadlineStories from repository`() = runBlockingTest {
-        val refresh = true
-        every { storyRepository.streamHeadlineStories(refresh) } returns flowOf(
+        every { storyRepository.streamHeadlineStories() } returns flowOf(
             StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
         )
 
-        assertThat(streamHeadlineStories.buildFlow(StreamHeadlineStories.Params(refresh))).emitsExactly(
+        assertThat(streamHeadlineStories.buildFlow(EmptyParams)).emitsExactly(
             StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
         )
 
         verifyAll {
-            storyRepository.streamHeadlineStories(refresh)
+            storyRepository.streamHeadlineStories()
         }
     }
 }

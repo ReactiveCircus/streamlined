@@ -49,13 +49,11 @@ class HomeStateMachine @Inject constructor(
                 on<HomeAction.Refresh>(FlatMapPolicy.LATEST, ::fetchStoriesFromNetwork)
             }
 
-            // TODO set refresh dynamically for both sources
-
             val headlineStoriesFlow = streamHeadlineStories
-                .buildFlow(StreamHeadlineStories.Params(refresh = true))
+                .buildFlow(EmptyParams)
 
             val personalizedStoriesFlow = streamPersonalizedStories
-                .buildFlow(StreamPersonalizedStories.Params(query, refresh = true))
+                .buildFlow(StreamPersonalizedStories.Params(query))
 
             val combinedStories = combine(
                 headlineStoriesFlow, personalizedStoriesFlow

@@ -50,18 +50,17 @@ class StreamPersonalizedStoriesTest {
     @Test
     fun `streamPersonalizedStories from repository`() = runBlockingTest {
         val query = "query"
-        val refresh = true
-        every { storyRepository.streamPersonalizedStories(query, refresh) } returns flowOf(
+        every { storyRepository.streamPersonalizedStories(query) } returns flowOf(
             StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
         )
 
-        val params = StreamPersonalizedStories.Params(query, refresh)
+        val params = StreamPersonalizedStories.Params(query)
         assertThat(streamPersonalizedStories.buildFlow(params)).emitsExactly(
             StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
         )
 
         verifyAll {
-            storyRepository.streamPersonalizedStories(query, refresh)
+            storyRepository.streamPersonalizedStories(query)
         }
     }
 }

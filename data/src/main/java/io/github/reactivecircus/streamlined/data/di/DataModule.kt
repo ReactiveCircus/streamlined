@@ -34,6 +34,8 @@ internal abstract class DataModule {
 
     @Binds
     @Reusable
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     abstract fun storyRepository(impl: StoryRepositoryImpl): StoryRepository
 
     @Binds

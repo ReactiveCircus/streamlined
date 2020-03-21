@@ -1,25 +1,32 @@
 package io.github.reactivecircus.streamlined.data.repository
 
 import com.dropbox.android.external.store4.ResponseOrigin
-import com.dropbox.android.external.store4.StoreRequest
+import com.dropbox.android.external.store4.Store
+import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreResponse
 import com.google.common.truth.Truth.assertThat
-import io.github.reactivecircus.coroutines.test.ext.assertThat
-import io.github.reactivecircus.streamlined.data.HeadlineStoryStore
-import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
+import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
+import io.github.reactivecircus.coroutines.test.ext.recordWith
+import io.github.reactivecircus.store.ext.RefreshCriteria
+import io.github.reactivecircus.streamlined.data.TimeBasedRefreshCriteria
 import io.github.reactivecircus.streamlined.data.mapper.toModel
+import io.github.reactivecircus.streamlined.data.testutil.TestStoryDao
 import io.github.reactivecircus.streamlined.domain.model.Story
-import io.github.reactivecircus.streamlined.persistence.StoryDao
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
-import io.mockk.coVerifyAll
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verifyAll
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
+import kotlin.collections.set
+import kotlin.time.ExperimentalTime
+import kotlin.time.TestTimeSource
+import kotlin.time.seconds
 
+@ExperimentalTime
+@ExperimentalStdlibApi
+@FlowPreview
 @ExperimentalCoroutinesApi
 class StoryRepositoryImplTest {
 
@@ -69,103 +76,245 @@ class StoryRepositoryImplTest {
         )
     )
 
-    private val headlineStoryStore = mockk<HeadlineStoryStore>(relaxed = true)
+    private val dummyStoryEntity = StoryEntity.Impl(
+        id = 1,
+        title = "Article",
+        source = "source",
+        author = "author",
+        description = "Description...",
+        url = "url",
+        imageUrl = "image-url",
+        publishedTime = 1234L,
+        isHeadline = false
+    )
 
-    private val personalizedStoryStore = mockk<PersonalizedStoryStore>(relaxed = true)
+    private val testScope = TestCoroutineScope()
 
-    private val storyDao = mockk<StoryDao>()
+    private val flowRecorder = FlowRecorder<StoreResponse<List<Story>>>(testScope)
+
+    private val headlineStoryFetcher = TestFetcher<Unit, List<Story>>(
+        dummyHeadlineStoryList
+    )
+
+    private val headlineStoryPersister = InMemoryPersister<Unit, List<Story>>()
+
+    private val headlineStoryStore = buildStore(
+        fetcher = headlineStoryFetcher,
+        persister = headlineStoryPersister,
+        scope = testScope
+    )
+
+    private val personalizedStoryFetcher = TestFetcher<String, List<Story>>(
+        dummyPersonalizedStoryList
+    )
+
+    private val personalizedStoryPersister = InMemoryPersister<String, List<Story>>()
+
+    private val personalizedStoryStore = buildStore(
+        fetcher = personalizedStoryFetcher,
+        persister = personalizedStoryPersister,
+        scope = testScope
+    )
+
+    private val freshDataExpiration = 10.seconds
+
+    private val clock = TestTimeSource()
+
+    private val refreshCriteria: RefreshCriteria = TimeBasedRefreshCriteria(
+        expiration = freshDataExpiration,
+        timeSource = clock
+    )
+
+    private val storyDao = TestStoryDao(
+        expectedStoryByIdResult = dummyStoryEntity
+    )
 
     private val storyRepository = StoryRepositoryImpl(
         headlineStoryStore,
         personalizedStoryStore,
+        refreshCriteria,
         storyDao
     )
 
     @Test
-    fun `streamHeadlineStories() starts streaming from Store and fetches from API immediately`() =
+    fun `streamHeadlineStories() streams data with StoreRequest#cached with forced initial refresh when no fetch was ever recorded`() =
         runBlockingTest {
-            val shouldRefresh = true
+            // given that cached data is available
+            headlineStoryPersister.write(Unit, dummyHeadlineStoryList)
 
-            every { headlineStoryStore.stream(any()) } returns flowOf(
-                StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
-            )
+            storyRepository.streamHeadlineStories().recordWith(flowRecorder)
+            assertThat(flowRecorder.takeAll())
+                .containsExactly(
+                    StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Persister),
+                    StoreResponse.Loading<List<Story>>(ResponseOrigin.Fetcher),
+                    StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
+                )
 
-            assertThat(storyRepository.streamHeadlineStories(shouldRefresh)).emitsExactly(
-                StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
-            )
-
-            verifyAll {
-                headlineStoryStore.stream(StoreRequest.cached(Unit, shouldRefresh))
-            }
+            // fetcher should still have been invoked despite have a cache
+            assertThat(headlineStoryFetcher.fetchCount)
+                .isEqualTo(1)
         }
 
     @Test
-    fun `streamPersonalizedStories() starts streaming from Store and fetches from API immediately`() =
+    fun `streamHeadlineStories() streams data with StoreRequest#cached without forced initial refresh when previously recorded fetch is unexpired`() =
+        runBlockingTest {
+            // given that cached data is available
+            headlineStoryPersister.write(Unit, dummyHeadlineStoryList)
+
+            storyRepository.streamHeadlineStories().recordWith(flowRecorder)
+
+            // fetcher should have been invoked first time
+            assertThat(headlineStoryFetcher.fetchCount)
+                .isEqualTo(1)
+
+            storyRepository.streamHeadlineStories().recordWith(flowRecorder)
+
+            // fetcher should not have been invoked again as unexpired fetch was recorded
+            assertThat(headlineStoryFetcher.fetchCount)
+                .isEqualTo(1)
+
+            clock += 9.seconds
+
+            storyRepository.streamHeadlineStories().recordWith(flowRecorder)
+
+            // fetcher should not have been invoked again previous fetch is yet to expire
+            assertThat(headlineStoryFetcher.fetchCount)
+                .isEqualTo(1)
+
+            clock += 1.seconds
+
+            storyRepository.streamHeadlineStories().recordWith(flowRecorder)
+
+            // fetcher should have been invoked again after previous fetch expired
+            assertThat(headlineStoryFetcher.fetchCount)
+                .isEqualTo(2)
+        }
+
+    @Test
+    fun `streamPersonalizedStories() streams data with StoreRequest#cached with forced initial refresh when no fetch was ever recorded`() =
         runBlockingTest {
             val query = "query"
-            val shouldRefresh = false
 
-            every { personalizedStoryStore.stream(any()) } returns flowOf(
-                StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Persister)
-            )
+            // given that cached data is available
+            personalizedStoryPersister.write(query, dummyPersonalizedStoryList)
 
-            assertThat(
-                storyRepository.streamPersonalizedStories(query, shouldRefresh)
-            ).emitsExactly(
-                StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Persister)
-            )
+            storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
+            assertThat(flowRecorder.takeAll())
+                .containsExactly(
+                    StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Persister),
+                    StoreResponse.Loading<List<Story>>(ResponseOrigin.Fetcher),
+                    StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
+                )
 
-            verifyAll {
-                personalizedStoryStore.stream(StoreRequest.cached(query, shouldRefresh))
-            }
+            // fetcher should still have been invoked despite have a cache
+            assertThat(personalizedStoryFetcher.fetchCount)
+                .isEqualTo(1)
+        }
+
+    @Test
+    fun `streamPersonalizedStories() streams data with StoreRequest#cached without forced initial refresh when previously recorded fetch is unexpired`() =
+        runBlockingTest {
+            val query = "query"
+
+            // given that cached data is available
+            personalizedStoryPersister.write(query, dummyPersonalizedStoryList)
+
+            storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
+
+            // fetcher should have been invoked first time
+            assertThat(personalizedStoryFetcher.fetchCount)
+                .isEqualTo(1)
+
+            storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
+
+            // fetcher should not have been invoked again as unexpired fetch was recorded
+            assertThat(personalizedStoryFetcher.fetchCount)
+                .isEqualTo(1)
+
+            clock += 9.seconds
+
+            storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
+
+            // fetcher should not have been invoked again previous fetch is yet to expire
+            assertThat(personalizedStoryFetcher.fetchCount)
+                .isEqualTo(1)
+
+            clock += 1.seconds
+
+            storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
+
+            // fetcher should have been invoked again after previous fetch expired
+            assertThat(personalizedStoryFetcher.fetchCount)
+                .isEqualTo(2)
         }
 
     @Test
     fun `fetchHeadlineStories() fetches fresh data from API via Store`() = runBlockingTest {
-        every { headlineStoryStore.stream(StoreRequest.fresh(Unit)) } returns flowOf(
-            StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
-        )
-
         assertThat(storyRepository.fetchHeadlineStories())
             .isEqualTo(dummyHeadlineStoryList)
 
-        coVerifyAll {
-            headlineStoryStore.stream(StoreRequest.fresh(Unit))
-        }
+        assertThat(headlineStoryFetcher.fetchCount)
+            .isEqualTo(1)
     }
 
     @Test
     fun `fetchPersonalizedStories() fetches fresh data from API via Store`() = runBlockingTest {
         val query = "query"
-        every { personalizedStoryStore.stream(StoreRequest.fresh(query)) } returns flowOf(
-            StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
-        )
 
         assertThat(storyRepository.fetchPersonalizedStories(query))
             .isEqualTo(dummyPersonalizedStoryList)
 
-        coVerifyAll {
-            personalizedStoryStore.stream(StoreRequest.fresh(query))
-        }
+        assertThat(personalizedStoryFetcher.fetchCount)
+            .isEqualTo(1)
     }
 
     @Test
     fun `storyById() gets Story from DAO`() = runBlockingTest {
-        val dummyStoryEntity = StoryEntity.Impl(
-            id = 1,
-            title = "Article",
-            source = "source",
-            author = "author",
-            description = "Description...",
-            url = "url",
-            imageUrl = "image-url",
-            publishedTime = 1234L,
-            isHeadline = false
-        )
-
-        every { storyDao.storyById(1) } returns dummyStoryEntity
-
         assertThat(storyRepository.getStoryById(1))
             .isEqualTo(dummyStoryEntity.toModel())
+    }
+}
+
+@FlowPreview
+@ExperimentalCoroutinesApi
+private fun <Key : Any, Output : Any> buildStore(
+    fetcher: TestFetcher<Key, Output>,
+    persister: InMemoryPersister<Key, Output>,
+    scope: CoroutineScope
+): Store<Key, Output> {
+    return StoreBuilder.fromNonFlow(fetcher::fetch)
+        .nonFlowingPersister(
+            reader = persister::read,
+            writer = persister::write
+        )
+        .disableCache()
+        .scope(scope)
+        .build()
+}
+
+class InMemoryPersister<Key : Any, Output : Any> {
+
+    private val data = mutableMapOf<Key, Output>()
+
+    @Suppress("RedundantSuspendModifier")
+    suspend fun read(key: Key): Output? = data[key]
+
+    @Suppress("RedundantSuspendModifier")
+    suspend fun write(key: Key, output: Output) {
+        data[key] = output
+    }
+}
+
+class TestFetcher<Key : Any, Output : Any>(
+    private val expectedResponse: Output
+) {
+    private var _fetchCount = 0
+
+    val fetchCount get() = _fetchCount
+
+    @Suppress("RedundantSuspendModifier", "UNUSED_PARAMETER")
+    suspend fun fetch(key: Key): Output {
+        _fetchCount++
+        return expectedResponse
     }
 }

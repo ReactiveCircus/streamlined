@@ -19,6 +19,7 @@ import reactivecircus.blueprint.testing.assertion.textDisplayed
 import reactivecircus.blueprint.testing.assertion.viewDisplayed
 import reactivecircus.blueprint.testing.clearToolbarScrollFlags
 import reactivecircus.blueprint.testing.matcher.withRecyclerView
+import reactivecircus.blueprint.testing.onRecyclerViewIdle
 import reactivecircus.blueprint.testing.scrollToItemInRecyclerView
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 
@@ -33,6 +34,7 @@ class HomeRobot : ScreenRobot<HomeRobot.Actions, HomeRobot.Assertions>(Actions()
         }
 
         fun swipeToRefresh() {
+            onRecyclerViewIdle(R.id.homeFeedsRecyclerView)
             swipeDownOnView(R.id.homeFeedsRecyclerView)
         }
     }

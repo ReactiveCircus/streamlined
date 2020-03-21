@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface StoryRepository {
 
-    fun streamHeadlineStories(refresh: Boolean): Flow<StoreResponse<List<Story>>>
+    fun streamHeadlineStories(): Flow<StoreResponse<List<Story>>>
 
     // TODO use custom query type
-    fun streamPersonalizedStories(query: String, refresh: Boolean): Flow<StoreResponse<List<Story>>>
+    fun streamPersonalizedStories(query: String): Flow<StoreResponse<List<Story>>>
 
     suspend fun fetchHeadlineStories(): List<Story>
 

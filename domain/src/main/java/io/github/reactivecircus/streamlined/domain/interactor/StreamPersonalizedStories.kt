@@ -18,9 +18,9 @@ class StreamPersonalizedStories @Inject constructor(
     override val dispatcher: CoroutineDispatcher = dispatcherProvider.io
 
     override fun createFlow(params: Params): Flow<StoreResponse<List<Story>>> {
-        return storyRepository.streamPersonalizedStories(params.query, params.refresh)
+        return storyRepository.streamPersonalizedStories(params.query)
     }
 
     // TODO use custom query / filter type
-    class Params(internal val query: String, internal val refresh: Boolean) : InteractorParams
+    class Params(internal val query: String) : InteractorParams
 }
