@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object versions {
-    const val kotlin = "1.3.70"
+    const val kotlin = "1.3.71"
     const val detekt = "1.7.0"
     const val bugsnag = "4.22.3"
     const val leakCanary = "2.2"
@@ -56,7 +56,7 @@ object versions {
     const val dagger = "2.27"
     const val assistedInject = "0.5.2"
     const val okhttp = "4.4.1"
-    const val retrofit = "2.7.2"
+    const val retrofit = "2.8.0"
     const val retrofitSerializationConverter = "0.5.0"
     const val sqldelight = "1.2.2"
     const val store = "4.0.0-alpha03"

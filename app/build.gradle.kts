@@ -56,6 +56,7 @@ android {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     bundle {
         // only support English for now
         language.enableSplit = false
