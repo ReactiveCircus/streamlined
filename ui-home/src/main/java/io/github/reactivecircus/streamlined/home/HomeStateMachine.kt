@@ -147,11 +147,10 @@ class HomeStateMachine @Inject constructor(
                     if (currentItems == null) {
                         HomeState.Error
                     } else {
-                        HomeState.Idle(currentItems)
+                        HomeState.Idle(currentItems).also {
+                            effectEmitter.offer(HomeEffect.ShowTransientError)
+                        }
                     }
-                }
-                if (currentItems != null) {
-                    effectEmitter.offer(HomeEffect.ShowTransientError)
                 }
             }
             headlines is StoreResponse.Data && personalized is StoreResponse.Data -> {

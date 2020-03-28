@@ -270,7 +270,15 @@ class HomeViewModelTest {
             )
         )
 
-        // then error returned while fetching data from network
+        // then loading responses are emitted while fetching data from network
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Loading(ResponseOrigin.Fetcher)
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Loading(ResponseOrigin.Fetcher)
+        )
+
+        // then error returned when fetching data from network
         headlineStoriesResponseEmitter.offer(
             StoreResponse.Data(
                 headlineStories,
@@ -287,6 +295,15 @@ class HomeViewModelTest {
         assertThat(stateObserver.takeAll())
             .containsExactly(
                 HomeState.InFlight.FirstTime(null),
+                HomeState.Idle(
+                    expectedFeedItems(headlineStories, personalizedStories)
+                ),
+                HomeState.InFlight.FirstTime(
+                    expectedFeedItems(
+                        headlineStories,
+                        personalizedStories
+                    )
+                ),
                 HomeState.Idle(
                     expectedFeedItems(headlineStories, personalizedStories)
                 )
@@ -313,11 +330,9 @@ class HomeViewModelTest {
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.Persister))
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher))
         }
         personalizedStoriesResponseEmitter.run {
             offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Persister))
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher))
         }
 
         viewModel.refreshHomeFeeds()
@@ -370,15 +385,14 @@ class HomeViewModelTest {
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.Persister))
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher))
         }
         personalizedStoriesResponseEmitter.run {
             offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Persister))
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher))
         }
 
         viewModel.refreshHomeFeeds()
 
+        // only refresh for personalized stories was successfully
         personalizedStoriesResponseEmitter.run {
             offer(StoreResponse.Data(emptyList(), ResponseOrigin.Fetcher))
         }
