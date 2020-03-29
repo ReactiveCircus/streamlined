@@ -26,7 +26,7 @@ android {
         applicationId = "io.github.reactivecircus.streamlined"
         versionCode = 1
         versionName = "1.0"
-        extra["archivesBaseName"] = "streamlined-$versionName"
+        base.archivesBaseName = "streamlined-$versionName"
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.IntegrationTestRunner"
