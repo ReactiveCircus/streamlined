@@ -39,3 +39,7 @@ captures/
 
 # Ignore plain keystore files
 secrets/streamlined.keystore
+
+# Ignore plain API keys
+google-services.json
+# TODO ignore play console service account secret
