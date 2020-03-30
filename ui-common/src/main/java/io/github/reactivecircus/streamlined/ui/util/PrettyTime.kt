@@ -16,10 +16,14 @@ import kotlin.time.toDuration
 /**
  * Converts the timestamp to a formatted String
  */
-fun Long.toFormattedDateString(pattern: String, locale: Locale = Locale.getDefault()): String {
+fun Long.toFormattedDateString(
+    pattern: String,
+    zoneId: ZoneId = ZoneId.systemDefault(),
+    locale: Locale = Locale.getDefault()
+): String {
     require(this > 0) { "Timestamp must be positive." }
     val formatter = DateTimeFormatter.ofPattern(pattern).withLocale(locale)
-    return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).format(formatter)
+    return Instant.ofEpochMilli(this).atZone(zoneId).format(formatter)
         // make sure "." is removed when using three-letter abbreviation for month
         .replace(".", "")
 }
@@ -30,6 +34,7 @@ fun Long.toFormattedDateString(pattern: String, locale: Locale = Locale.getDefau
 @OptIn(ExperimentalTime::class)
 fun Long.timeAgo(
     fallbackDatePattern: String,
+    zoneId: ZoneId = ZoneId.systemDefault(),
     locale: Locale = Locale.getDefault(),
     clock: Clock = RealClock()
 ): String {
@@ -59,7 +64,7 @@ fun Long.timeAgo(
                 "${timeAgo.inDays.toInt()} days ago"
             }
         }
-        else -> this.toFormattedDateString(fallbackDatePattern, locale)
+        else -> this.toFormattedDateString(fallbackDatePattern, zoneId, locale)
     }
 }
 
