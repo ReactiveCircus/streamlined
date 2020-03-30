@@ -17,14 +17,16 @@ import kotlin.time.seconds
 class PrettyTimeTest {
 
     private val pattern = "EEE d MMM 'at' h:mm a"
+    private val zoneId = ZoneId.of("GMT")
+    private val locale = Locale.ENGLISH
 
     @Test
     fun `timestamp can be converted to a formatted date string given a date pattern`() {
         val timestamp = LocalDateTime.of(
             2019, Month.AUGUST, 24, 20, 0
-        ).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        ).atZone(zoneId).toInstant().toEpochMilli()
 
-        assertThat(timestamp.toFormattedDateString(pattern, Locale.ENGLISH))
+        assertThat(timestamp.toFormattedDateString(pattern, zoneId, locale))
             .isEqualTo("Sat 24 Aug at 8:00 PM")
     }
 
@@ -85,8 +87,8 @@ class PrettyTimeTest {
         val nowMillis = 8.days.inMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(1.days.inMilliseconds.toLong().timeAgo(pattern, Locale.ENGLISH, fixedClock))
-            .isEqualTo("Fri 2 Jan at 10:00 AM")
+        assertThat(1.days.inMilliseconds.toLong().timeAgo(pattern, zoneId, locale, fixedClock))
+            .isEqualTo("Fri 2 Jan at 12:00 AM")
         assertThat(3.days.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
             .isEqualTo("5 days ago")
         assertThat(7.days.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
@@ -98,10 +100,10 @@ class PrettyTimeTest {
         val nowMillis = 10.days.inMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(3.days.inMilliseconds.toLong().timeAgo(pattern, Locale.ENGLISH, fixedClock))
-            .isEqualTo("Sun 4 Jan at 10:00 AM")
-        assertThat(2.days.inMilliseconds.toLong().timeAgo(pattern, Locale.ENGLISH, fixedClock))
-            .isEqualTo("Sat 3 Jan at 10:00 AM")
+        assertThat(3.days.inMilliseconds.toLong().timeAgo(pattern, zoneId, locale, fixedClock))
+            .isEqualTo("Sun 4 Jan at 12:00 AM")
+        assertThat(2.days.inMilliseconds.toLong().timeAgo(pattern, zoneId, locale, fixedClock))
+            .isEqualTo("Sat 3 Jan at 12:00 AM")
     }
 
     @Test
