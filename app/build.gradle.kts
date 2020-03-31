@@ -14,6 +14,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.getkeepsafe.dexcount")
     id("project-report")
+    id("com.github.triplet.play")
 }
 
 android {
@@ -141,6 +142,12 @@ android {
             java.srcDir("src/online/java")
         }
     }
+}
+
+play {
+    serviceAccountCredentials = rootProject.file("secrets/play-api.json")
+    defaultToAppBundles = true
+    resolutionStrategy = "ignore"
 }
 
 dependencies {

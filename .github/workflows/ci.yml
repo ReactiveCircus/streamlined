@@ -232,8 +232,7 @@ jobs:
 
       - name: Decrypt secrets
         run: |
-          echo
-          # TODO decrypt play console service account secret
+          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/play-api.aes -out secrets/play-api.json -k $ENCRYPTION_KEY
 
       - name: Download build artifacts
         uses: actions/download-artifact@v1
@@ -243,9 +242,9 @@ jobs:
 
       - name: Upload mapping file to Bugsnag
         run: |
-          curl https://upload.bugsnag.com/ \
+          curl --http1.1 https://upload.bugsnag.com/ \
             -F proguard=@app/build/outputs/mapping/prodRelease/mapping.txt \
-            -F apiKey=STREAMLINED_BUGSNAG_PROD_API_KEY \
+            -F apiKey=$STREAMLINED_BUGSNAG_PROD_API_KEY \
             -F appId=$APP_ID \
             -F versionCode=$VERSION_CODE \
             -F versionName=$VERSION_NAME \
@@ -253,11 +252,9 @@ jobs:
 
       - name: Publish release App Bundle to Play Store
         run: |
-          echo
-          # TODO ./gradlew publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
+          ./gradlew publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
 
       - name: Cleanup secrets
         if: always()
         run: |
-          echo
-          # TODO remove play console service account secret file
+          rm -f secrets/play-api.json

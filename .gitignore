@@ -42,4 +42,4 @@ secrets/streamlined.keystore
 
 # Ignore plain API keys
 google-services.json
-# TODO ignore play console service account secret
+secrets/play-api.json
