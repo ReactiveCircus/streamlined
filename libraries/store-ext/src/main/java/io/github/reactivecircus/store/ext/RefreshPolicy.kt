@@ -4,14 +4,14 @@ import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.StoreResponse
 
 /**
- * An API that defines the criteria for whether [Store.streamWithRefreshCriteria(key, refreshCriteria)]
+ * An API that defines the policy for whether [Store.streamWithRefreshPolicy(key, refreshPolicy)]
  * should start by doing a fetch from network.
  */
-interface RefreshCriteria {
+interface RefreshPolicy {
 
     /**
      * Returns whether the store should fetch data from the network at the start of the stream.
-     * @param refreshScope a string that represents a specific data set whose refresh criteria
+     * @param refreshScope a string that represents a specific data set whose refresh policy
      * the consumer is concerned with.
      */
     suspend fun shouldRefresh(refreshScope: RefreshScope): Boolean
@@ -24,6 +24,6 @@ interface RefreshCriteria {
 }
 
 /**
- * A string representation of a specific data set which the [RefreshCriteria] is concerned with.
+ * A string representation of a specific data set which the [RefreshPolicy] is concerned with.
  */
 inline class RefreshScope(val scope: String)

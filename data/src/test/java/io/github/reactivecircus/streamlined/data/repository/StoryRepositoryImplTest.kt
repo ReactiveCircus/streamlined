@@ -7,8 +7,8 @@ import com.dropbox.android.external.store4.StoreResponse
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
 import io.github.reactivecircus.coroutines.test.ext.recordWith
-import io.github.reactivecircus.store.ext.RefreshCriteria
-import io.github.reactivecircus.streamlined.data.TimeBasedRefreshCriteria
+import io.github.reactivecircus.store.ext.RefreshPolicy
+import io.github.reactivecircus.streamlined.data.TimeBasedRefreshPolicy
 import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.data.testutil.TestStoryDao
 import io.github.reactivecircus.streamlined.domain.model.Story
@@ -120,7 +120,7 @@ class StoryRepositoryImplTest {
 
     private val clock = TestTimeSource()
 
-    private val refreshCriteria: RefreshCriteria = TimeBasedRefreshCriteria(
+    private val refreshPolicy: RefreshPolicy = TimeBasedRefreshPolicy(
         expiration = freshDataExpiration,
         timeSource = clock
     )
@@ -132,7 +132,7 @@ class StoryRepositoryImplTest {
     private val storyRepository = StoryRepositoryImpl(
         headlineStoryStore,
         personalizedStoryStore,
-        refreshCriteria,
+        refreshPolicy,
         storyDao
     )
 

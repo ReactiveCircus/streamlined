@@ -2,8 +2,8 @@ package io.github.reactivecircus.streamlined.data.repository
 
 import com.dropbox.android.external.store4.StoreResponse
 import com.dropbox.android.external.store4.fresh
-import io.github.reactivecircus.store.ext.RefreshCriteria
-import io.github.reactivecircus.store.ext.streamWithRefreshCriteria
+import io.github.reactivecircus.store.ext.RefreshPolicy
+import io.github.reactivecircus.store.ext.streamWithRefreshPolicy
 import io.github.reactivecircus.streamlined.data.HeadlineStoryStore
 import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
 import io.github.reactivecircus.streamlined.data.mapper.toModel
@@ -20,16 +20,16 @@ import javax.inject.Inject
 internal class StoryRepositoryImpl @Inject constructor(
     private val headlineStoryStore: HeadlineStoryStore,
     private val personalizedStoryStore: PersonalizedStoryStore,
-    private val refreshCriteria: RefreshCriteria,
+    private val refreshPolicy: RefreshPolicy,
     private val storyDao: StoryDao
 ) : StoryRepository {
 
     override fun streamHeadlineStories(): Flow<StoreResponse<List<Story>>> {
-        return headlineStoryStore.streamWithRefreshCriteria(Unit, refreshCriteria)
+        return headlineStoryStore.streamWithRefreshPolicy(Unit, refreshPolicy)
     }
 
     override fun streamPersonalizedStories(query: String): Flow<StoreResponse<List<Story>>> {
-        return personalizedStoryStore.streamWithRefreshCriteria(query, refreshCriteria)
+        return personalizedStoryStore.streamWithRefreshPolicy(query, refreshPolicy)
     }
 
     override suspend fun fetchHeadlineStories(): List<Story> {

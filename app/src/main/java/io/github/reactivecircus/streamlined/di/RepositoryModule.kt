@@ -4,9 +4,9 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.github.reactivecircus.store.ext.RefreshCriteria
+import io.github.reactivecircus.store.ext.RefreshPolicy
 import io.github.reactivecircus.streamlined.BuildConfig
-import io.github.reactivecircus.streamlined.data.TimeBasedRefreshCriteria
+import io.github.reactivecircus.streamlined.data.TimeBasedRefreshPolicy
 import io.github.reactivecircus.streamlined.data.di.DataComponent
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
@@ -25,8 +25,8 @@ object RepositoryModule {
     @Provides
     @Reusable
     @InternalApi
-    fun provideRefreshCriteria(): RefreshCriteria {
-        return TimeBasedRefreshCriteria()
+    fun provideRefreshPolicy(): RefreshPolicy {
+        return TimeBasedRefreshPolicy()
     }
 
     @Provides
@@ -34,13 +34,13 @@ object RepositoryModule {
     fun provideDataComponent(
         context: Context,
         coroutineDispatcherProvider: CoroutineDispatcherProvider,
-        @InternalApi refreshCriteria: RefreshCriteria,
+        @InternalApi refreshPolicy: RefreshPolicy,
         newsApiService: NewsApiService
     ): DataComponent = DataComponent.factory().create(
         context = context,
         coroutineDispatcherProvider = coroutineDispatcherProvider,
         processLifetimeCoroutineScope = GlobalScope,
-        refreshCriteria = refreshCriteria,
+        refreshPolicy = refreshPolicy,
         newsApiService = newsApiService,
         databaseName = BuildConfig.DATABASE_NAME
     )

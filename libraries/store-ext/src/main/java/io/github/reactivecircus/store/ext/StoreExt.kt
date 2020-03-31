@@ -12,29 +12,29 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 /**
- * Returns a [Flow] of [StoreResponse] with the [StoreRequest.cached] request, using [refreshCriteria]
+ * Returns a [Flow] of [StoreResponse] with the [StoreRequest.cached] request, using [refreshPolicy]
  * to decide whether to do a `refresh` at the start.
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-inline fun <reified Key : Any, reified Output : Any> Store<Key, Output>.streamWithRefreshCriteria(
+inline fun <reified Key : Any, reified Output : Any> Store<Key, Output>.streamWithRefreshPolicy(
     key: Key,
-    refreshCriteria: RefreshCriteria
+    refreshPolicy: RefreshPolicy
 ): Flow<StoreResponse<Output>> {
     val refreshScope = getRefreshScope<Key, Output>(key)
-    return flow { emit(refreshCriteria.shouldRefresh(refreshScope)) }
+    return flow { emit(refreshPolicy.shouldRefresh(refreshScope)) }
         .flatMapConcat { shouldRefresh ->
             stream(StoreRequest.cached(key, refresh = shouldRefresh))
         }
         .onEach { response ->
             if (response is StoreResponse.Data && response.origin == ResponseOrigin.Fetcher) {
-                refreshCriteria.onRefreshed(refreshScope)
+                refreshPolicy.onRefreshed(refreshScope)
             }
         }
 }
 
 /**
- * Generates the refreshScope of the [RefreshCriteria] from a [Store]'s Output type and a [key].
+ * Generates the refreshScope of the [RefreshPolicy] from a [Store]'s Output type and a [key].
  */
 @PublishedApi
 internal inline fun <reified Key : Any, reified Output : Any> getRefreshScope(

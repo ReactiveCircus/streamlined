@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined.data
 
-import io.github.reactivecircus.store.ext.RefreshCriteria
+import io.github.reactivecircus.store.ext.RefreshPolicy
 import io.github.reactivecircus.store.ext.RefreshScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -11,20 +11,20 @@ import kotlin.time.TimeSource
 import kotlin.time.minutes
 
 /**
- * A [RefreshCriteria] implementation which determines whether data should be refreshed
+ * A [RefreshPolicy] implementation which determines whether data should be refreshed
  * for a [RefreshScope] based on the duration since a refresh was last recorded for the same [RefreshScope].
  * Once a refresh has been recorded for a [RefreshScope], refresh won't be necessary for new quests
  * until [expiration] time has passed where the [expiration] is updated / extended each time a refresh
  * is recorded, effectively debouncing the expiration of a data set for the given [RefreshScope].
  */
 @OptIn(ExperimentalTime::class)
-class TimeBasedRefreshCriteria(
+class TimeBasedRefreshPolicy(
     private val expiration: Duration = DEFAULT_EXPIRATION,
     private val timeSource: TimeSource = TimeSource.Monotonic
-) : RefreshCriteria {
+) : RefreshPolicy {
 
     init {
-        require(expiration.isPositive()) { "Expiration for refresh criteria must be positive." }
+        require(expiration.isPositive()) { "Expiration for refresh policy must be positive." }
     }
 
     private val lock = Mutex()

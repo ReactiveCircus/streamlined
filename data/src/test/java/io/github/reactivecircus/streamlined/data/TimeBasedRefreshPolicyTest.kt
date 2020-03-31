@@ -12,29 +12,29 @@ import kotlin.time.seconds
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-class TimeBasedRefreshCriteriaTest {
+class TimeBasedRefreshPolicyTest {
 
     @Test
     fun `non-positive expiration is not allowed`() {
         val exception1 = assertThrows(IllegalArgumentException::class.java) {
-            TimeBasedRefreshCriteria(
+            TimeBasedRefreshPolicy(
                 expiration = 0.seconds
             )
         }
 
         assertThat(exception1)
             .hasMessageThat()
-            .isEqualTo("Expiration for refresh criteria must be positive.")
+            .isEqualTo("Expiration for refresh policy must be positive.")
 
         val exception2 = assertThrows(IllegalArgumentException::class.java) {
-            TimeBasedRefreshCriteria(
+            TimeBasedRefreshPolicy(
                 expiration = (-1).seconds
             )
         }
 
         assertThat(exception2)
             .hasMessageThat()
-            .isEqualTo("Expiration for refresh criteria must be positive.")
+            .isEqualTo("Expiration for refresh policy must be positive.")
     }
 
     @Test
@@ -42,16 +42,16 @@ class TimeBasedRefreshCriteriaTest {
         runBlockingTest {
             val scope1 = RefreshScope("scope1")
             val scope2 = RefreshScope("scope2")
-            val refreshCriteria = TimeBasedRefreshCriteria()
+            val refreshPolicy = TimeBasedRefreshPolicy()
 
-            assertThat(refreshCriteria.shouldRefresh(scope1))
+            assertThat(refreshPolicy.shouldRefresh(scope1))
                 .isTrue()
 
             // record refresh with a different scope
-            refreshCriteria.onRefreshed(scope2)
+            refreshPolicy.onRefreshed(scope2)
 
             // should still return true for original scope
-            assertThat(refreshCriteria.shouldRefresh(scope1))
+            assertThat(refreshPolicy.shouldRefresh(scope1))
                 .isTrue()
         }
 
@@ -60,23 +60,23 @@ class TimeBasedRefreshCriteriaTest {
         runBlockingTest {
             val scope = RefreshScope("scope")
             val testTimeSource = TestTimeSource()
-            val refreshCriteria = TimeBasedRefreshCriteria(
+            val refreshPolicy = TimeBasedRefreshPolicy(
                 expiration = 10.seconds,
                 timeSource = testTimeSource
             )
-            refreshCriteria.onRefreshed(scope)
+            refreshPolicy.onRefreshed(scope)
 
-            assertThat(refreshCriteria.shouldRefresh(scope))
+            assertThat(refreshPolicy.shouldRefresh(scope))
                 .isFalse()
 
             testTimeSource += 9.seconds
 
-            assertThat(refreshCriteria.shouldRefresh(scope))
+            assertThat(refreshPolicy.shouldRefresh(scope))
                 .isFalse()
 
             testTimeSource += 1.seconds
 
-            assertThat(refreshCriteria.shouldRefresh(scope))
+            assertThat(refreshPolicy.shouldRefresh(scope))
                 .isTrue()
         }
 
@@ -84,43 +84,43 @@ class TimeBasedRefreshCriteriaTest {
     fun `expiration time is extended after recording a new refresh`() = runBlockingTest {
         val scope = RefreshScope("scope")
         val testTimeSource = TestTimeSource()
-        val refreshCriteria = TimeBasedRefreshCriteria(
+        val refreshPolicy = TimeBasedRefreshPolicy(
             expiration = 10.seconds,
             timeSource = testTimeSource
         )
-        refreshCriteria.onRefreshed(scope)
+        refreshPolicy.onRefreshed(scope)
 
         testTimeSource += 9.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope))
+        assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
         // expiry is updated to 10 seconds from now
-        refreshCriteria.onRefreshed(scope)
+        refreshPolicy.onRefreshed(scope)
 
         testTimeSource += 1.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope))
+        assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
         testTimeSource += 8.seconds
 
         // expiry is updated again to 10 seconds from now
-        refreshCriteria.onRefreshed(scope)
+        refreshPolicy.onRefreshed(scope)
 
         testTimeSource += 1.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope))
+        assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
         testTimeSource += 8.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope))
+        assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
         testTimeSource += 1.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope))
+        assertThat(refreshPolicy.shouldRefresh(scope))
             .isTrue()
     }
 
@@ -129,36 +129,36 @@ class TimeBasedRefreshCriteriaTest {
         val scope1 = RefreshScope("scope1")
         val scope2 = RefreshScope("scope2")
         val testTimeSource = TestTimeSource()
-        val refreshCriteria = TimeBasedRefreshCriteria(
+        val refreshPolicy = TimeBasedRefreshPolicy(
             expiration = 10.seconds,
             timeSource = testTimeSource
         )
-        refreshCriteria.onRefreshed(scope1)
+        refreshPolicy.onRefreshed(scope1)
 
         testTimeSource += 5.seconds
 
-        refreshCriteria.onRefreshed(scope2)
+        refreshPolicy.onRefreshed(scope2)
 
-        assertThat(refreshCriteria.shouldRefresh(scope1))
+        assertThat(refreshPolicy.shouldRefresh(scope1))
             .isFalse()
 
-        assertThat(refreshCriteria.shouldRefresh(scope2))
+        assertThat(refreshPolicy.shouldRefresh(scope2))
             .isFalse()
 
         testTimeSource += 5.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope1))
+        assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
 
-        assertThat(refreshCriteria.shouldRefresh(scope2))
+        assertThat(refreshPolicy.shouldRefresh(scope2))
             .isFalse()
 
         testTimeSource += 5.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope1))
+        assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
 
-        assertThat(refreshCriteria.shouldRefresh(scope2))
+        assertThat(refreshPolicy.shouldRefresh(scope2))
             .isTrue()
     }
 
@@ -167,32 +167,32 @@ class TimeBasedRefreshCriteriaTest {
         val scope1 = RefreshScope("scope1")
         val scope2 = RefreshScope("scope2")
         val testTimeSource = TestTimeSource()
-        val refreshCriteria = TimeBasedRefreshCriteria(
+        val refreshPolicy = TimeBasedRefreshPolicy(
             expiration = 10.seconds,
             timeSource = testTimeSource
         )
-        refreshCriteria.onRefreshed(scope1)
+        refreshPolicy.onRefreshed(scope1)
 
         testTimeSource += 5.seconds
 
-        refreshCriteria.onRefreshed(scope2)
+        refreshPolicy.onRefreshed(scope2)
 
         testTimeSource += 4.seconds
 
-        refreshCriteria.reset()
+        refreshPolicy.reset()
 
-        assertThat(refreshCriteria.shouldRefresh(scope1))
+        assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
 
-        assertThat(refreshCriteria.shouldRefresh(scope2))
+        assertThat(refreshPolicy.shouldRefresh(scope2))
             .isTrue()
 
         testTimeSource += 11.seconds
 
-        assertThat(refreshCriteria.shouldRefresh(scope1))
+        assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
 
-        assertThat(refreshCriteria.shouldRefresh(scope2))
+        assertThat(refreshPolicy.shouldRefresh(scope2))
             .isTrue()
     }
 }

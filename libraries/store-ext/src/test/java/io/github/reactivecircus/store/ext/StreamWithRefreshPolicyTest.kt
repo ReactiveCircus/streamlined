@@ -24,7 +24,7 @@ import org.junit.Test
 @FlowPreview
 @ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
-class StreamWithRefreshCriteriaTest {
+class StreamWithRefreshPolicyTest {
 
     private val testScope = TestCoroutineScope()
 
@@ -33,9 +33,9 @@ class StreamWithRefreshCriteriaTest {
     private val inMemoryPersister = NonFlowingTestPersister<String, Int>()
 
     @Test
-    fun `streamWithRefreshCriteria returns non-refreshing cached stream when refreshCriteria#shouldRefresh() returns false`() =
+    fun `streamWithRefreshPolicy returns non-refreshing cached stream when refreshPolicy#shouldRefresh() returns false`() =
         testScope.runBlockingTest {
-            val refreshCriteria = TestRefreshCriteria(shouldRefresh = false)
+            val refreshPolicy = TestRefreshPolicy(shouldRefresh = false)
             val store = buildStoreWithNonFlowingPersister(
                 fetcher = TestFetcher(FetcherResponse.Success(output = 1))
             )
@@ -43,7 +43,7 @@ class StreamWithRefreshCriteriaTest {
             // given that data exists in persister
             store.fresh("key")
 
-            store.streamWithRefreshCriteria("key", refreshCriteria)
+            store.streamWithRefreshPolicy("key", refreshPolicy)
                 .recordWith(flowRecorder)
 
             assertThat(flowRecorder.takeAll())
@@ -51,14 +51,14 @@ class StreamWithRefreshCriteriaTest {
                     StoreResponse.Data(1, ResponseOrigin.Persister)
                 )
 
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(0)
         }
 
     @Test
-    fun `streamWithRefreshCriteria returns refreshing cached stream when refreshCriteria#shouldRefresh() returns true`() =
+    fun `streamWithRefreshPolicy returns refreshing cached stream when refreshPolicy#shouldRefresh() returns true`() =
         testScope.runBlockingTest {
-            val refreshCriteria = TestRefreshCriteria(shouldRefresh = true)
+            val refreshPolicy = TestRefreshPolicy(shouldRefresh = true)
             val store = buildStoreWithNonFlowingPersister(
                 fetcher = TestFetcher(
                     FetcherResponse.Success(output = 1),
@@ -69,7 +69,7 @@ class StreamWithRefreshCriteriaTest {
             // given that data exists in persister
             store.fresh("key")
 
-            store.streamWithRefreshCriteria("key", refreshCriteria)
+            store.streamWithRefreshPolicy("key", refreshPolicy)
                 .recordWith(flowRecorder)
 
             assertThat(flowRecorder.takeAll())
@@ -79,46 +79,46 @@ class StreamWithRefreshCriteriaTest {
                     StoreResponse.Data(2, ResponseOrigin.Fetcher)
                 )
 
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(1)
         }
 
     @Test
-    fun `onRefreshed(key, output) is invoked when refreshCriteria#shouldRefresh() returns false and StoreResponse is Data and ResponseOrigin is Fetcher`() =
+    fun `onRefreshed(key, output) is invoked when refreshPolicy#shouldRefresh() returns false and StoreResponse is Data and ResponseOrigin is Fetcher`() =
         testScope.runBlockingTest {
             val readerChannel = ConflatedBroadcastChannel(1)
-            val refreshCriteria = TestRefreshCriteria(shouldRefresh = false)
+            val refreshPolicy = TestRefreshPolicy(shouldRefresh = false)
             val store = buildStoreWithFlowingPersister(
                 fetcher = TestFetcher(FetcherResponse.Success(output = 1)),
                 persister = FlowingTestPersister(readerChannel.asFlow())
             )
 
-            store.streamWithRefreshCriteria("key", refreshCriteria)
+            store.streamWithRefreshPolicy("key", refreshPolicy)
                 .recordWith(flowRecorder)
 
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(0)
 
             // a new response emitted from fetcher
             store.fresh("key")
 
             // onRefreshed(key, output) should have been invoked
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(1)
 
             // another response emitted from persister
             readerChannel.offer(1)
 
             // onRefreshed(key, output) should not have been invoked again
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(1)
         }
 
     @Test
-    fun `onRefreshed(key, output) is invoked when refreshCriteria#shouldRefresh() returns true and StoreResponse is Data and ResponseOrigin is Fetcher`() =
+    fun `onRefreshed(key, output) is invoked when refreshPolicy#shouldRefresh() returns true and StoreResponse is Data and ResponseOrigin is Fetcher`() =
         testScope.runBlockingTest {
             val readerChannel = ConflatedBroadcastChannel(1)
-            val refreshCriteria = TestRefreshCriteria(shouldRefresh = true)
+            val refreshPolicy = TestRefreshPolicy(shouldRefresh = true)
             val store = buildStoreWithFlowingPersister(
                 fetcher = TestFetcher(
                     FetcherResponse.Success(output = 1),
@@ -127,24 +127,24 @@ class StreamWithRefreshCriteriaTest {
                 persister = FlowingTestPersister(readerChannel.asFlow())
             )
 
-            store.streamWithRefreshCriteria("key", refreshCriteria)
+            store.streamWithRefreshPolicy("key", refreshPolicy)
                 .recordWith(flowRecorder)
 
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(1)
 
             // a new response emitted from fetcher
             store.fresh("key")
 
             // onRefreshed(key, output) should have been invoked again
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(2)
 
             // another response emitted from persister
             readerChannel.offer(1)
 
             // onRefreshed(key, output) should not have been invoked again
-            assertThat(refreshCriteria.refreshCounts)
+            assertThat(refreshPolicy.refreshCounts)
                 .isEqualTo(2)
         }
 
@@ -183,9 +183,9 @@ class StreamWithRefreshCriteriaTest {
     }
 }
 
-private class TestRefreshCriteria(
+private class TestRefreshPolicy(
     private val shouldRefresh: Boolean
-) : RefreshCriteria {
+) : RefreshPolicy {
 
     private var _refreshCounts = 0
 

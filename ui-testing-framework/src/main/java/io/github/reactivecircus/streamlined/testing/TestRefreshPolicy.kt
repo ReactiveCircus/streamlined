@@ -1,13 +1,13 @@
 package io.github.reactivecircus.streamlined.testing
 
-import io.github.reactivecircus.store.ext.RefreshCriteria
+import io.github.reactivecircus.store.ext.RefreshPolicy
 import io.github.reactivecircus.store.ext.RefreshScope
-import io.github.reactivecircus.streamlined.testing.TestRefreshCriteria.shouldRefresh
+import io.github.reactivecircus.streamlined.testing.TestRefreshPolicy.shouldRefresh
 
 /**
- * Implementation of [RefreshCriteria] where [shouldRefresh] is always true.
+ * Implementation of [RefreshPolicy] where [shouldRefresh] is always true.
  */
-object TestRefreshCriteria : RefreshCriteria {
+object TestRefreshPolicy : RefreshPolicy {
 
     override suspend fun shouldRefresh(refreshScope: RefreshScope): Boolean = true
 
