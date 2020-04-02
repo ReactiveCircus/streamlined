@@ -163,6 +163,7 @@ jobs:
   instrumented-tests:
     name: Instrumented tests
     runs-on: macos-latest
+    timeout-minutes: 20
     env:
       CI: true
       JAVA_TOOL_OPTIONS: -Xmx4g
