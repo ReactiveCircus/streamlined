@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.domain.model.Story
@@ -55,7 +56,9 @@ class HomeFragment @Inject constructor(
         feedsListAdapter = FeedsListAdapter(
             actionListener = actionListener,
             animationConfigs = if (savedInstanceState == null) animationConfigs else null
-        )
+        ).apply {
+            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
 
         binding.homeFeedsRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
