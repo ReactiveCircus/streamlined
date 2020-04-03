@@ -90,9 +90,18 @@ internal fun BaseExtension.configureCommonAndroidOptions() {
  * Apply configuration options for Android Library projects.
  */
 @Suppress("UnstableApiUsage")
-internal fun LibraryExtension.configureAndroidLibraryOptions() {
+internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
     // Disable generating BuildConfig.java
     buildFeatures.buildConfig = false
+
+    // skip tasks related to androidTest if no testApplicationId is defined in the library project.
+    if (defaultConfig.testApplicationId == null) {
+        project.tasks.configureEach {
+            if (name.contains("androidTest", ignoreCase = true)) {
+                enabled = false
+            }
+        }
+    }
 
     packagingOptions {
         exclude("META-INF/*.kotlin_module")

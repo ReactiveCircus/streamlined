@@ -51,7 +51,7 @@ class StreamlinedPlugin : Plugin<Project> {
                         }
                     }
                     is LibraryPlugin -> {
-                        libraryExtension.configureAndroidLibraryOptions()
+                        libraryExtension.configureAndroidLibraryOptions(project)
                         libraryExtension.configureCommonAndroidOptions()
                         enableSlimTests()
                     }
