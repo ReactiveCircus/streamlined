@@ -64,7 +64,7 @@ internal fun Project.configureForAllProjects() {
 /**
  * Apply baseline configurations for all Android projects (Application and Library).
  */
-internal fun BaseExtension.configureCommonAndroidOptions() {
+internal fun BaseExtension.configureCommonAndroidOptions(project: Project) {
     setCompileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
 
@@ -74,6 +74,15 @@ internal fun BaseExtension.configureCommonAndroidOptions() {
 
         // only support English for now
         resConfigs("en")
+    }
+
+    // skip tasks related to androidTest if the androidTest source set of the library project is empty.
+    if (!project.hasAndroidTestSource) {
+        project.tasks.configureEach {
+            if (name.contains("androidTest", ignoreCase = true)) {
+                enabled = false
+            }
+        }
     }
 
     testOptions.animationsDisabled = true
@@ -90,18 +99,9 @@ internal fun BaseExtension.configureCommonAndroidOptions() {
  * Apply configuration options for Android Library projects.
  */
 @Suppress("UnstableApiUsage")
-internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
+internal fun LibraryExtension.configureAndroidLibraryOptions() {
     // Disable generating BuildConfig.java
     buildFeatures.buildConfig = false
-
-    // skip tasks related to androidTest if no testApplicationId is defined in the library project.
-    if (defaultConfig.testApplicationId == null) {
-        project.tasks.configureEach {
-            if (name.contains("androidTest", ignoreCase = true)) {
-                enabled = false
-            }
-        }
-    }
 
     packagingOptions {
         exclude("META-INF/*.kotlin_module")
