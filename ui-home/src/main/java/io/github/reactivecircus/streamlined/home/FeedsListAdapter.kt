@@ -136,9 +136,9 @@ internal class FeedsListAdapter(
                 ThemeResource.anim.slide_in_and_fade_in
             )
             animation.startOffset = (animationConfigs.defaultListItemAnimationStartOffset *
-                    holder.adapterPosition).toLong()
+                    holder.bindingAdapterPosition).toLong()
             holder.itemView.startAnimation(animation)
-            lastAnimatedPosition = holder.adapterPosition
+            lastAnimatedPosition = holder.bindingAdapterPosition
         }
     }
 }
