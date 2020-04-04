@@ -49,13 +49,13 @@ class StreamlinedPlugin : Plugin<Project> {
                         }
                     }
                     is LibraryPlugin -> {
-                        libraryExtension.configureAndroidLibraryOptions()
-                        libraryExtension.configureCommonAndroidOptions(project)
+                        libraryExtension.configureAndroidLibraryOptions(project)
+                        testedExtension.configureCommonAndroidOptions()
                         enableSlimTests()
                     }
                     is AppPlugin -> {
                         appExtension.configureAndroidApplicationOptions(project)
-                        appExtension.configureCommonAndroidOptions(project)
+                        testedExtension.configureCommonAndroidOptions()
                         enableSlimTests()
                     }
                     is Kapt3GradleSubplugin -> {
