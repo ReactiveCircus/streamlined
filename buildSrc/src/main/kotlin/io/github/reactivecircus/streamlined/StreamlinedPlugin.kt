@@ -3,13 +3,18 @@
 package io.github.reactivecircus.streamlined
 
 import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.TestedExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.getPlugin
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
 
 /**
@@ -43,20 +48,20 @@ class StreamlinedPlugin : Plugin<Project> {
                 when (this) {
                     is JavaPlugin,
                     is JavaLibraryPlugin -> {
-                        project.convention.getPlugin(JavaPluginConvention::class.java).apply {
+                        project.convention.getPlugin<JavaPluginConvention>().apply {
                             sourceCompatibility = JavaVersion.VERSION_1_8
                             targetCompatibility = JavaVersion.VERSION_1_8
                         }
                     }
                     is LibraryPlugin -> {
-                        libraryExtension.configureAndroidLibraryOptions(project)
-                        testedExtension.configureCommonAndroidOptions()
-                        enableSlimTests()
+                        extensions.getByType<LibraryExtension>().configureAndroidLibraryOptions(project)
+                        extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                        configureSlimTests()
                     }
                     is AppPlugin -> {
-                        appExtension.configureAndroidApplicationOptions(project)
-                        testedExtension.configureCommonAndroidOptions()
-                        enableSlimTests()
+                        extensions.getByType<BaseAppModuleExtension>().configureAndroidApplicationOptions(project)
+                        extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                        configureSlimTests()
                     }
                     is Kapt3GradleSubplugin -> {
                         configureKapt()
@@ -66,3 +71,5 @@ class StreamlinedPlugin : Plugin<Project> {
         }
     }
 }
+
+private val Project.isRoot get() = this == this.rootProject

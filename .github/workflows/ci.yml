@@ -73,7 +73,6 @@ jobs:
       JAVA_TOOL_OPTIONS: -Xmx4g
       GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
       TERM: dumb
-      ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@v2
@@ -88,13 +87,6 @@ jobs:
         with:
           path: ~/.gradle/caches
           key: unit-tests-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-
-      - name: Decrypt secrets
-        run: |
-          mkdir -p app/src/dev
-          mkdir -p app/src/prod
-          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-dev.aes -out app/src/dev/google-services.json -k $ENCRYPTION_KEY
-          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
       - name: Run unit tests
         run: |
@@ -112,12 +104,6 @@ jobs:
         with:
           name: junit-results
           path: junit
-
-      - name: Cleanup secrets
-        if: always()
-        run: |
-          rm -f app/src/dev/google-services.json
-          rm -f app/src/prod/google-services.json
 
   static-analysis:
     name: Static analysis
@@ -145,9 +131,7 @@ jobs:
 
       - name: Decrypt secrets
         run: |
-          mkdir -p app/src/dev
           mkdir -p app/src/prod
-          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-dev.aes -out app/src/dev/google-services.json -k $ENCRYPTION_KEY
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
       - name: Run detekt and Android Lint
@@ -157,7 +141,6 @@ jobs:
       - name: Cleanup secrets
         if: always()
         run: |
-          rm -f app/src/dev/google-services.json
           rm -f app/src/prod/google-services.json
 
   instrumented-tests:
@@ -193,7 +176,7 @@ jobs:
           api-level: 23
           arch: x86
           profile: Nexus 5X
-          script: ./gradlew app:connectedMockDebugAndroidTest connectedDebugAndroidTest
+          script: ./gradlew connectedCheck
 
   publish-to-play-store:
     name: Publish to Play Store

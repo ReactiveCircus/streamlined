@@ -2,8 +2,10 @@
 
 package io.github.reactivecircus.streamlined
 
+import com.android.build.gradle.TestedExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
 
 /**
  * A plugin that enables Java 8 desugaring for consuming new Java language APIs.
@@ -25,7 +27,7 @@ class CoreLibraryDesugaringPlugin : Plugin<Project> {
                 "Core library desugaring should only be enabled on Android projects but ${project.displayName} doesn't have either 'com.android.library' or 'com.android.application' plugin applied."
             }
 
-            testedExtension.apply {
+            extensions.getByType<TestedExtension>().apply {
                 compileOptions.isCoreLibraryDesugaringEnabled = true
                 project.dependencies.add("coreLibraryDesugaring", libraries.desugarLibs)
             }

@@ -1,8 +1,8 @@
 package io.github.reactivecircus.streamlined
 
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -90,7 +90,22 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
 /**
  * Apply configuration options for Android Application projects.
  */
-internal fun AppExtension.configureAndroidApplicationOptions(project: Project) {
+@Suppress("UnstableApiUsage")
+internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
+    // disable unit test tasks if the unitTest source set is empty
+    if (!project.hasUnitTestSource) {
+        onVariants {
+            unitTest { enabled = false }
+        }
+    }
+
+    // disable android test tasks if the androidTest source set is empty
+    if (!project.hasAndroidTestSource) {
+        onVariants {
+            androidTest { enabled = false }
+        }
+    }
+
     lintOptions {
         disable("ParcelCreator")
         disable("GoogleAppIndexingWarning")

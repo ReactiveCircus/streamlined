@@ -1,9 +1,8 @@
+import io.github.reactivecircus.streamlined.*
 import io.github.reactivecircus.streamlined.dsl.devImplementation
 import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
-import io.github.reactivecircus.streamlined.envOrProp
-import io.github.reactivecircus.streamlined.isCiBuild
-import io.github.reactivecircus.streamlined.libraries
+import org.gradle.language.nativeplatform.internal.BuildType
 
 plugins {
     `streamlined-plugin`
@@ -43,13 +42,13 @@ android {
     }
 
     signingConfigs {
-        named("debug") {
+        named(BuildType.DEBUG.name) {
             storeFile = rootProject.file("secrets/debug.keystore")
             storePassword = "streamlined-debug"
             keyAlias = "streamlined-key"
             keyPassword = "streamlined-debug"
         }
-        register("release") {
+        register(BuildType.RELEASE.name) {
             storeFile = rootProject.file("secrets/streamlined.keystore")
             storePassword = envOrProp("STREAMLINED_STORE_PASSWORD")
             keyAlias = "streamlined"
@@ -64,8 +63,8 @@ android {
     }
 
     buildTypes {
-        named("debug") {
-            signingConfig = signingConfigs.getByName("debug")
+        named(BuildType.DEBUG.name) {
+            signingConfig = signingConfigs.getByName(BuildType.DEBUG.name)
 
             // turn on strict mode for non-CI debug builds
             buildConfigField("boolean", "ENABLE_STRICT_MODE", "Boolean.parseBoolean(\"${!isCiBuild}\")")
@@ -73,9 +72,9 @@ android {
             // override app name for LeakCanary
             resValue("string", "leak_canary_display_activity_label", "streamlined leaks")
         }
-        named("release") {
+        named(BuildType.RELEASE.name) {
             if (rootProject.file("secrets/streamlined.keystore").exists()) {
-                signingConfig = signingConfigs.getByName("debug")
+                signingConfig = signingConfigs.getByName(BuildType.RELEASE.name)
             }
             isMinifyEnabled = true
             isShrinkResources = true
@@ -83,18 +82,18 @@ android {
         }
     }
 
-    flavorDimensions("environment")
+    flavorDimensions(FlavorDimensions.ENVIRONMENT)
 
     productFlavors {
-        register("mock") {
-            applicationIdSuffix = ".mock"
+        register(ProductFlavors.MOCK) {
+            applicationIdSuffix = ".${ProductFlavors.MOCK}"
             extra.set("enableBugsnag", false)
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to "")
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"false\")")
             buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"false\")")
         }
-        register("dev") {
-            applicationIdSuffix = ".dev"
+        register(ProductFlavors.DEV) {
+            applicationIdSuffix = ".${ProductFlavors.DEV}"
             extra.set("enableBugsnag", isCiBuild)
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_DEV_API_KEY"))
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"${isCiBuild}\")")
@@ -102,7 +101,7 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
             buildConfigField("String", "API_KEY", "\"${envOrProp("NEWS_API_DEV_API_KEY")}\"")
         }
-        register("prod") {
+        register(ProductFlavors.PROD) {
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY"))
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"true\")")
             buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"true\")")
@@ -114,8 +113,8 @@ android {
     // filter out mockRelease, devRelease and prodDebug builds.
     variantFilter = Action {
         flavors.forEach { flavor ->
-            if (flavor.name != "prod" && buildType.name == "release" ||
-                flavor.name == "prod" && buildType.name == "debug"
+            if (flavor.name != ProductFlavors.PROD && buildType.name == BuildType.RELEASE.name ||
+                flavor.name == ProductFlavors.PROD && buildType.name == BuildType.DEBUG.name
             ) {
                 ignore = true
             }
@@ -124,7 +123,7 @@ android {
 
     applicationVariants.all {
         // customize app name for debug builds
-        if (buildType.name == "debug") {
+        if (buildType.name == BuildType.DEBUG.name) {
             // concatenate build variant to app name
             val appName = "streamlined-${name}"
 
@@ -135,10 +134,10 @@ android {
 
     sourceSets {
         // common source set for dev and prod
-        named("dev") {
+        named(ProductFlavors.DEV) {
             java.srcDir("src/online/java")
         }
-        named("prod") {
+        named(ProductFlavors.PROD) {
             java.srcDir("src/online/java")
         }
     }
@@ -209,19 +208,21 @@ dependencies {
     kaptAndroidTest(libraries.dagger.compiler)
 }
 
-tasks.configureEach {
-    when {
-        // don't count dex methods for debug builds
-        name.matches("count(?i).+debugDexMethods".toRegex()) -> {
-            onlyIf { false }
-        }
-        // disable google services plugin for mock flavor
-        name.matches("process(?i)mock.+GoogleServices".toRegex()) -> {
-            onlyIf { false }
-        }
-        // disable all AndroidTest tasks for prod flavor
-        name.matches(".*(?i)(prod).+AndroidTest.*".toRegex()) -> {
-            onlyIf { false }
-        }
+android.applicationVariants.all {
+    // don't count dex methods for debug builds
+    if (buildType.name == BuildType.DEBUG.name) {
+        tasks.named("count${name.capitalize()}DexMethods").configure { enabled = false }
+    }
+    // disable google services plugin for mock flavor
+    if (flavorName == ProductFlavors.MOCK) {
+        tasks.named("process${name.capitalize()}GoogleServices").configure { enabled = false }
+    }
+}
+
+@Suppress("UnstableApiUsage")
+android.onVariants.run {
+    // disable android test for dev flavor
+    withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV) {
+        androidTest { enabled = false }
     }
 }
