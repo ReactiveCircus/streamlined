@@ -1,14 +1,15 @@
 package io.github.reactivecircus.analytics.firebase
 
 import android.app.Activity
-import android.content.Context
-import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import io.github.reactivecircus.analytics.AnalyticsApi
 
-class FirebaseAnalyticsApi(context: Context) : AnalyticsApi {
+object FirebaseAnalyticsApi : AnalyticsApi {
 
-    private val firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    private val firebaseAnalytics: FirebaseAnalytics = Firebase.analytics
 
     /**
      * By default Firebase uses the class name of the activity for automatic screen reporting.
@@ -33,17 +34,16 @@ class FirebaseAnalyticsApi(context: Context) : AnalyticsApi {
     }
 
     override fun logEvent(name: String, params: Map<String, *>?) {
-        val bundle = Bundle()
-        params?.run {
-            entries.forEach { entry ->
-                when (entry.value) {
-                    is String -> bundle.putString(entry.key, (entry.value as String))
-                    is Long -> bundle.putLong(entry.key, (entry.value as Long))
-                    is Double -> bundle.putDouble(entry.key, (entry.value as Double))
+        firebaseAnalytics.logEvent(name) {
+            params?.entries?.run {
+                forEach { entry ->
+                    when (entry.value) {
+                        is String -> param(entry.key, entry.value as String)
+                        is Long -> param(entry.key, (entry.value as Long))
+                        is Double -> param(entry.key, (entry.value as Double))
+                    }
                 }
             }
         }
-
-        firebaseAnalytics.logEvent(name, bundle)
     }
 }

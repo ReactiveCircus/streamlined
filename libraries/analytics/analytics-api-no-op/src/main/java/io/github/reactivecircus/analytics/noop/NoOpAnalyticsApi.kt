@@ -3,7 +3,7 @@ package io.github.reactivecircus.analytics.noop
 import android.app.Activity
 import io.github.reactivecircus.analytics.AnalyticsApi
 
-class NoOpAnalyticsApi : AnalyticsApi {
+object NoOpAnalyticsApi : AnalyticsApi {
 
     override fun setCurrentScreenName(activity: Activity, name: String, className: String?) = Unit
 

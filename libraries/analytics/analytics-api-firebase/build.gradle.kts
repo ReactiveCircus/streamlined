@@ -13,5 +13,5 @@ dependencies {
     implementation(libraries.kotlinStdlib)
 
     // Firebase
-    api(libraries.firebase.analytics)
+    api(libraries.firebase.analyticsKtx)
 }

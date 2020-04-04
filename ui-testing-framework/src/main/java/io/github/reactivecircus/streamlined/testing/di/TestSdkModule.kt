@@ -12,6 +12,6 @@ internal object TestSdkModule {
     @Provides
     @Reusable
     fun provideAnalyticsApi(): AnalyticsApi {
-        return NoOpAnalyticsApi()
+        return NoOpAnalyticsApi
     }
 }
