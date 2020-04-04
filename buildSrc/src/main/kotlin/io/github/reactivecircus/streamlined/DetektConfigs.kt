@@ -17,7 +17,6 @@ internal fun Project.configureDetektPlugin() {
 
     pluginManager.withPlugin("io.gitlab.arturbosch.detekt") {
         extensions.configure(DetektExtension::class.java) {
-            toolVersion = versions.detekt
             input = files("src/")
             failFast = true
             config = files("${project.rootDir}/detekt.yml")
