@@ -25,7 +25,7 @@ class CoreLibraryDesugaringPlugin : Plugin<Project> {
                 "Core library desugaring should only be enabled on Android projects but ${project.displayName} doesn't have either 'com.android.library' or 'com.android.application' plugin applied."
             }
 
-            baseExtension.apply {
+            testedExtension.apply {
                 compileOptions.isCoreLibraryDesugaringEnabled = true
                 project.dependencies.add("coreLibraryDesugaring", libraries.desugarLibs)
             }

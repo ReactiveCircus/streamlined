@@ -24,7 +24,7 @@ dependencies {
     // Dagger
     implementation(libraries.dagger.runtime)
     kapt(libraries.dagger.compiler)
-    
+
     // OkHttp
     implementation(libraries.okhttp.client)
     implementation(libraries.okhttp.loggingInterceptor)

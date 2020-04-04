@@ -1,8 +1,8 @@
 package io.github.reactivecircus.streamlined
 
 import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.TestedExtension
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -64,7 +64,8 @@ internal fun Project.configureForAllProjects() {
 /**
  * Apply baseline configurations for all Android projects (Application and Library).
  */
-internal fun BaseExtension.configureCommonAndroidOptions(project: Project) {
+@Suppress("UnstableApiUsage")
+internal fun TestedExtension.configureCommonAndroidOptions() {
     setCompileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
 
@@ -76,15 +77,6 @@ internal fun BaseExtension.configureCommonAndroidOptions(project: Project) {
         resConfigs("en")
     }
 
-    // skip tasks related to androidTest if the androidTest source set of the library project is empty.
-    if (!project.hasAndroidTestSource) {
-        project.tasks.configureEach {
-            if (name.contains("androidTest", ignoreCase = true)) {
-                enabled = false
-            }
-        }
-    }
-
     testOptions.animationsDisabled = true
 
     dexOptions.preDexLibraries = !isCiBuild
@@ -93,19 +85,6 @@ internal fun BaseExtension.configureCommonAndroidOptions(project: Project) {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     })
-}
-
-/**
- * Apply configuration options for Android Library projects.
- */
-@Suppress("UnstableApiUsage")
-internal fun LibraryExtension.configureAndroidLibraryOptions() {
-    // Disable generating BuildConfig.java
-    buildFeatures.buildConfig = false
-
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
-    }
 }
 
 /**
@@ -132,5 +111,32 @@ internal fun AppExtension.configureAndroidApplicationOptions(project: Project) {
             "META-INF/MANIFEST.MF",
             "LICENSE.txt"
         )
+    }
+}
+
+/**
+ * Apply configuration options for Android Library projects.
+ */
+@Suppress("UnstableApiUsage")
+internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
+    // disable unit test tasks if the unitTest source set is empty
+    if (!project.hasUnitTestSource) {
+        onVariants {
+            unitTest { enabled = false }
+        }
+    }
+
+    // disable android test tasks if the androidTest source set is empty
+    if (!project.hasAndroidTestSource) {
+        onVariants {
+            androidTest { enabled = false }
+        }
+    }
+
+    // Disable generating BuildConfig.java
+    buildFeatures.buildConfig = false
+
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
     }
 }
