@@ -1,9 +1,7 @@
 package io.github.reactivecircus.streamlined
 
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.TestExtension
 import com.android.build.gradle.TestedExtension
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
@@ -121,12 +119,17 @@ internal fun AppExtension.configureAndroidApplicationOptions(project: Project) {
  */
 @Suppress("UnstableApiUsage")
 internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
+    // disable unit test tasks if the unitTest source set is empty
+    if (!project.hasUnitTestSource) {
+        onVariants {
+            unitTest { enabled = false }
+        }
+    }
+
     // disable android test tasks if the androidTest source set is empty
     if (!project.hasAndroidTestSource) {
         onVariants {
-            androidTest {
-                enabled = false
-            }
+            androidTest { enabled = false }
         }
     }
 
