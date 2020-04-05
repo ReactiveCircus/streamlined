@@ -189,8 +189,6 @@ jobs:
       GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
       TERM: dumb
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
-      STREAMLINED_BUGSNAG_PROD_API_KEY: ${{ secrets.STREAMLINED_BUGSNAG_PROD_API_KEY }}
-      APP_ID: io.github.reactivecircus.streamlined
 
     steps:
       - uses: actions/checkout@v2
@@ -209,10 +207,11 @@ jobs:
       - name: Export environment variables
         run: |
           echo "::set-env name=BUILD_NUMBER::$GITHUB_RUN_NUMBER"
+          echo "::set-env name=APP_ID::io.github.reactivecircus.streamlined"
           # TODO get versionCode from task
-          echo "::set-env name=VERSION_CODE::1
+          echo "::set-env name=VERSION_CODE::1"
           # TODO get versionName from task
-          echo "::set-env name=VERSION_NAME::1.0
+          echo "::set-env name=VERSION_NAME::1.0"
 
       - name: Decrypt secrets
         run: |
