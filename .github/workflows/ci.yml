@@ -46,7 +46,7 @@ jobs:
       - name: Decrypt secrets
         run: |
           mkdir -p app/src/prod
-          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/streamlined.aes -out secrets/streamlined.keystore -k $ENCRYPTION_KEY
+          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/streamlined.aes -out secrets/streamlined.jks -k $ENCRYPTION_KEY
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
       - name: Assemble signed release App Bundle
@@ -56,7 +56,7 @@ jobs:
       - name: Cleanup secrets
         if: always()
         run: |
-          rm -f secrets/streamlined.keystore
+          rm -f secrets/streamlined.jks
           rm -f app/src/prod/google-services.json
 
       - name: Upload build artifacts

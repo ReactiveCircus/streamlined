@@ -59,7 +59,7 @@ android {
             keyPassword = "streamlined-debug"
         }
         register(BuildType.RELEASE.name) {
-            storeFile = rootProject.file("secrets/streamlined.keystore")
+            storeFile = rootProject.file("secrets/streamlined.jks")
             storePassword = envOrProp("STREAMLINED_STORE_PASSWORD")
             keyAlias = "streamlined"
             keyPassword = envOrProp("STREAMLINED_KEY_PASSWORD")
@@ -83,7 +83,7 @@ android {
             resValue("string", "leak_canary_display_activity_label", "streamlined leaks")
         }
         named(BuildType.RELEASE.name) {
-            if (rootProject.file("secrets/streamlined.keystore").exists()) {
+            if (rootProject.file("secrets/streamlined.jks").exists()) {
                 signingConfig = signingConfigs.getByName(BuildType.RELEASE.name)
             }
             isMinifyEnabled = true

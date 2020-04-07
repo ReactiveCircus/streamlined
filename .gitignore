@@ -38,7 +38,7 @@ captures/
 .externalNativeBuild
 
 # Ignore plain keystore files
-secrets/streamlined.keystore
+secrets/streamlined.jks
 
 # Ignore plain API keys
 google-services.json
