@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
  * Apply this plugin to the build.gradle.kts file in all projects:
  * ```
  * plugins {
- *     id 'streamlined-plugin'
+ *     `streamlined-plugin`
  * }
  * ```
  */

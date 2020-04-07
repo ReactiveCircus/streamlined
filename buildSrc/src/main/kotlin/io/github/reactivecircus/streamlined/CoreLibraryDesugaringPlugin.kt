@@ -13,7 +13,7 @@ import org.gradle.kotlin.dsl.getByType
  * Apply this plugin to the build.gradle.kts file in Android Application or Android Library projects:
  * ```
  * plugins {
- *     id 'core-library-desugaring'
+ *     `core-library-desugaring`
  * }
  * ```
  */
