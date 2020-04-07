@@ -1,12 +1,17 @@
-import io.github.reactivecircus.streamlined.*
+import io.github.reactivecircus.streamlined.FlavorDimensions
+import io.github.reactivecircus.streamlined.ProductFlavors
 import io.github.reactivecircus.streamlined.dsl.devImplementation
 import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
+import io.github.reactivecircus.streamlined.envOrProp
+import io.github.reactivecircus.streamlined.isCiBuild
+import io.github.reactivecircus.streamlined.libraries
 import org.gradle.language.nativeplatform.internal.BuildType
 
 plugins {
     `streamlined-plugin`
     `core-library-desugaring`
+    `app-versioning`
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -14,6 +19,13 @@ plugins {
     id("com.getkeepsafe.dexcount")
     id("project-report")
     id("com.github.triplet.play")
+}
+
+appVersioning {
+    major = 1
+    minor = 0
+    patch = 0
+    buildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull()
 }
 
 android {
@@ -24,9 +36,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.reactivecircus.streamlined"
-        versionCode = 1
-        versionName = "1.0"
-        base.archivesBaseName = "streamlined-$versionName"
+        base.archivesBaseName = "streamlined"
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.IntegrationTestRunner"
