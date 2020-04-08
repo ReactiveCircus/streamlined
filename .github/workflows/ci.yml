@@ -205,22 +205,21 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-publish-to-play-store-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
-      - name: Export environment variables
-        run: |
-          echo "::set-env name=BUILD_NUMBER::$GITHUB_RUN_NUMBER"
-          echo "::set-env name=APP_ID::io.github.reactivecircus.streamlined"
-          echo "::set-env name=VERSION_NAME::$(./gradlew -q printAppVersionName | tail -1)"
-          echo "::set-env name=VERSION_CODE::$(./gradlew -q printAppVersionCode | tail -1)"
-
-      - name: Decrypt secrets
-        run: |
-          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/play-api.aes -out secrets/play-api.json -k $ENCRYPTION_KEY
-
       - name: Download build artifacts
         uses: actions/download-artifact@v1
         with:
           name: build-outputs
           path: app/build/outputs
+
+      - name: Export environment variables
+        run: |
+          echo "::set-env name=APP_ID::io.github.reactivecircus.streamlined"
+          echo "::set-env name=VERSION_NAME::$(cat app/build/outputs/app_versioning/version_name.txt)"
+          echo "::set-env name=VERSION_CODE::$(cat app/build/outputs/app_versioning/version_code.txt)"
+
+      - name: Decrypt secrets
+        run: |
+          openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/play-api.aes -out secrets/play-api.json -k $ENCRYPTION_KEY
 
       - name: Upload mapping file to Bugsnag
         run: |
