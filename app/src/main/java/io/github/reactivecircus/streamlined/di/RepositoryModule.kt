@@ -25,13 +25,13 @@ object RepositoryModule {
     @Provides
     @Reusable
     @InternalApi
-    fun provideRefreshPolicy(): RefreshPolicy {
+    fun refreshPolicy(): RefreshPolicy {
         return TimeBasedRefreshPolicy()
     }
 
     @Provides
     @Reusable
-    fun provideDataComponent(
+    fun dataComponent(
         context: Context,
         coroutineDispatcherProvider: CoroutineDispatcherProvider,
         @InternalApi refreshPolicy: RefreshPolicy,
@@ -47,13 +47,13 @@ object RepositoryModule {
 
     @Provides
     @Reusable
-    fun provideStoryRepository(dataComponent: DataComponent): StoryRepository {
+    fun storyRepository(dataComponent: DataComponent): StoryRepository {
         return dataComponent.storyRepository
     }
 
     @Provides
     @Reusable
-    fun provideBookmarkRepository(dataComponent: DataComponent): BookmarkRepository {
+    fun bookmarkRepository(dataComponent: DataComponent): BookmarkRepository {
         return dataComponent.bookmarkRepository
     }
 }

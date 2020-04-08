@@ -11,7 +11,7 @@ object SdkModule {
 
     @Provides
     @Reusable
-    fun provideAnalyticsApi(): AnalyticsApi {
+    fun analyticsApi(): AnalyticsApi {
         return NoOpAnalyticsApi
     }
 }

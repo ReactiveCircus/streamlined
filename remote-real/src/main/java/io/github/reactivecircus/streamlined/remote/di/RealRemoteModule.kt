@@ -23,7 +23,7 @@ internal object RealRemoteModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+    fun okHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             // add logging interceptor
@@ -36,7 +36,7 @@ internal object RealRemoteModule {
     @Provides
     @Singleton
     @UnstableDefault
-    fun provideRetrofit(
+    fun retrofit(
         @BaseUrl baseUrl: String,
         okhttpClient: Lazy<OkHttpClient>
     ): Retrofit {
@@ -57,7 +57,7 @@ internal object RealRemoteModule {
 
     @Provides
     @Singleton
-    fun provideNewsApiService(retrofit: Retrofit): NewsApiService {
+    fun newsApiService(retrofit: Retrofit): NewsApiService {
         return retrofit.create()
     }
 }

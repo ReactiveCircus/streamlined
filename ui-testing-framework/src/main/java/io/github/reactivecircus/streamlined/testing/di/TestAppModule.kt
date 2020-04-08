@@ -30,7 +30,7 @@ internal abstract class TestAppModule {
 
         @Provides
         @Reusable
-        fun provideCoroutineDispatcherProvider(): CoroutineDispatcherProvider {
+        fun coroutineDispatcherProvider(): CoroutineDispatcherProvider {
             // TODO use proper io dispatcher https://github.com/Kotlin/kotlinx.coroutines/issues/242
             return CoroutineDispatcherProvider(
                 io = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher(),
@@ -41,7 +41,7 @@ internal abstract class TestAppModule {
 
         @Provides
         @Reusable
-        fun provideImageLoader(): ImageLoader {
+        fun imageLoader(): ImageLoader {
             return object : ImageLoader {
 
                 private val drawable = ColorDrawable(Color.TRANSPARENT)

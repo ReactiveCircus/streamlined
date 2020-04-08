@@ -22,7 +22,7 @@ internal object MockRemoteModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun okHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC
@@ -32,7 +32,7 @@ internal object MockRemoteModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okhttpClient: Lazy<OkHttpClient>): Retrofit {
+    fun retrofit(okhttpClient: Lazy<OkHttpClient>): Retrofit {
         return Retrofit.Builder()
             .baseUrl(DUMMY_URL)
             .callFactory(object : Call.Factory {
@@ -45,7 +45,7 @@ internal object MockRemoteModule {
 
     @Provides
     @Singleton
-    fun provideNetworkBehavior(): NetworkBehavior {
+    fun networkBehavior(): NetworkBehavior {
         return NetworkBehavior.create().apply {
             // make sure behavior is deterministic
             setVariancePercent(0)
@@ -58,7 +58,7 @@ internal object MockRemoteModule {
 
     @Provides
     @Singleton
-    fun provideNewsApiService(
+    fun newsApiService(
         networkBehavior: NetworkBehavior,
         retrofit: Retrofit
     ): NewsApiService {

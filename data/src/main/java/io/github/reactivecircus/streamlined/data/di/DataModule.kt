@@ -47,7 +47,7 @@ internal abstract class DataModule {
         @Provides
         @Reusable
         @InternalApi
-        fun providePersistenceComponent(
+        fun persistenceComponent(
             context: Context,
             coroutineDispatcherProvider: CoroutineDispatcherProvider,
             databaseName: String?

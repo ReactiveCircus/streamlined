@@ -31,13 +31,13 @@ abstract class ScheduledTasksModule {
 
         @Provides
         @Reusable
-        fun provideWorkManager(context: Context): WorkManager {
+        fun workManager(context: Context): WorkManager {
             return WorkManager.getInstance(context)
         }
 
         @Provides
         @Reusable
-        fun provideWorkConfiguration(workerFactory: StreamlinedWorkerFactory): Configuration {
+        fun workConfiguration(workerFactory: StreamlinedWorkerFactory): Configuration {
             return Configuration.Builder()
                 .setWorkerFactory(workerFactory)
                 .build()

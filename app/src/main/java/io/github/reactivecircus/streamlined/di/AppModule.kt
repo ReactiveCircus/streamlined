@@ -35,7 +35,7 @@ abstract class AppModule {
 
         @Provides
         @Reusable
-        fun provideCoroutineDispatcherProvider(): CoroutineDispatcherProvider {
+        fun coroutineDispatcherProvider(): CoroutineDispatcherProvider {
             return CoroutineDispatcherProvider(
                 io = Dispatchers.IO,
                 computation = Dispatchers.Default,
@@ -45,7 +45,7 @@ abstract class AppModule {
 
         @Provides
         @Reusable
-        fun provideImageLoader(context: Context): ImageLoader {
+        fun imageLoader(context: Context): ImageLoader {
             return ImageLoaderBuilder(context).build()
         }
     }

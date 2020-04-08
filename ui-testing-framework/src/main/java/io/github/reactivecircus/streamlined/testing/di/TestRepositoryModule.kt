@@ -20,7 +20,7 @@ internal object TestRepositoryModule {
 
     @Provides
     @Reusable
-    fun provideDataComponent(
+    fun dataComponent(
         context: Context,
         coroutineDispatcherProvider: CoroutineDispatcherProvider,
         newsApiService: NewsApiService
@@ -35,13 +35,13 @@ internal object TestRepositoryModule {
 
     @Provides
     @Reusable
-    fun provideStoryRepository(dataComponent: DataComponent): StoryRepository {
+    fun storyRepository(dataComponent: DataComponent): StoryRepository {
         return dataComponent.storyRepository
     }
 
     @Provides
     @Reusable
-    fun provideBookmarkRepository(dataComponent: DataComponent): BookmarkRepository {
+    fun bookmarkRepository(dataComponent: DataComponent): BookmarkRepository {
         return dataComponent.bookmarkRepository
     }
 
