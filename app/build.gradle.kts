@@ -1,5 +1,6 @@
 import io.github.reactivecircus.streamlined.FlavorDimensions
 import io.github.reactivecircus.streamlined.ProductFlavors
+import io.github.reactivecircus.streamlined.StreamlinedAppVersion
 import io.github.reactivecircus.streamlined.dsl.devImplementation
 import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
@@ -22,9 +23,9 @@ plugins {
 }
 
 appVersioning {
-    major = 1
-    minor = 0
-    patch = 0
+    major = StreamlinedAppVersion.MAJOR
+    minor = StreamlinedAppVersion.MINOR
+    patch = StreamlinedAppVersion.PATCH
     buildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull()
 }
 
