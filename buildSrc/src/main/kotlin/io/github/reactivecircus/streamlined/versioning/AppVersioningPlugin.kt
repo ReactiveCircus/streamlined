@@ -93,8 +93,8 @@ class AppVersioningPlugin : Plugin<Project> {
             patchVersion.set(extension.patch)
             buildNumber.set(extension.buildNumber)
 
-            versionNameFile.set(File(project.buildDir, "$APP_VERSIONING_TASK_OUTPUT_DIR/$VERSION_NAME_RESULT_FILE"))
-            versionCodeFile.set(File(project.buildDir, "$APP_VERSIONING_TASK_OUTPUT_DIR/$VERSION_CODE_RESULT_FILE"))
+            versionNameFile.set(project.layout.buildDirectory.file("$APP_VERSIONING_TASK_OUTPUT_DIR/$VERSION_NAME_RESULT_FILE"))
+            versionCodeFile.set(project.layout.buildDirectory.file("$APP_VERSIONING_TASK_OUTPUT_DIR/$VERSION_CODE_RESULT_FILE"))
         }
 }
 
