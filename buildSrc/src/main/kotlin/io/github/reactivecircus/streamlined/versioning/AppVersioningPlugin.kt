@@ -1,12 +1,12 @@
 package io.github.reactivecircus.streamlined.versioning
 
+import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import io.github.reactivecircus.streamlined.hasAndroidAppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.getByType
-import java.io.File
 
 /**
  * A plugin that generates and sets the version name and version code for an application by:
@@ -72,10 +72,9 @@ class AppVersioningPlugin : Plugin<Project> {
             }
 
             extensions.getByType<BaseAppModuleExtension>().onVariantProperties {
-                outputs.forEach {
-                    it.versionName.set(generatedVersionName)
-                    it.versionCode.set(generatedVersionCode)
-                }
+                val mainOutput = outputs.single { it.outputType == VariantOutputConfiguration.OutputType.SINGLE }
+                mainOutput.versionName.set(generatedVersionName)
+                mainOutput.versionCode.set(generatedVersionCode)
             }
         }
     }
