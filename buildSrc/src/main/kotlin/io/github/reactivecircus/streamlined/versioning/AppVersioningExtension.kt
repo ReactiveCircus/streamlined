@@ -6,12 +6,12 @@ package io.github.reactivecircus.streamlined.versioning
 open class AppVersioningExtension {
 
     /**
-     * Major version of the app. Must be greater than 0.
+     * Major version of the app. Must be greater than or equal to 0.
      */
     var major: Int? = null
         set(value) {
-            require(value!! > 0) {
-                "Major version must be greater than 0."
+            require(value!! >= 0) {
+                "Major version must be greater than or equal to 0."
             }
             field = value
         }
