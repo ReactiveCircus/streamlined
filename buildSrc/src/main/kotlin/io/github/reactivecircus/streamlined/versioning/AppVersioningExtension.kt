@@ -1,56 +1,60 @@
 package io.github.reactivecircus.streamlined.versioning
 
+import org.gradle.api.model.ObjectFactory
+import org.gradle.kotlin.dsl.property
+
 /**
  * Extension for [AppVersioningPlugin].
  */
-open class AppVersioningExtension {
+open class AppVersioningExtension internal constructor(objects: ObjectFactory) {
 
     /**
-     * Major version of the app. Must be greater than or equal to 0.
+     * Whether to only generate version name and version code for `release` builds.
+     *
+     * Default is `true`.
      */
-    var major: Int? = null
-        set(value) {
-            require(value!! >= 0) {
-                "Major version must be greater than or equal to 0."
-            }
-            field = value
-        }
+    val releaseBuildOnly = objects.property<Boolean>().apply {
+        set(DEFAULT_RELEASE_BUILD_ONLY)
+    }
 
     /**
-     * Minor version of the app.
-     * Must be greater than or equal to 0 and less than [MAX_VERSION].
+     * Whether a valid git tag is required.
+     * When set to `true` a git tag in the MAJOR.MINOR.PATCH format must be present.
+     * When set to `false` version name "0.0.0" and version code 0 will be used if no valid git tag exists.
+     *
+     * Default is `false`.
      */
-    var minor: Int? = null
-        set(value) {
-            require(value in 0 until MAX_VERSION) {
-                "Minor version must be greater than or equal to 0 and less than $MAX_VERSION."
-            }
-            field = value
-        }
+    val requireValidGitTag = objects.property<Boolean>().apply {
+        set(DEFAULT_REQUIRE_VALID_GIT_TAG)
+    }
 
     /**
-     * Minor version of the app.
-     * Must be greater than or equal to 0 and less than [MAX_VERSION].
+     * Whether to fetch git tags from remote when no valid git tag can be found locally.
+     *
+     * Default is `false`.
      */
-    var patch: Int? = null
-        set(value) {
-            require(value in 0 until MAX_VERSION) {
-                "Patch version must be greater than or equal to 0 and less than $MAX_VERSION."
-            }
-            field = value
-        }
+    val fetchTagsWhenNoneExistsLocally = objects.property<Boolean>().apply {
+        set(DEFAULT_FETCH_TAGS_WHEN_NONE_EXISTS_LOCALLY)
+    }
 
     /**
-     * An optional build number appended to the app's version name.
-     * Must be greater than or equal to 0.
+     * Maximum number of digits allowed for any of the MAJOR, MINOR, or PATCH version.
+     * E.g. when set to `3`, the maximum version allowed for MAJOR, MINOR, or PATCH is 999.
+     *
+     * Must be at least `1` and at most `4`.
+     *
+     * Default is `3`.
      */
-    var buildNumber: Int? = null
-        set(value) {
-            if (value != null) {
-                require(value >= 0) {
-                    "Build number must be greater than or equal to 0."
-                }
-                field = value
-            }
-        }
+    val maxDigits = objects.property<Int>().apply {
+        set(DEFAULT_MAX_DIGITS)
+    }
+
+    companion object {
+        const val DEFAULT_RELEASE_BUILD_ONLY = true
+        const val DEFAULT_REQUIRE_VALID_GIT_TAG = false
+        const val DEFAULT_FETCH_TAGS_WHEN_NONE_EXISTS_LOCALLY = false
+        const val DEFAULT_MAX_DIGITS = 3
+        const val MAX_DIGITS_RANGE_MIN = 1
+        const val MAX_DIGITS_RANGE_MAX = 4
+    }
 }

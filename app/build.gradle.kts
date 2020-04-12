@@ -1,6 +1,5 @@
 import io.github.reactivecircus.streamlined.FlavorDimensions
 import io.github.reactivecircus.streamlined.ProductFlavors
-import io.github.reactivecircus.streamlined.StreamlinedAppVersion
 import io.github.reactivecircus.streamlined.dsl.devImplementation
 import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
@@ -23,10 +22,9 @@ plugins {
 }
 
 appVersioning {
-    major = StreamlinedAppVersion.MAJOR
-    minor = StreamlinedAppVersion.MINOR
-    patch = StreamlinedAppVersion.PATCH
-    buildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull()
+    releaseBuildOnly.set(!isCiBuild)
+    requireValidGitTag.set(true)
+    fetchTagsWhenNoneExistsLocally.set(true)
 }
 
 android {
@@ -157,7 +155,6 @@ android {
 play {
     serviceAccountCredentials = rootProject.file("secrets/play-api.json")
     defaultToAppBundles = true
-    resolutionStrategy = "ignore"
 }
 
 dependencies {
