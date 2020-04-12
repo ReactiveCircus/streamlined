@@ -10,6 +10,7 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
@@ -38,22 +39,22 @@ internal fun Project.configureForAllProjects() {
         jcenter()
     }
 
-    tasks.withType(JavaCompile::class.java).configureEach {
+    tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
     }
 
-    tasks.withType(KotlinJvmCompile::class.java).configureEach {
+    tasks.withType<KotlinJvmCompile>().configureEach {
         kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    tasks.withType(KotlinCompile::class.java).configureEach {
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
         }
     }
 
-    tasks.withType(Test::class.java).configureEach {
+    tasks.withType<Test>().configureEach {
         maxParallelForks = Runtime.getRuntime().availableProcessors() * 2
         testLogging {
             events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
@@ -78,8 +79,6 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     }
 
     testOptions.animationsDisabled = true
-
-    dexOptions.preDexLibraries = !isCiBuild
 
     compileOptions(Action {
         sourceCompatibility = JavaVersion.VERSION_1_8
