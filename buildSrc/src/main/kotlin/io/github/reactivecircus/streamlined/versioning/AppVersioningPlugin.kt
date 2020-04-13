@@ -11,7 +11,7 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.language.nativeplatform.internal.BuildType
 
 /**
- * A plugin that generates and sets the version name and version code for an Android app from the latest git tag that follows semantic versioning.
+ * A plugin that generates and sets the version name and version code for an Android app using the latest git tag that follows semantic versioning.
  * The latest git tag with the format MAJOR.MINOR.PATCH (without additional label for pre-release or build metadata) is used for computing version name and version code:
  * Version name is "<major>.<minor>.<patch>" or "<major>.<minor>.<patch>.<commitsSinceLatestTag>" if `commitsSinceLatestTag` is greater than 0;
  * Version code is major * 10 ^ (maxDigits * 2) + minor * 10 ^ maxDigits + patch + commitsSinceLatestTag, where `maxDigits` is the maximum number of digits allowed for a version.
@@ -60,7 +60,7 @@ class AppVersioningPlugin : Plugin<Project> {
     private fun validateExtensions(extension: AppVersioningExtension) {
         val maxDigits = extension.maxDigits.get()
         require(maxDigits >= AppVersioningExtension.MAX_DIGITS_RANGE_MIN && maxDigits <= AppVersioningExtension.MAX_DIGITS_RANGE_MAX) {
-            "`maxDigits` must be at least `1` and at most `4`."
+            "`maxDigits` must be at least `${AppVersioningExtension.MAX_DIGITS_RANGE_MIN}` and at most `${AppVersioningExtension.MAX_DIGITS_RANGE_MAX}`."
         }
     }
 
