@@ -64,7 +64,8 @@ abstract class GenerateAppVersionInfo : DefaultTask() {
 
         val versionCode = gitTagVersion.major * 10.0.pow(maxDigitsAllowed * 2).toInt() +
                 gitTagVersion.minor * 10.0.pow(maxDigitsAllowed).toInt() +
-                gitTagVersion.patch + gitTagVersion.commitsSinceLatestTag
+                gitTagVersion.patch +
+                gitTagVersion.commitsSinceLatestTag
         versionCodeFile.get().asFile.writeText(versionCode.toString())
         logger.lifecycle("Generated app version code: $versionCode.")
     }
