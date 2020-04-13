@@ -2,12 +2,8 @@ package io.github.reactivecircus.streamlined.versioning
 
 import java.io.File
 import java.util.concurrent.TimeUnit
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
-import kotlin.time.seconds
 
-@OptIn(ExperimentalTime::class)
-internal fun String.execute(workingDir: File, timeout: Duration = DEFAULT_COMMAND_TIMEOUT_SECONDS.seconds): String {
+internal fun String.execute(workingDir: File, timeoutInSeconds: Long = DEFAULT_COMMAND_TIMEOUT_SECONDS): String {
     val parts = this.split("\\s".toRegex())
     val process = ProcessBuilder(*parts.toTypedArray())
         .directory(workingDir)
@@ -15,8 +11,8 @@ internal fun String.execute(workingDir: File, timeout: Duration = DEFAULT_COMMAN
         .redirectError(ProcessBuilder.Redirect.PIPE)
         .start()
 
-    process.waitFor(timeout.inSeconds.toLong(), TimeUnit.SECONDS)
+    process.waitFor(timeoutInSeconds, TimeUnit.SECONDS)
     return process.inputStream.bufferedReader().readText().trim()
 }
 
-private const val DEFAULT_COMMAND_TIMEOUT_SECONDS = 5
+private const val DEFAULT_COMMAND_TIMEOUT_SECONDS = 5L

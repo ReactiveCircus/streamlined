@@ -72,6 +72,7 @@ class AppVersioningPlugin : Plugin<Project> {
             group = APP_VERSIONING_TASK_GROUP
             description = GenerateAppVersionInfo.TASK_DESCRIPTION
 
+            gitRefsDirectory.set(rootProject.file(GIT_REFS_DIRECTORY))
             maxDigits.set(extension.maxDigits)
             requireValidTag.set(extension.requireValidGitTag)
             fetchTagsWhenNoneExistsLocally.set(extension.fetchTagsWhenNoneExistsLocally)
@@ -83,5 +84,6 @@ class AppVersioningPlugin : Plugin<Project> {
 
 internal const val APP_VERSIONING_TASK_GROUP = "versioning"
 internal const val APP_VERSIONING_TASK_OUTPUT_DIR = "outputs/app_versioning"
+internal const val GIT_REFS_DIRECTORY = ".git/refs"
 internal const val VERSION_NAME_RESULT_FILE = "version_name.txt"
 internal const val VERSION_CODE_RESULT_FILE = "version_code.txt"

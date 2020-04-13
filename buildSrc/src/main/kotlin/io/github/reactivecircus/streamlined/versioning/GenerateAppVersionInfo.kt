@@ -2,18 +2,28 @@ package io.github.reactivecircus.streamlined.versioning
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import kotlin.math.pow
 
 /**
  * Generates versionName and versionCode based on git-tag.
  */
+@CacheableTask
 abstract class GenerateAppVersionInfo : DefaultTask() {
+
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val gitRefsDirectory: DirectoryProperty
 
     @get:Input
     abstract val maxDigits: Property<Int>
@@ -29,10 +39,6 @@ abstract class GenerateAppVersionInfo : DefaultTask() {
 
     @get:OutputFile
     abstract val versionCodeFile: RegularFileProperty
-
-    init {
-        outputs.upToDateWhen { false }
-    }
 
     @TaskAction
     fun generate() {
