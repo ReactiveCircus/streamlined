@@ -21,10 +21,6 @@ plugins {
     id("com.github.triplet.play")
 }
 
-appVersioning {
-    requireValidGitTag.set(true)
-}
-
 android {
     @Suppress("UnstableApiUsage")
     buildFeatures {

@@ -116,7 +116,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow
 
       - uses: gradle/wrapper-validation-action@v1
 
