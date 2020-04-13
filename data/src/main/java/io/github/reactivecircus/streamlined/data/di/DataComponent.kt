@@ -33,7 +33,7 @@ interface DataComponent {
         fun create(
             @BindsInstance context: Context,
             @BindsInstance coroutineDispatcherProvider: CoroutineDispatcherProvider,
-            @BindsInstance processLifetimeCoroutineScope: CoroutineScope,
+            @BindsInstance longLifetimeCoroutineScope: CoroutineScope,
             @BindsInstance refreshPolicy: RefreshPolicy,
             @BindsInstance newsApiService: NewsApiService,
             @BindsInstance databaseName: String?

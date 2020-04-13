@@ -1,8 +1,7 @@
 package io.github.reactivecircus.streamlined.testing.di
 
 import android.content.Context
-import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.coroutineScope
+import android.os.AsyncTask
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -13,6 +12,9 @@ import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
 import io.github.reactivecircus.streamlined.testing.TestRefreshPolicy
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asCoroutineDispatcher
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
 @Module
@@ -27,7 +29,9 @@ internal object TestRepositoryModule {
     ): DataComponent = DataComponent.factory().create(
         context = context,
         coroutineDispatcherProvider = coroutineDispatcherProvider,
-        processLifetimeCoroutineScope = ProcessLifecycleOwner.get().lifecycle.coroutineScope,
+        longLifetimeCoroutineScope = CoroutineScope(
+            SupervisorJob() + AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
+        ),
         refreshPolicy = TestRefreshPolicy,
         newsApiService = newsApiService,
         databaseName = null

@@ -11,7 +11,8 @@ import io.github.reactivecircus.streamlined.data.di.DataComponent
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import javax.inject.Qualifier
 
@@ -39,7 +40,7 @@ object RepositoryModule {
     ): DataComponent = DataComponent.factory().create(
         context = context,
         coroutineDispatcherProvider = coroutineDispatcherProvider,
-        processLifetimeCoroutineScope = GlobalScope,
+        longLifetimeCoroutineScope = CoroutineScope(SupervisorJob() + coroutineDispatcherProvider.io),
         refreshPolicy = refreshPolicy,
         newsApiService = newsApiService,
         databaseName = BuildConfig.DATABASE_NAME
