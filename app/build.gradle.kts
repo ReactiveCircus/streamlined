@@ -22,9 +22,7 @@ plugins {
 }
 
 appVersioning {
-    releaseBuildOnly.set(!isCiBuild)
     requireValidGitTag.set(true)
-    fetchTagsWhenNoneExistsLocally.set(true)
 }
 
 android {
