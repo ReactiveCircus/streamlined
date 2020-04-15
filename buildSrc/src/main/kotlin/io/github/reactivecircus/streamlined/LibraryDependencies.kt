@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object versions {
-    const val kotlin = "1.3.71"
+    const val kotlin = "1.3.72"
     const val detekt = "1.7.4"
     const val bugsnag = "4.22.3"
     const val leakCanary = "2.2"
@@ -52,7 +52,7 @@ object versions {
         }
     }
 
-    const val material = "1.2.0-alpha05"
+    const val material = "1.2.0-alpha06"
     const val dagger = "2.27"
     const val assistedInject = "0.5.2"
     const val okhttp = "4.5.0"
