@@ -22,7 +22,7 @@ class AuthInterceptorTest {
     @Before
     fun setUp() {
         // start mock server
-        server.start(5000)
+        server.start()
     }
 
     @After
