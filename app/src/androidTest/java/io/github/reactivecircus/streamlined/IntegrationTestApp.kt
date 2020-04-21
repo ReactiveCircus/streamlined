@@ -1,6 +1,6 @@
 package io.github.reactivecircus.streamlined
 
-import coil.Coil.setDefaultImageLoader
+import coil.Coil.setImageLoader
 import io.github.reactivecircus.streamlined.di.AppComponent
 import io.github.reactivecircus.streamlined.di.IntegrationTestAppComponent
 import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
@@ -27,6 +27,6 @@ class IntegrationTestApp : StreamlinedApp() {
         )
 
         // set default image loader
-        setDefaultImageLoader(appComponent.imageLoader)
+        setImageLoader(appComponent.imageLoader)
     }
 }

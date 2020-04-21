@@ -5,7 +5,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.work.Configuration
-import coil.Coil.setDefaultImageLoader
+import coil.Coil.setImageLoader
 import com.bugsnag.android.Bugsnag
 import com.bugsnag.android.Client
 import io.github.reactivecircus.bugsnag.BugsnagTree
@@ -48,7 +48,7 @@ open class StreamlinedApp : Application(), Configuration.Provider {
         )
 
         // set default image loader
-        setDefaultImageLoader(appComponent.imageLoader)
+        setImageLoader(appComponent.imageLoader)
     }
 
     protected open fun initializeTimber() {

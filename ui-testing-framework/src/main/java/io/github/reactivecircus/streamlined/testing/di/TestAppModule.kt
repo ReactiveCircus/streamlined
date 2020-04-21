@@ -5,10 +5,13 @@ import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
 import coil.DefaultRequestOptions
 import coil.ImageLoader
-import coil.annotation.ExperimentalCoil
+import coil.annotation.ExperimentalCoilApi
+import coil.decode.DataSource
 import coil.request.GetRequest
 import coil.request.LoadRequest
 import coil.request.RequestDisposable
+import coil.request.RequestResult
+import coil.request.SuccessResult
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -49,7 +52,7 @@ internal abstract class TestAppModule {
                 private val disposable = object : RequestDisposable {
                     override val isDisposed = true
 
-                    @OptIn(ExperimentalCoil::class)
+                    @OptIn(ExperimentalCoilApi::class)
                     override suspend fun await() = Unit
 
                     override fun dispose() = Unit
@@ -57,15 +60,19 @@ internal abstract class TestAppModule {
 
                 override val defaults = DefaultRequestOptions()
 
-                override suspend fun get(request: GetRequest) = drawable
+                override fun clearMemory() = Unit
 
-                override fun load(request: LoadRequest): RequestDisposable {
+                override suspend fun execute(request: GetRequest): RequestResult {
+                    return SuccessResult(drawable, DataSource.MEMORY_CACHE)
+                }
+
+                override fun execute(request: LoadRequest): RequestDisposable {
                     request.target?.onStart(drawable)
                     request.target?.onSuccess(drawable)
                     return disposable
                 }
 
-                override fun clearMemory() = Unit
+                override fun invalidate(key: String) = Unit
 
                 override fun shutdown() = Unit
             }
