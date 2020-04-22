@@ -7,7 +7,7 @@ import android.content.Context
 import androidx.work.Configuration
 import coil.Coil.setImageLoader
 import com.bugsnag.android.Bugsnag
-import com.bugsnag.android.Client
+import com.bugsnag.android.OnErrorCallback
 import io.github.reactivecircus.bugsnag.BugsnagTree
 import io.github.reactivecircus.streamlined.di.AppComponent
 import timber.log.Timber
@@ -19,19 +19,8 @@ open class StreamlinedApp : Application(), Configuration.Provider {
         AppComponent.factory().create(this)
     }
 
-    private lateinit var bugsnagClient: Client
-
     override fun onCreate() {
         super.onCreate()
-
-        // initialize Bugsnag
-        if (BuildConfig.ENABLE_BUGSNAG) {
-            bugsnagClient = Bugsnag.init(this).apply {
-                setReleaseStage(BuildConfig.BUILD_TYPE)
-                config.detectAnrs = false
-                config.detectNdkCrashes = false
-            }
-        }
 
         // initialize Timber
         initializeTimber()
@@ -52,11 +41,20 @@ open class StreamlinedApp : Application(), Configuration.Provider {
     }
 
     protected open fun initializeTimber() {
-        val tree = BugsnagTree(bugsnagClient)
+        val tree = BugsnagTree()
         Timber.plant(tree)
-        bugsnagClient.beforeNotify { error ->
-            tree.update(error)
-            return@beforeNotify true
+
+        // initialize Bugsnag
+        if (BuildConfig.ENABLE_BUGSNAG) {
+            val config = com.bugsnag.android.Configuration.load(this).apply {
+                enabledReleaseStages = setOf(BuildConfig.BUILD_TYPE)
+                enabledErrorTypes.ndkCrashes = false
+                addOnError(OnErrorCallback { event ->
+                    tree.update(event)
+                    true
+                })
+            }
+            Bugsnag.start(this, config)
         }
     }
 

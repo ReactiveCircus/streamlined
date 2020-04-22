@@ -15,7 +15,6 @@ dependencies {
 
     // Bugsnag
     api(libraries.bugsnag) {
-        exclude(module = "bugsnag-plugin-android-anr")
         exclude(module = "bugsnag-plugin-android-ndk")
     }
 }

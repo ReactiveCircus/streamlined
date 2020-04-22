@@ -90,14 +90,12 @@ android {
     productFlavors {
         register(ProductFlavors.MOCK) {
             applicationIdSuffix = ".${ProductFlavors.MOCK}"
-            extra.set("enableBugsnag", false)
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to "")
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"false\")")
             buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"false\")")
         }
         register(ProductFlavors.DEV) {
             applicationIdSuffix = ".${ProductFlavors.DEV}"
-            extra.set("enableBugsnag", isCiBuild)
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_DEV_API_KEY"))
             buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"${isCiBuild}\")")
             buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"true\")")

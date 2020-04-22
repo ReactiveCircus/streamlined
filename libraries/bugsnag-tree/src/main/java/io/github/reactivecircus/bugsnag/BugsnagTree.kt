@@ -4,17 +4,17 @@ import android.util.Log.ASSERT
 import android.util.Log.ERROR
 import android.util.Log.INFO
 import android.util.Log.WARN
-import com.bugsnag.android.Client
-import com.bugsnag.android.Error
+import com.bugsnag.android.Bugsnag
+import com.bugsnag.android.Event
 import com.bugsnag.android.Severity
-import java.util.Locale
 import timber.log.Timber
+import java.util.Locale
 
 /**
  * A logging implementation which buffers the last 200 messages and notifies on error exceptions.
  */
 @OptIn(ExperimentalStdlibApi::class)
-class BugsnagTree(private val client: Client) : Timber.Tree() {
+class BugsnagTree : Timber.Tree() {
 
     // Adding one to the initial size accounts for the add before remove.
     private val buffer = ArrayDeque<String>(BUFFER_SIZE + 1)
@@ -53,17 +53,26 @@ class BugsnagTree(private val client: Client) : Timber.Tree() {
 
         if (throwable != null) {
             when (priority) {
-                ERROR -> client.notify(throwable, Severity.ERROR)
-                WARN -> client.notify(throwable, Severity.WARNING)
-                INFO -> client.notify(throwable, Severity.INFO)
+                ERROR -> Bugsnag.notify(throwable) {
+                    it.severity = Severity.ERROR
+                    true
+                }
+                WARN -> Bugsnag.notify(throwable) {
+                    it.severity = Severity.WARNING
+                    true
+                }
+                INFO -> Bugsnag.notify(throwable) {
+                    it.severity = Severity.INFO
+                    true
+                }
             }
         }
     }
 
-    fun update(error: Error) {
+    fun update(event: Event) {
         synchronized(buffer) {
             buffer.forEachIndexed { index, message ->
-                error.addToTab("Log", String.format(Locale.getDefault(), "%03d", index), message)
+                event.addMetadata("Log", String.format(Locale.getDefault(), "%03d", index), message)
             }
         }
     }
