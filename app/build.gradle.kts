@@ -61,10 +61,8 @@ android {
 
     @Suppress("UnstableApiUsage")
     bundle {
-        abi.enableSplit = true
-        density.enableSplit = true
-        language.enableSplit = true
-        texture.enableSplit = true
+        // only support English for now
+        language.enableSplit = false
     }
 
     buildTypes {
