@@ -232,7 +232,8 @@ jobs:
 
       - name: Publish release App Bundle to Play Store
         run: |
-          ./gradlew publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
+          echo
+          # TODO ./gradlew publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
 
       - name: Cleanup secrets
         if: always()
