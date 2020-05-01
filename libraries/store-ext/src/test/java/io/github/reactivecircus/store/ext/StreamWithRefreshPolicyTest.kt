@@ -1,10 +1,12 @@
 package io.github.reactivecircus.store.ext
 
 import com.dropbox.android.external.store4.ResponseOrigin
+import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreResponse
 import com.dropbox.android.external.store4.fresh
+import com.dropbox.android.external.store4.nonFlowValueFetcher
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
 import io.github.reactivecircus.coroutines.test.ext.recordWith
@@ -48,7 +50,7 @@ class StreamWithRefreshPolicyTest {
 
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
-                    StoreResponse.Data(1, ResponseOrigin.Persister)
+                    StoreResponse.Data(1, ResponseOrigin.SourceOfTruth)
                 )
 
             assertThat(refreshPolicy.refreshCounts)
@@ -74,7 +76,7 @@ class StreamWithRefreshPolicyTest {
 
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
-                    StoreResponse.Data(1, ResponseOrigin.Persister),
+                    StoreResponse.Data(1, ResponseOrigin.SourceOfTruth),
                     StoreResponse.Loading<Int>(ResponseOrigin.Fetcher),
                     StoreResponse.Data(2, ResponseOrigin.Fetcher)
                 )
@@ -155,11 +157,13 @@ class StreamWithRefreshPolicyTest {
         persister: NonFlowingTestPersister<String, Int> = inMemoryPersister,
         scope: CoroutineScope = testScope
     ): Store<String, Int> {
-        return StoreBuilder.fromNonFlow(fetcher::fetch)
-            .nonFlowingPersister(
+        return StoreBuilder.from(
+            fetcher = nonFlowValueFetcher(fetcher::fetch),
+            sourceOfTruth = SourceOfTruth.fromNonFlow(
                 reader = persister::read,
                 writer = persister::write
             )
+        )
             .disableCache()
             .scope(scope)
             .build()
@@ -172,11 +176,13 @@ class StreamWithRefreshPolicyTest {
         persister: FlowingTestPersister<String, Int>,
         scope: CoroutineScope = testScope
     ): Store<String, Int> {
-        return StoreBuilder.fromNonFlow(fetcher::fetch)
-            .persister(
+        return StoreBuilder.from(
+            fetcher = nonFlowValueFetcher(fetcher::fetch),
+            sourceOfTruth = SourceOfTruth.from(
                 reader = persister::read,
                 writer = persister::write
             )
+        )
             .disableCache()
             .scope(scope)
             .build()

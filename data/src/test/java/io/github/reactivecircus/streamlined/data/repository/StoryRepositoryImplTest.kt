@@ -1,9 +1,11 @@
 package io.github.reactivecircus.streamlined.data.repository
 
 import com.dropbox.android.external.store4.ResponseOrigin
+import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreResponse
+import com.dropbox.android.external.store4.nonFlowValueFetcher
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
 import io.github.reactivecircus.coroutines.test.ext.recordWith
@@ -145,7 +147,7 @@ class StoryRepositoryImplTest {
             storyRepository.streamHeadlineStories().recordWith(flowRecorder)
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
-                    StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Persister),
+                    StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.SourceOfTruth),
                     StoreResponse.Loading<List<Story>>(ResponseOrigin.Fetcher),
                     StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
                 )
@@ -201,7 +203,7 @@ class StoryRepositoryImplTest {
             storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
-                    StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Persister),
+                    StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.SourceOfTruth),
                     StoreResponse.Loading<List<Story>>(ResponseOrigin.Fetcher),
                     StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
                 )
@@ -282,11 +284,13 @@ private fun <Key : Any, Output : Any> buildStore(
     persister: InMemoryPersister<Key, Output>,
     scope: CoroutineScope
 ): Store<Key, Output> {
-    return StoreBuilder.fromNonFlow(fetcher::fetch)
-        .nonFlowingPersister(
+    return StoreBuilder.from(
+        fetcher = nonFlowValueFetcher(fetcher::fetch),
+        sourceOfTruth = SourceOfTruth.fromNonFlow(
             reader = persister::read,
             writer = persister::write
         )
+    )
         .disableCache()
         .scope(scope)
         .build()

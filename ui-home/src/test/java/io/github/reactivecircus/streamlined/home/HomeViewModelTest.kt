@@ -131,10 +131,10 @@ class HomeViewModelTest {
     @Test
     fun `emits Idle state with generated feed items when headline and personalized stories streams emit Data responses`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(headlineStories, ResponseOrigin.Persister)
+            StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth)
         )
         every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(personalizedStories, ResponseOrigin.Persister)
+            StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth)
         )
 
         viewModel.state.observeForever(stateObserver)
@@ -151,7 +151,7 @@ class HomeViewModelTest {
             StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher)
         )
         every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error(IOException(), ResponseOrigin.Fetcher)
+            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
 
         viewModel.state.observeForever(stateObserver)
@@ -165,7 +165,7 @@ class HomeViewModelTest {
     @Test
     fun `emits Error state when headline stories stream emits Error response and personalized stories stream emits Data response`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error(IOException(), ResponseOrigin.Fetcher)
+            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
         every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
             StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher)
@@ -195,13 +195,13 @@ class HomeViewModelTest {
         headlineStoriesResponseEmitter.offer(
             StoreResponse.Data(
                 headlineStories,
-                ResponseOrigin.Persister
+                ResponseOrigin.SourceOfTruth
             )
         )
         personalizedStoriesResponseEmitter.offer(
             StoreResponse.Data(
                 personalizedStories,
-                ResponseOrigin.Persister
+                ResponseOrigin.SourceOfTruth
             )
         )
 
@@ -229,10 +229,10 @@ class HomeViewModelTest {
     @Test
     fun `emits Error state when both headline and personalized stories streams emit Error responses`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error(IOException(), ResponseOrigin.Fetcher)
+            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
         every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error(IOException(), ResponseOrigin.Fetcher)
+            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
 
         viewModel.state.observeForever(stateObserver)
@@ -260,13 +260,13 @@ class HomeViewModelTest {
         headlineStoriesResponseEmitter.offer(
             StoreResponse.Data(
                 headlineStories,
-                ResponseOrigin.Persister
+                ResponseOrigin.SourceOfTruth
             )
         )
         personalizedStoriesResponseEmitter.offer(
             StoreResponse.Data(
                 personalizedStories,
-                ResponseOrigin.Persister
+                ResponseOrigin.SourceOfTruth
             )
         )
 
@@ -286,7 +286,7 @@ class HomeViewModelTest {
             )
         )
         personalizedStoriesResponseEmitter.offer(
-            StoreResponse.Error(
+            StoreResponse.Error.Exception(
                 IOException(),
                 ResponseOrigin.Fetcher
             )
@@ -329,10 +329,10 @@ class HomeViewModelTest {
         viewModel.state.observeForever(stateObserver)
 
         headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.Persister))
+            offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
         }
         personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Persister))
+            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
         }
 
         viewModel.refreshHomeFeeds()
@@ -384,10 +384,10 @@ class HomeViewModelTest {
         viewModel.effect.recordWith(effectFlowRecorder)
 
         headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.Persister))
+            offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
         }
         personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Persister))
+            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
         }
 
         viewModel.refreshHomeFeeds()
@@ -442,7 +442,7 @@ class HomeViewModelTest {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher))
         }
         personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Error(IOException(), ResponseOrigin.Fetcher))
+            offer(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
         }
 
         viewModel.refreshHomeFeeds()
@@ -490,7 +490,7 @@ class HomeViewModelTest {
         viewModel.effect.recordWith(effectFlowRecorder)
 
         headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Error(IOException(), ResponseOrigin.Fetcher))
+            offer(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
         }
         personalizedStoriesResponseEmitter.run {
             offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher))

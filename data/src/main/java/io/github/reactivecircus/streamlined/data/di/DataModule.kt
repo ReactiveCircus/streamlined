@@ -1,7 +1,9 @@
 package io.github.reactivecircus.streamlined.data.di
 
 import android.content.Context
+import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.StoreBuilder
+import com.dropbox.android.external.store4.nonFlowValueFetcher
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -12,6 +14,7 @@ import io.github.reactivecircus.streamlined.data.mapper.toEntity
 import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.data.repository.BookmarkRepositoryImpl
 import io.github.reactivecircus.streamlined.data.repository.StoryRepositoryImpl
+import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.persistence.StoryDao
@@ -73,31 +76,26 @@ internal abstract class DataModule {
             storyDao: StoryDao,
             longLifetimeCoroutineScope: CoroutineScope
         ): HeadlineStoryStore {
-            return StoreBuilder.fromNonFlow<Unit, List<StoryEntity>>(
-                    fetcher = {
-                        // TODO source country (hardcode ISO 3166-1 country code) from user preference
-                        val country = "au"
-                        newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
-                    }
-                )
-                .scope(longLifetimeCoroutineScope)
-                .persister(
+            return StoreBuilder.from<Unit, List<StoryEntity>, List<Story>>(
+                fetcher = nonFlowValueFetcher {
+                    // TODO source country (hardcode ISO 3166-1 country code) from user preference
+                    val country = "au"
+                    newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
+                },
+                sourceOfTruth = SourceOfTruth.from(
                     reader = {
                         storyDao.headlineStories().map { stories ->
-                            if (stories.isNotEmpty()) {
-                                stories.map { it.toModel() }
-                            } else {
-                                null
-                            }
+                            stories.map { it.toModel() }.ifEmpty { null }
                         }
                     },
                     writer = { _, stories ->
                         storyDao.updateStories(forHeadlines = true, stories = stories)
                     },
-                    deleteAll = {
-                        storyDao.deleteHeadlineStories()
-                    }
-                ).build()
+                    deleteAll = storyDao::deleteHeadlineStories
+                )
+            )
+                .scope(longLifetimeCoroutineScope)
+                .build()
         }
 
         @Provides
@@ -109,14 +107,12 @@ internal abstract class DataModule {
             storyDao: StoryDao,
             longLifetimeCoroutineScope: CoroutineScope
         ): PersonalizedStoryStore {
-            return StoreBuilder.fromNonFlow<String, List<StoryEntity>>(
-                    fetcher = { query ->
-                        // TODO use custom query type instead of string
-                        newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
-                    }
-                )
-                .scope(longLifetimeCoroutineScope)
-                .persister(
+            return StoreBuilder.from<String, List<StoryEntity>, List<Story>>(
+                fetcher = nonFlowValueFetcher { query ->
+                    // TODO use custom query type instead of string
+                    newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
+                },
+                sourceOfTruth = SourceOfTruth.from(
                     reader = {
                         storyDao.nonHeadlineStories().map { stories ->
                             if (stories.isNotEmpty()) {
@@ -129,10 +125,10 @@ internal abstract class DataModule {
                     writer = { _, stories ->
                         storyDao.updateStories(forHeadlines = false, stories = stories)
                     },
-                    deleteAll = {
-                        storyDao.deleteNonHeadlineStories()
-                    }
+                    deleteAll = storyDao::deleteNonHeadlineStories
                 )
+            )
+                .scope(longLifetimeCoroutineScope)
                 .build()
         }
     }
