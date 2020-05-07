@@ -15,29 +15,29 @@ sealed class FeedType {
 }
 
 sealed class HomeState {
-    data class Idle(val items: List<FeedItem>) : HomeState()
-
     sealed class InFlight : HomeState() {
-        abstract val items: List<FeedItem>?
-
-        data class FirstTime(override val items: List<FeedItem>?) : InFlight()
-        data class Subsequent(override val items: List<FeedItem>?) : InFlight()
+        object Initial : InFlight()
+        data class FetchWithCache(val items: List<FeedItem>) : InFlight()
+        data class Refresh(val items: List<FeedItem>?) : InFlight()
     }
 
-    object Error : HomeState()
+    data class ShowingContent(val items: List<FeedItem>) : HomeState()
+
+    sealed class Error : HomeState() {
+        data class Transient(val items: List<FeedItem>) : Error()
+        object Permanent : Error()
+    }
 
     internal val itemsOrNull: List<FeedItem>?
         get() = when (this) {
-            is Idle -> items
-            is InFlight -> items
+            is InFlight.FetchWithCache -> items
+            is InFlight.Refresh -> items
+            is ShowingContent -> items
+            is Error.Transient -> items
             else -> null
         }
 }
 
 sealed class HomeAction {
     object Refresh : HomeAction()
-}
-
-sealed class HomeEffect {
-    object ShowTransientError : HomeEffect()
 }

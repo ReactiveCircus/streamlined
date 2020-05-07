@@ -3,14 +3,18 @@ package io.github.reactivecircus.streamlined.di
 import androidx.fragment.app.Fragment
 import dagger.Binds
 import dagger.Module
+import dagger.Reusable
 import dagger.multibindings.IntoMap
 import io.github.reactivecircus.streamlined.headlines.HeadlinesFragment
+import io.github.reactivecircus.streamlined.home.DefaultHomeUiConfigs
 import io.github.reactivecircus.streamlined.home.HomeFragment
+import io.github.reactivecircus.streamlined.home.HomeUiConfigs
 import io.github.reactivecircus.streamlined.readinglist.ReadingListFragment
 import io.github.reactivecircus.streamlined.settings.SettingsFragment
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsAssistedModule
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
 import io.github.reactivecircus.streamlined.ui.di.FragmentKey
+import kotlin.time.ExperimentalTime
 
 @Module(
     includes = [
@@ -18,6 +22,11 @@ import io.github.reactivecircus.streamlined.ui.di.FragmentKey
     ]
 )
 abstract class FeatureModule {
+
+    @Binds
+    @Reusable
+    @OptIn(ExperimentalTime::class)
+    abstract fun homeUiConfigs(impl: DefaultHomeUiConfigs): HomeUiConfigs
 
     @Binds
     @IntoMap

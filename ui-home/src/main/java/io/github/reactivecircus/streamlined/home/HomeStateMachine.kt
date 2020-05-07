@@ -14,55 +14,62 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import reactivecircus.blueprint.interactor.EmptyParams
 import javax.inject.Inject
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @FlowPreview
 @ExperimentalCoroutinesApi
 class HomeStateMachine @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories,
     streamPersonalizedStories: StreamPersonalizedStories,
     private val fetchHeadlineStories: FetchHeadlineStories,
-    private val fetchPersonalizedStories: FetchPersonalizedStories
-) : FlowReduxStateMachine<HomeState, HomeAction>(HomeState.InFlight.FirstTime(null)) {
+    private val fetchPersonalizedStories: FetchPersonalizedStories,
+    private val homeUiConfigs: HomeUiConfigs
+) : FlowReduxStateMachine<HomeState, HomeAction>(HomeState.InFlight.Initial) {
 
     // TODO replace with currently applied filters / configs
     private val query = "android"
 
-    private val effectEmitter = BroadcastChannel<HomeEffect>(Channel.BUFFERED)
-
-    val effect: Flow<HomeEffect> = effectEmitter.asFlow()
-
     init {
         spec {
-            inState<HomeState.Idle> {
-                on<HomeAction.Refresh>(FlatMapPolicy.LATEST, ::fetchStoriesFromNetwork)
+            inState<HomeState.InFlight.Refresh> {
+                onEnter(FlatMapPolicy.LATEST, ::fetchStoriesFromNetwork)
+            }
+
+            inState<HomeState.ShowingContent> {
+                on<HomeAction.Refresh>(FlatMapPolicy.LATEST) { _, _, setState ->
+                    setState { HomeState.InFlight.Refresh(it.itemsOrNull) }
+                }
             }
 
             inState<HomeState.Error> {
-                on<HomeAction.Refresh>(FlatMapPolicy.LATEST, ::fetchStoriesFromNetwork)
+                on<HomeAction.Refresh>(FlatMapPolicy.LATEST) { _, _, setState ->
+                    setState { HomeState.InFlight.Refresh(it.itemsOrNull) }
+                }
             }
 
-            val headlineStoriesFlow = streamHeadlineStories
-                .buildFlow(EmptyParams)
-
-            val personalizedStoriesFlow = streamPersonalizedStories
-                .buildFlow(StreamPersonalizedStories.Params(query))
+            inState<HomeState.Error.Transient> {
+                val timer = flow {
+                    delay(homeUiConfigs.transientErrorDisplayDuration)
+                    emit(Unit)
+                }.flowOn(homeUiConfigs.delayDispatcher)
+                collectWhileInState(timer, FlatMapPolicy.LATEST, ::dismissTransientError)
+            }
 
             val combinedStories = combine(
-                headlineStoriesFlow, personalizedStoriesFlow
+                streamHeadlineStories.buildFlow(EmptyParams),
+                streamPersonalizedStories.buildFlow(StreamPersonalizedStories.Params(query))
             ) { source1, source2 -> source1 to source2 }
 
             collectWhileInAnyState(
-                combinedStories,
-                FlatMapPolicy.LATEST,
-                ::processCombinedStoriesFlow
+                combinedStories, FlatMapPolicy.LATEST, ::processCombinedStoriesFlow
             )
         }
     }
@@ -74,16 +81,9 @@ class HomeStateMachine @Inject constructor(
      */
     @Suppress("UNUSED_PARAMETER")
     private suspend fun fetchStoriesFromNetwork(
-        action: HomeAction,
         getState: GetState<HomeState>,
         setState: SetState<HomeState>
     ) {
-        setState(runIf = { state ->
-            state !is HomeState.InFlight
-        }) {
-            HomeState.InFlight.Subsequent(getState().itemsOrNull)
-        }
-
         val result = runCatching {
             coroutineScope {
                 val headlineStoriesDeferred = async {
@@ -96,18 +96,18 @@ class HomeStateMachine @Inject constructor(
             }
         }
 
-        // when refresh fails, transition to Error state if no existing data is available,
-        // otherwise transition back to Idle state and emit an Effect for showing transient error
-        val currentItems = getState().itemsOrNull
-        setState(runIf = { result.isFailure }) {
-            if (currentItems == null) {
-                HomeState.Error
+        // When refresh fails, transition to Error.Permanent state if no existing data is available,
+        // otherwise transition to Error.Transient state if data exists.
+        setState { currentState ->
+            if (result.isFailure && currentState is HomeState.InFlight.Refresh) {
+                if (currentState.items == null) {
+                    HomeState.Error.Permanent
+                } else {
+                    HomeState.Error.Transient(currentState.items)
+                }
             } else {
-                HomeState.Idle(currentItems)
+                currentState
             }
-        }
-        if (result.isFailure && currentItems != null) {
-            effectEmitter.offer(HomeEffect.ShowTransientError)
         }
     }
 
@@ -115,6 +115,7 @@ class HomeStateMachine @Inject constructor(
      * Set the next state based on the latest [StoreResponse] type
      * for both the headlines and personalized stories.
      */
+    @Suppress("UNUSED_PARAMETER")
     private suspend fun processCombinedStoriesFlow(
         combinedStoryResponses: CombinedStoryResponses,
         getState: GetState<HomeState>,
@@ -124,47 +125,73 @@ class HomeStateMachine @Inject constructor(
         val personalized = combinedStoryResponses.second
 
         when {
+            // When either response is loading and currently showing content,
+            // transition to InFlight.FetchWithCache state.
+            // This is needed when cached content has been displayed,
+            // but the story streams continue to fetch fresh data from network after
+            // emitting the cached content.
+            // The sequence of responses looks like this:
+            // Data response cache / disk -> Loading -> Error or Data response from network
             headlines is StoreResponse.Loading || personalized is StoreResponse.Loading -> {
-                // when either response is loading, transition to InFlight.FirstTime state
-                // if not already in InFlight state. This is needed when cached data is being displayed first
-                // while waiting for fresh data from network to be emitted.
-                // The sequence of responses looks like this:
-                // Data response cache / disk -> Loading -> Error or Data response from network
-                setState(runIf = { state ->
-                    state !is HomeState.InFlight
-                }) {
-                    HomeState.InFlight.FirstTime(getState().itemsOrNull)
-                }
-            }
-            headlines is StoreResponse.Error || personalized is StoreResponse.Error -> {
-                // when either response is an error and we are loading for the first time,
-                // transition to Error state if no existing data is available,
-                // otherwise transition back to Idle state and emit an Effect for showing transient error
-                val currentItems = getState().itemsOrNull
-                setState(runIf = { state ->
-                    state is HomeState.InFlight.FirstTime
-                }) {
-                    if (currentItems == null) {
-                        HomeState.Error
-                    } else {
-                        HomeState.Idle(currentItems).also {
-                            effectEmitter.offer(HomeEffect.ShowTransientError)
+                setState { currentState ->
+                    when (currentState) {
+                        is HomeState.ShowingContent -> {
+                            HomeState.InFlight.FetchWithCache(currentState.items)
                         }
+                        else -> currentState
                     }
                 }
             }
+            // When either response is an error, transition to Error.Permanent state
+            // if we are either loading for the first time;
+            // or transition to Error.Transient state if we are fetching from network
+            // while displaying cached content.
+            headlines is StoreResponse.Error || personalized is StoreResponse.Error -> {
+                setState { currentState ->
+                    when (currentState) {
+                        is HomeState.InFlight.Initial -> {
+                            HomeState.Error.Permanent
+                        }
+                        is HomeState.InFlight.FetchWithCache -> {
+                            HomeState.Error.Transient(currentState.items)
+                        }
+                        else -> currentState
+                    }
+                }
+            }
+            // Generate feed items and transition to ShowingContent state
+            // when both responses have data available
             headlines is StoreResponse.Data && personalized is StoreResponse.Data -> {
                 val feedItems = generateFeedItems(
-                    maxNumberOfHeadlines = NUMBER_OF_HEADLINES_DISPLAYED,
+                    maxNumberOfHeadlines = homeUiConfigs.numberOfHeadlinesDisplayed,
                     headlineStories = headlines.requireData(),
                     personalizedStories = personalized.requireData()
                 )
                 setState {
-                    HomeState.Idle(feedItems)
+                    HomeState.ShowingContent(feedItems)
                 }
+            }
+        }
+    }
+
+    /**
+     * Reset state back to ShowingContent after displaying transient error for a period.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    private suspend fun dismissTransientError(
+        result: Unit,
+        getState: GetState<HomeState>,
+        setState: SetState<HomeState>
+    ) {
+        setState { currentState ->
+            when (currentState) {
+                is HomeState.Error.Transient -> {
+                    HomeState.ShowingContent(currentState.items)
+                }
+                else -> currentState
             }
         }
     }
 }
 
-private typealias CombinedStoryResponses = Pair<StoreResponse<List<Story>>, StoreResponse<List<Story>>>
+internal typealias CombinedStoryResponses = Pair<StoreResponse<List<Story>>, StoreResponse<List<Story>>>

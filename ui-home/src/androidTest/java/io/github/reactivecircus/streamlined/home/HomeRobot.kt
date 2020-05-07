@@ -34,15 +34,15 @@ class HomeRobot : ScreenRobot<HomeRobot.Actions, HomeRobot.Assertions>(Actions()
         }
 
         fun swipeToRefresh() {
-            onRecyclerViewIdle(R.id.homeFeedsRecyclerView)
-            swipeDownOnView(R.id.homeFeedsRecyclerView)
+            onRecyclerViewIdle(R.id.recyclerView)
+            swipeDownOnView(R.id.recyclerView)
         }
     }
 
     class Assertions : RobotAssertions {
 
         fun homeFeedsDisplayed(feedItems: List<FeedItem>) {
-            val recyclerViewId = R.id.homeFeedsRecyclerView
+            val recyclerViewId = R.id.recyclerView
             val storyImageViewId = R.id.storyImageView
             val storySourceTextViewId = R.id.storySourceTextView
             val storyTitleTextViewId = R.id.storyTitleTextView

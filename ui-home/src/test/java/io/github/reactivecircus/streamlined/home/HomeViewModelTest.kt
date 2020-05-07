@@ -5,8 +5,6 @@ import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.StoreResponse
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.CoroutinesTestRule
-import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
-import io.github.reactivecircus.coroutines.test.ext.recordWith
 import io.github.reactivecircus.livedata.test.ext.TestObserver
 import io.github.reactivecircus.streamlined.domain.interactor.FetchHeadlineStories
 import io.github.reactivecircus.streamlined.domain.interactor.FetchPersonalizedStories
@@ -25,11 +23,15 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
+import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import java.io.IOException
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @FlowPreview
 @ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
@@ -97,7 +99,7 @@ class HomeViewModelTest {
 
     private val stateObserver = TestObserver<HomeState>()
 
-    private val effectFlowRecorder = FlowRecorder<HomeEffect>(TestCoroutineScope())
+    private val testDispatcher = TestCoroutineDispatcher()
 
     private val viewModel: HomeViewModel by lazy {
         HomeViewModel(
@@ -105,13 +107,20 @@ class HomeViewModelTest {
                 streamHeadlineStories,
                 streamPersonalizedStories,
                 fetchHeadlineStories,
-                fetchPersonalizedStories
+                fetchPersonalizedStories,
+                DefaultHomeUiConfigs(
+                    CoroutineDispatcherProvider(
+                        io = testDispatcher,
+                        computation = testDispatcher,
+                        ui = testDispatcher
+                    )
+                )
             )
         )
     }
 
     @Test
-    fun `starts streaming headline and personalized stories and emits InFlight#FirstTime state when initialized`() {
+    fun `starts streaming headline and personalized stories and emits InFlight#Initial state when initialized`() {
         every { streamHeadlineStories.buildFlow(any()) } returns emptyFlow()
         every { streamPersonalizedStories.buildFlow(any()) } returns emptyFlow()
 
@@ -124,12 +133,12 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null)
+                HomeState.InFlight.Initial
             )
     }
 
     @Test
-    fun `emits Idle state with generated feed items when headline and personalized stories streams emit Data responses`() {
+    fun `emits ShowingContent state with generated feed items when headline and personalized stories streams emit Data responses`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
             StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth)
         )
@@ -141,12 +150,12 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.Idle(expectedFeedItems(headlineStories, personalizedStories))
+                HomeState.ShowingContent(expectedFeedItems(headlineStories, personalizedStories))
             )
     }
 
     @Test
-    fun `emits Error state when headline stories stream emits Data response and personalized stories stream emits Error response`() {
+    fun `emits Error#Permanent state when headline stories stream emits Data response and personalized stories stream emits Error response`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
             StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher)
         )
@@ -158,12 +167,12 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.Error
+                HomeState.Error.Permanent
             )
     }
 
     @Test
-    fun `emits Error state when headline stories stream emits Error response and personalized stories stream emits Data response`() {
+    fun `emits Error#Permanent state when headline stories stream emits Error response and personalized stories stream emits Data response`() {
         every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
             StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
@@ -175,12 +184,29 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.Error
+                HomeState.Error.Permanent
             )
     }
 
     @Test
-    fun `emits InFlight#FirstTime state when either stories stream emits Loading response while not already in InFlight state`() {
+    fun `emits Error#Permanent state when both headline and personalized stories streams emit Error responses`() {
+        every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
+            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
+        )
+        every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
+            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
+        )
+
+        viewModel.state.observeForever(stateObserver)
+
+        assertThat(stateObserver.takeAll())
+            .containsExactly(
+                HomeState.Error.Permanent
+            )
+    }
+
+    @Test
+    fun `emits InFlight#FetchWithCache state when either stories stream emits Loading response while in ShowingContent state`() {
         val headlineStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
         val personalizedStoriesResponseEmitter =
@@ -215,9 +241,9 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null),
-                HomeState.Idle(expectedFeedItems(headlineStories, personalizedStories)),
-                HomeState.InFlight.FirstTime(
+                HomeState.InFlight.Initial,
+                HomeState.ShowingContent(expectedFeedItems(headlineStories, personalizedStories)),
+                HomeState.InFlight.FetchWithCache(
                     expectedFeedItems(
                         headlineStories,
                         personalizedStories
@@ -227,24 +253,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `emits Error state when both headline and personalized stories streams emit Error responses`() {
-        every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
-        )
-        every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
-        )
-
-        viewModel.state.observeForever(stateObserver)
-
-        assertThat(stateObserver.takeAll())
-            .containsExactly(
-                HomeState.Error
-            )
-    }
-
-    @Test
-    fun `emits ShowTransientError effect without emitting new state when either stories stream emits Error response with existing cached data in the current state`() {
+    fun `emits Error#Transient state when either stories stream emits Error response with existing cached data in the current state`() {
         val headlineStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
         val personalizedStoriesResponseEmitter =
@@ -254,7 +263,6 @@ class HomeViewModelTest {
         every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
 
         viewModel.state.observeForever(stateObserver)
-        viewModel.effect.recordWith(effectFlowRecorder)
 
         // cached data is emitted first
         headlineStoriesResponseEmitter.offer(
@@ -294,27 +302,24 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null),
-                HomeState.Idle(
+                HomeState.InFlight.Initial,
+                HomeState.ShowingContent(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
-                HomeState.InFlight.FirstTime(
+                HomeState.InFlight.FetchWithCache(
                     expectedFeedItems(
                         headlineStories,
                         personalizedStories
                     )
                 ),
-                HomeState.Idle(
+                HomeState.Error.Transient(
                     expectedFeedItems(headlineStories, personalizedStories)
                 )
             )
-
-        assertThat(effectFlowRecorder.takeAll())
-            .containsExactly(HomeEffect.ShowTransientError)
     }
 
     @Test
-    fun `emits Idle state with updated feed items when refresh is successful while in Idle state`() {
+    fun `emits ShowingContent state with updated feed items when refresh is successful while in ShowingContent state`() {
         val headlineStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
         val personalizedStoriesResponseEmitter =
@@ -351,24 +356,24 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null),
-                HomeState.Idle(
+                HomeState.InFlight.Initial,
+                HomeState.ShowingContent(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
-                HomeState.InFlight.Subsequent(
+                HomeState.InFlight.Refresh(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
-                HomeState.Idle(
+                HomeState.ShowingContent(
                     expectedFeedItems(headlineStories.subList(0, 1), personalizedStories)
                 ),
-                HomeState.Idle(
+                HomeState.ShowingContent(
                     expectedFeedItems(headlineStories.subList(0, 1), emptyList())
                 )
             )
     }
 
     @Test
-    fun `emits ShowTransientError effect and Idle state with existing data when refresh is unsuccessful while in Idle state`() {
+    fun `emits Error#Transient state with existing data when refresh is unsuccessful while in ShowingContent state`() {
         val headlineStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
         val personalizedStoriesResponseEmitter =
@@ -381,7 +386,6 @@ class HomeViewModelTest {
         coEvery { fetchPersonalizedStories.execute(any()) } returns emptyList()
 
         viewModel.state.observeForever(stateObserver)
-        viewModel.effect.recordWith(effectFlowRecorder)
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
@@ -392,11 +396,6 @@ class HomeViewModelTest {
 
         viewModel.refreshHomeFeeds()
 
-        // only refresh for personalized stories was successfully
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(emptyList(), ResponseOrigin.Fetcher))
-        }
-
         coVerifyAll {
             fetchHeadlineStories.execute(any())
             fetchHeadlineStories.execute(any())
@@ -404,27 +403,74 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null),
-                HomeState.Idle(
+                HomeState.InFlight.Initial,
+                HomeState.ShowingContent(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
-                HomeState.InFlight.Subsequent(
+                HomeState.InFlight.Refresh(
                     expectedFeedItems(headlineStories, personalizedStories)
                 ),
-                HomeState.Idle(
+                HomeState.Error.Transient(
                     expectedFeedItems(headlineStories, personalizedStories)
-                ),
-                HomeState.Idle(
-                    expectedFeedItems(headlineStories, emptyList())
                 )
             )
-
-        assertThat(effectFlowRecorder.takeAll())
-            .containsExactly(HomeEffect.ShowTransientError)
     }
 
     @Test
-    fun `emits Idle state with fetched feed items when retry is successful while in Error state`() {
+    fun `emits ShowingContent state after being in the Error#Transient state for a certain period`() =
+        testDispatcher.runBlockingTest {
+            val headlineStoriesResponseEmitter =
+                BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
+            val personalizedStoriesResponseEmitter =
+                BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
+
+            every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
+            every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
+
+            coEvery { fetchHeadlineStories.execute(any()) } returns emptyList()
+            coEvery { fetchPersonalizedStories.execute(any()) } coAnswers { throw IOException() }
+
+            viewModel.state.observeForever(stateObserver)
+
+            headlineStoriesResponseEmitter.run {
+                offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
+            }
+            personalizedStoriesResponseEmitter.run {
+                offer(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
+            }
+
+            viewModel.refreshHomeFeeds()
+
+            assertThat(stateObserver.takeAll())
+                .containsExactly(
+                    HomeState.InFlight.Initial,
+                    HomeState.ShowingContent(
+                        expectedFeedItems(headlineStories, personalizedStories)
+                    ),
+                    HomeState.InFlight.Refresh(
+                        expectedFeedItems(
+                            headlineStories,
+                            personalizedStories
+                        )
+                    ),
+                    HomeState.Error.Transient(
+                        expectedFeedItems(headlineStories, personalizedStories)
+                    )
+                )
+
+            // advance virtual clock to when the transient error is expected to be dismissed
+            advanceTimeBy(DefaultHomeUiConfigs.TRANSIENT_ERROR_DISPLAY_DURATION.toLongMilliseconds())
+
+            assertThat(stateObserver.takeAll())
+                .containsExactly(
+                    HomeState.ShowingContent(
+                        expectedFeedItems(headlineStories, personalizedStories)
+                    )
+                )
+        }
+
+    @Test
+    fun `emits ShowingContent state with fetched feed items when retry is successful while in Error state`() {
         val headlineStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
         val personalizedStoriesResponseEmitter =
@@ -461,10 +507,10 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null),
-                HomeState.Error,
-                HomeState.InFlight.Subsequent(null),
-                HomeState.Idle(
+                HomeState.InFlight.Initial,
+                HomeState.Error.Permanent,
+                HomeState.InFlight.Refresh(null),
+                HomeState.ShowingContent(
                     expectedFeedItems(
                         headlineStories.subList(0, 1),
                         personalizedStories.subList(0, 1)
@@ -474,7 +520,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `emits Error state without emitting ShowTransientError effect when retry is unsuccessful while in Error state`() {
+    fun `emits Error#Permanent state again after an unsuccessful retry when already in Error#Permanent state before the retry`() {
         val headlineStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
         val personalizedStoriesResponseEmitter =
@@ -487,7 +533,6 @@ class HomeViewModelTest {
         coEvery { fetchPersonalizedStories.execute(any()) } coAnswers { throw IOException() }
 
         viewModel.state.observeForever(stateObserver)
-        viewModel.effect.recordWith(effectFlowRecorder)
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
@@ -505,22 +550,19 @@ class HomeViewModelTest {
 
         assertThat(stateObserver.takeAll())
             .containsExactly(
-                HomeState.InFlight.FirstTime(null),
-                HomeState.Error,
-                HomeState.InFlight.Subsequent(null),
-                HomeState.Error
+                HomeState.InFlight.Initial,
+                HomeState.Error.Permanent,
+                HomeState.InFlight.Refresh(null),
+                HomeState.Error.Permanent
             )
-
-        assertThat(effectFlowRecorder.takeAll())
-            .isEmpty()
     }
-}
 
-private fun expectedFeedItems(
-    headlineStories: List<Story>,
-    personalizedStories: List<Story>
-) = generateFeedItems(
-    NUMBER_OF_HEADLINES_DISPLAYED,
-    headlineStories,
-    personalizedStories
-)
+    private fun expectedFeedItems(
+        headlineStories: List<Story>,
+        personalizedStories: List<Story>
+    ) = generateFeedItems(
+        DefaultHomeUiConfigs.NUMBER_OF_HEADLINES_DISPLAYED,
+        headlineStories,
+        personalizedStories
+    )
+}

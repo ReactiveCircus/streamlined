@@ -13,11 +13,10 @@ import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
-import io.github.reactivecircus.streamlined.ui.Screen
+import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import reactivecircus.flowbinding.android.view.clicks
@@ -29,9 +28,9 @@ import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeFragment @Inject constructor(
     private val navigatorProvider: NavigatorProvider,
-    private val viewModelProvider: Provider<HomeViewModel>,
-    private val animationConfigs: AnimationConfigs
-) : Fragment(R.layout.fragment_home), Screen {
+    private val animationConfigs: AnimationConfigs,
+    private val viewModelProvider: Provider<HomeViewModel>
+) : Fragment(R.layout.fragment_home), ScreenForAnalytics {
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
@@ -60,68 +59,66 @@ class HomeFragment @Inject constructor(
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
 
-        binding.homeFeedsRecyclerView.apply {
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = feedsListAdapter
         }
 
         viewModel.state.observe<HomeState>(viewLifecycleOwner) { state ->
             when (state) {
-                is HomeState.Idle -> binding.showIdleState()
-                is HomeState.InFlight -> binding.showInFlightState(state.itemsOrNull)
-                is HomeState.Error -> binding.showErrorState()
+                is HomeState.InFlight -> binding.showInFlightState(
+                    hasContent = state.itemsOrNull != null
+                )
+                is HomeState.ShowingContent -> binding.showContentState()
+                is HomeState.Error.Permanent -> binding.showPermanentErrorState()
+                is HomeState.Error.Transient -> binding.showTransientErrorState()
             }
             state.itemsOrNull?.run {
                 feedsListAdapter.submitList(this)
             }
         }
-
-        viewModel.effect
-            .filterIsInstance<HomeEffect.ShowTransientError>()
-            .onEach { binding.showErrorSnackbarOnce() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        errorSnackbar?.dismiss()
-    }
-
-    private fun FragmentHomeBinding.showIdleState() {
+    private fun FragmentHomeBinding.showContentState() {
         errorStateView.isVisible = false
         progressBar.isVisible = false
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = true
-        homeFeedsRecyclerView.isVisible = true
+        recyclerView.isVisible = true
+        errorSnackbar?.dismiss()
     }
 
-    private fun FragmentHomeBinding.showInFlightState(items: List<FeedItem>?) {
+    private fun FragmentHomeBinding.showInFlightState(hasContent: Boolean) {
         errorStateView.isVisible = false
-        progressBar.isVisible = items == null
-        swipeRefreshLayout.isRefreshing = items != null
-        swipeRefreshLayout.isEnabled = items != null
-        homeFeedsRecyclerView.isVisible = items != null
+        progressBar.isVisible = !hasContent
+        swipeRefreshLayout.isRefreshing = hasContent
+        swipeRefreshLayout.isEnabled = hasContent
+        recyclerView.isVisible = hasContent
+        errorSnackbar?.dismiss()
     }
 
-    private fun FragmentHomeBinding.showErrorState() {
+    private fun FragmentHomeBinding.showPermanentErrorState() {
         errorStateView.isVisible = true
         progressBar.isVisible = false
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = false
-        homeFeedsRecyclerView.isVisible = false
+        recyclerView.isVisible = false
         errorSnackbar?.dismiss()
     }
 
-    private fun FragmentHomeBinding.showErrorSnackbarOnce() {
-        if (errorSnackbar?.isShownOrQueued != true) {
-            val errorMessage = getString(
-                CommonUiResource.string.error_message_could_not_refresh_content
-            )
-            errorSnackbar = Snackbar
-                .make(root, errorMessage, Snackbar.LENGTH_LONG)
-                .setDefaultBackgroundColor()
-                .apply { show() }
-        }
+    private fun FragmentHomeBinding.showTransientErrorState() {
+        errorStateView.isVisible = false
+        progressBar.isVisible = false
+        swipeRefreshLayout.isRefreshing = false
+        swipeRefreshLayout.isEnabled = true
+        recyclerView.isVisible = true
+        val errorMessage = getString(
+            CommonUiResource.string.error_message_could_not_refresh_content
+        )
+        errorSnackbar = Snackbar
+            .make(root, errorMessage, Snackbar.LENGTH_INDEFINITE)
+            .setDefaultBackgroundColor()
+            .apply { show() }
     }
 
     private val actionListener = object : FeedsListAdapter.ActionListener {
@@ -130,10 +127,8 @@ class HomeFragment @Inject constructor(
             navigatorProvider.get()?.navigateToStoryDetailsScreen(story.id)
         }
 
-        // TODO
         override fun bookmarkToggled(story: Story) = Unit
 
-        // TODO
         override fun moreButtonClicked(story: Story) = Unit
 
         override fun readMoreHeadlinesButtonClicked() {

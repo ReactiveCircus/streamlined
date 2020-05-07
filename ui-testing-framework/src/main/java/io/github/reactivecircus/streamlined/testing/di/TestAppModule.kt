@@ -37,7 +37,7 @@ internal abstract class TestAppModule {
             // TODO use proper io dispatcher https://github.com/Kotlin/kotlinx.coroutines/issues/242
             return CoroutineDispatcherProvider(
                 io = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher(),
-                computation = Dispatchers.Default,
+                computation = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher(),
                 ui = Dispatchers.Main.immediate
             )
         }

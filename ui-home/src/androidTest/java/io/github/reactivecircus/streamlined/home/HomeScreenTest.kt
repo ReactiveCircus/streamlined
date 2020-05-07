@@ -12,6 +12,7 @@ import io.github.reactivecircus.streamlined.testing.assumption.populatePersonali
 import io.github.reactivecircus.streamlined.testing.testHeadlineStories
 import io.github.reactivecircus.streamlined.testing.testPersonalizedStories
 import org.junit.Test
+import kotlin.time.ExperimentalTime
 
 @LargeTest
 class HomeScreenTest : BaseScreenTest() {
@@ -141,8 +142,9 @@ class HomeScreenTest : BaseScreenTest() {
     }
 }
 
+@OptIn(ExperimentalTime::class)
 private val testFeedItems = generateFeedItems(
-    maxNumberOfHeadlines = NUMBER_OF_HEADLINES_DISPLAYED,
+    maxNumberOfHeadlines = DefaultHomeUiConfigs.NUMBER_OF_HEADLINES_DISPLAYED,
     headlineStories = testHeadlineStories,
     personalizedStories = testPersonalizedStories
 )

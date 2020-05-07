@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
-import io.github.reactivecircus.streamlined.ui.Screen
+import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
 class StoryDetailsFragment @Inject constructor(
     private val viewModelProvider: Provider<StoryDetailsViewModel.Factory>
-) : Fragment(R.layout.fragment_story_details), Screen {
+) : Fragment(R.layout.fragment_story_details), ScreenForAnalytics {
 
     private val viewModel: StoryDetailsViewModel by fragmentViewModel {
         val id = requireArguments().getLong(ARG_STORY_ID)
