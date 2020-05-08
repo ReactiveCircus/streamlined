@@ -13,7 +13,6 @@ buildscript {
         classpath(build.getValue("kotlinGradlePlugin"))
         classpath(build.getValue("kotlinSerializationPlugin"))
         classpath(build.getValue("googleServicesGradlePlugin"))
-        classpath(build.getValue("dexcountGradlePlugin"))
         classpath(build.getValue("sqldelightGradlePlugin"))
         classpath(build.getValue("playPublisherPlugin"))
     }

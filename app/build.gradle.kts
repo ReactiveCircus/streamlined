@@ -16,7 +16,6 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
-    id("com.getkeepsafe.dexcount")
     id("project-report")
     id("com.github.triplet.play")
 }
@@ -209,10 +208,6 @@ dependencies {
 }
 
 android.applicationVariants.all {
-    // don't count dex methods for debug builds
-    if (buildType.name == BuildType.DEBUG.name) {
-        tasks.named("count${name.capitalize()}DexMethods").configure { enabled = false }
-    }
     // disable google services plugin for mock flavor
     if (flavorName == ProductFlavors.MOCK) {
         tasks.named("process${name.capitalize()}GoogleServices").configure { enabled = false }
