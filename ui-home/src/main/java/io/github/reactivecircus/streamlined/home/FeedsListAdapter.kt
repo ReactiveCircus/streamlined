@@ -11,13 +11,11 @@ import io.github.reactivecircus.streamlined.home.databinding.ItemMainStoryBindin
 import io.github.reactivecircus.streamlined.home.databinding.ItemReadMoreHeadlinesBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemSectionHeaderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemStoryBinding
-import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import reactivecircus.blueprint.ui.extension.isAnimationOn
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 internal class FeedsListAdapter(
-    private val actionListener: ActionListener,
-    private val animationConfigs: AnimationConfigs?
+    private val actionListener: ActionListener
 ) : ListAdapter<FeedItem, FeedViewHolder>(diffCallback) {
 
     private var lastAnimatedPosition = -1
@@ -118,18 +116,18 @@ internal class FeedsListAdapter(
             }
         }
 
-        if (animationConfigs != null &&
-            position > lastAnimatedPosition && holder.itemView.context.isAnimationOn()
-        ) {
+        if (position > lastAnimatedPosition && holder.itemView.context.isAnimationOn()) {
             val animation = AnimationUtils.loadAnimation(
                 holder.itemView.context,
                 ThemeResource.anim.slide_in_and_fade_in
             )
-            animation.startOffset = (animationConfigs.defaultListItemAnimationStartOffset *
-                    holder.bindingAdapterPosition).toLong()
             holder.itemView.startAnimation(animation)
             lastAnimatedPosition = holder.bindingAdapterPosition
         }
+    }
+
+    override fun onViewDetachedFromWindow(holder: FeedViewHolder) {
+        holder.itemView.clearAnimation()
     }
 }
 

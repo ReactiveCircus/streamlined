@@ -14,7 +14,6 @@ import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
-import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
@@ -28,13 +27,28 @@ import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeFragment @Inject constructor(
     private val navigatorProvider: NavigatorProvider,
-    private val animationConfigs: AnimationConfigs,
     private val viewModelProvider: Provider<HomeViewModel>
 ) : Fragment(R.layout.fragment_home), ScreenForAnalytics {
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
-    private lateinit var feedsListAdapter: FeedsListAdapter
+    private val actionListener = object : FeedsListAdapter.ActionListener {
+        override fun storyClicked(story: Story) {
+            navigatorProvider.get()?.navigateToStoryDetailsScreen(story.id)
+        }
+
+        override fun bookmarkToggled(story: Story) = Unit
+
+        override fun moreButtonClicked(story: Story) = Unit
+
+        override fun readMoreHeadlinesButtonClicked() {
+            navigatorProvider.get()?.navigateToHeadlinesScreen()
+        }
+    }
+
+    private val feedsListAdapter = FeedsListAdapter(actionListener).apply {
+        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+    }
 
     private var errorSnackbar: Snackbar? = null
 
@@ -51,13 +65,6 @@ class HomeFragment @Inject constructor(
         binding.retryButton.clicks()
             .onEach { viewModel.refreshHomeFeeds() }
             .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        feedsListAdapter = FeedsListAdapter(
-            actionListener = actionListener,
-            animationConfigs = if (savedInstanceState == null) animationConfigs else null
-        ).apply {
-            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -119,20 +126,5 @@ class HomeFragment @Inject constructor(
             .make(root, errorMessage, Snackbar.LENGTH_INDEFINITE)
             .setDefaultBackgroundColor()
             .apply { show() }
-    }
-
-    private val actionListener = object : FeedsListAdapter.ActionListener {
-
-        override fun storyClicked(story: Story) {
-            navigatorProvider.get()?.navigateToStoryDetailsScreen(story.id)
-        }
-
-        override fun bookmarkToggled(story: Story) = Unit
-
-        override fun moreButtonClicked(story: Story) = Unit
-
-        override fun readMoreHeadlinesButtonClicked() {
-            navigatorProvider.get()?.navigateToHeadlinesScreen()
-        }
     }
 }
