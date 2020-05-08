@@ -40,7 +40,7 @@ android {
         resValue("string", "app_name", "streamlined.")
 
         // database name
-        buildConfigField("String", "DATABASE_NAME", "\"streamlined.db\"")
+        buildConfigField("String", "DATABASE_NAME", "streamlined.db")
     }
 
     signingConfigs {
@@ -69,7 +69,7 @@ android {
             signingConfig = signingConfigs.getByName(BuildType.DEBUG.name)
 
             // turn on strict mode for non-CI debug builds
-            buildConfigField("boolean", "ENABLE_STRICT_MODE", "Boolean.parseBoolean(\"${!isCiBuild}\")")
+            buildConfigField("boolean", "ENABLE_STRICT_MODE", "${!isCiBuild}")
 
             // override app name for LeakCanary
             resValue("string", "leak_canary_display_activity_label", "streamlined leaks")
@@ -90,23 +90,23 @@ android {
         register(ProductFlavors.MOCK) {
             applicationIdSuffix = ".${ProductFlavors.MOCK}"
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to "")
-            buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"false\")")
-            buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"false\")")
+            buildConfigField("boolean", "ENABLE_BUGSNAG", "false")
+            buildConfigField("boolean", "ENABLE_ANALYTICS", "false")
         }
         register(ProductFlavors.DEV) {
             applicationIdSuffix = ".${ProductFlavors.DEV}"
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_DEV_API_KEY"))
-            buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"${isCiBuild}\")")
-            buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"true\")")
-            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
-            buildConfigField("String", "API_KEY", "\"${envOrProp("NEWS_API_DEV_API_KEY")}\"")
+            buildConfigField("boolean", "ENABLE_BUGSNAG", "$isCiBuild")
+            buildConfigField("boolean", "ENABLE_ANALYTICS", "true")
+            buildConfigField("String", "BASE_URL", "https://newsapi.org/v2/")
+            buildConfigField("String", "API_KEY", envOrProp("NEWS_API_DEV_API_KEY"))
         }
         register(ProductFlavors.PROD) {
             manifestPlaceholders = mutableMapOf("bugsnagApiKey" to envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY"))
-            buildConfigField("boolean", "ENABLE_BUGSNAG", "Boolean.parseBoolean(\"true\")")
-            buildConfigField("boolean", "ENABLE_ANALYTICS", "Boolean.parseBoolean(\"true\")")
-            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
-            buildConfigField("String", "API_KEY", "\"${envOrProp("NEWS_API_PROD_API_KEY")}\"")
+            buildConfigField("boolean", "ENABLE_BUGSNAG", "true")
+            buildConfigField("boolean", "ENABLE_ANALYTICS", "true")
+            buildConfigField("String", "BASE_URL", "https://newsapi.org/v2/")
+            buildConfigField("String", "API_KEY", envOrProp("NEWS_API_PROD_API_KEY"))
         }
     }
 
