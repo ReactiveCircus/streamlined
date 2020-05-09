@@ -11,7 +11,6 @@ import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStor
 import io.github.reactivecircus.streamlined.domain.interactor.StreamPersonalizedStories
 import io.github.reactivecircus.streamlined.domain.model.Story
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -24,7 +23,6 @@ import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-@FlowPreview
 @ExperimentalCoroutinesApi
 class HomeStateMachine @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories,

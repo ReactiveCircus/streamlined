@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -71,19 +70,21 @@ class HomeFragment @Inject constructor(
             adapter = feedsListAdapter
         }
 
-        viewModel.state.observe<HomeState>(viewLifecycleOwner) { state ->
-            when (state) {
-                is HomeState.InFlight -> binding.showInFlightState(
-                    hasContent = state.itemsOrNull != null
-                )
-                is HomeState.ShowingContent -> binding.showContentState()
-                is HomeState.Error.Permanent -> binding.showPermanentErrorState()
-                is HomeState.Error.Transient -> binding.showTransientErrorState()
+        viewModel.state
+            .onEach { state ->
+                when (state) {
+                    is HomeState.InFlight -> binding.showInFlightState(
+                        hasContent = state.itemsOrNull != null
+                    )
+                    is HomeState.ShowingContent -> binding.showContentState()
+                    is HomeState.Error.Permanent -> binding.showPermanentErrorState()
+                    is HomeState.Error.Transient -> binding.showTransientErrorState()
+                }
+                state.itemsOrNull?.run {
+                    feedsListAdapter.submitList(this)
+                }
             }
-            state.itemsOrNull?.run {
-                feedsListAdapter.submitList(this)
-            }
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun FragmentHomeBinding.showContentState() {

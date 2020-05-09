@@ -1,11 +1,11 @@
 package io.github.reactivecircus.streamlined.home
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.StoreResponse
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.CoroutinesTestRule
-import io.github.reactivecircus.livedata.test.ext.TestObserver
+import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
+import io.github.reactivecircus.coroutines.test.ext.recordWith
 import io.github.reactivecircus.streamlined.domain.interactor.FetchHeadlineStories
 import io.github.reactivecircus.streamlined.domain.interactor.FetchPersonalizedStories
 import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStories
@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
@@ -36,9 +37,6 @@ import kotlin.time.ExperimentalTime
 @ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
 class HomeViewModelTest {
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     val coroutinesTestRule = CoroutinesTestRule()
@@ -97,9 +95,11 @@ class HomeViewModelTest {
 
     private val fetchPersonalizedStories = mockk<FetchPersonalizedStories>()
 
-    private val stateObserver = TestObserver<HomeState>()
+    private val testScope = TestCoroutineScope()
 
     private val testDispatcher = TestCoroutineDispatcher()
+
+    private val stateRecorder = FlowRecorder<HomeState>(testScope)
 
     private val viewModel: HomeViewModel by lazy {
         HomeViewModel(
@@ -124,14 +124,14 @@ class HomeViewModelTest {
         every { streamHeadlineStories.buildFlow(any()) } returns emptyFlow()
         every { streamPersonalizedStories.buildFlow(any()) } returns emptyFlow()
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         verifyAll {
             streamHeadlineStories.buildFlow(any())
             streamPersonalizedStories.buildFlow(any())
         }
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial
             )
@@ -146,9 +146,9 @@ class HomeViewModelTest {
             StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth)
         )
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.ShowingContent(expectedFeedItems(headlineStories, personalizedStories))
             )
@@ -163,9 +163,9 @@ class HomeViewModelTest {
             StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.Error.Permanent
             )
@@ -180,9 +180,9 @@ class HomeViewModelTest {
             StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher)
         )
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.Error.Permanent
             )
@@ -197,9 +197,9 @@ class HomeViewModelTest {
             StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
         )
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.Error.Permanent
             )
@@ -215,7 +215,7 @@ class HomeViewModelTest {
         every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
         every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         // cached data is emitted first
         headlineStoriesResponseEmitter.offer(
@@ -239,7 +239,7 @@ class HomeViewModelTest {
             StoreResponse.Loading(ResponseOrigin.Fetcher)
         )
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial,
                 HomeState.ShowingContent(expectedFeedItems(headlineStories, personalizedStories)),
@@ -262,7 +262,7 @@ class HomeViewModelTest {
         every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
         every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         // cached data is emitted first
         headlineStoriesResponseEmitter.offer(
@@ -300,7 +300,7 @@ class HomeViewModelTest {
             )
         )
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial,
                 HomeState.ShowingContent(
@@ -331,7 +331,7 @@ class HomeViewModelTest {
         coEvery { fetchHeadlineStories.execute(any()) } returns headlineStories.subList(0, 1)
         coEvery { fetchPersonalizedStories.execute(any()) } returns emptyList()
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
@@ -354,7 +354,7 @@ class HomeViewModelTest {
             fetchPersonalizedStories.execute(any())
         }
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial,
                 HomeState.ShowingContent(
@@ -385,7 +385,7 @@ class HomeViewModelTest {
         coEvery { fetchHeadlineStories.execute(any()) } coAnswers { throw IOException() }
         coEvery { fetchPersonalizedStories.execute(any()) } returns emptyList()
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
@@ -401,7 +401,7 @@ class HomeViewModelTest {
             fetchHeadlineStories.execute(any())
         }
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial,
                 HomeState.ShowingContent(
@@ -430,7 +430,7 @@ class HomeViewModelTest {
             coEvery { fetchHeadlineStories.execute(any()) } returns emptyList()
             coEvery { fetchPersonalizedStories.execute(any()) } coAnswers { throw IOException() }
 
-            viewModel.state.observeForever(stateObserver)
+            viewModel.state.recordWith(stateRecorder)
 
             headlineStoriesResponseEmitter.run {
                 offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
@@ -441,7 +441,7 @@ class HomeViewModelTest {
 
             viewModel.refreshHomeFeeds()
 
-            assertThat(stateObserver.takeAll())
+            assertThat(stateRecorder.takeAll())
                 .containsExactly(
                     HomeState.InFlight.Initial,
                     HomeState.ShowingContent(
@@ -461,7 +461,7 @@ class HomeViewModelTest {
             // advance virtual clock to when the transient error is expected to be dismissed
             advanceTimeBy(DefaultHomeUiConfigs.TRANSIENT_ERROR_DISPLAY_DURATION.toLongMilliseconds())
 
-            assertThat(stateObserver.takeAll())
+            assertThat(stateRecorder.takeAll())
                 .containsExactly(
                     HomeState.ShowingContent(
                         expectedFeedItems(headlineStories, personalizedStories)
@@ -482,7 +482,7 @@ class HomeViewModelTest {
         coEvery { fetchHeadlineStories.execute(any()) } returns headlineStories
         coEvery { fetchPersonalizedStories.execute(any()) } returns personalizedStories
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher))
@@ -505,7 +505,7 @@ class HomeViewModelTest {
             fetchPersonalizedStories.execute(any())
         }
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial,
                 HomeState.Error.Permanent,
@@ -532,7 +532,7 @@ class HomeViewModelTest {
         coEvery { fetchHeadlineStories.execute(any()) } returns emptyList()
         coEvery { fetchPersonalizedStories.execute(any()) } coAnswers { throw IOException() }
 
-        viewModel.state.observeForever(stateObserver)
+        viewModel.state.recordWith(stateRecorder)
 
         headlineStoriesResponseEmitter.run {
             offer(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
@@ -548,7 +548,7 @@ class HomeViewModelTest {
             fetchPersonalizedStories.execute(any())
         }
 
-        assertThat(stateObserver.takeAll())
+        assertThat(stateRecorder.takeAll())
             .containsExactly(
                 HomeState.InFlight.Initial,
                 HomeState.Error.Permanent,
