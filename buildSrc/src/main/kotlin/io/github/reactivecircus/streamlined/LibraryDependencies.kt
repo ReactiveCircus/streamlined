@@ -18,7 +18,7 @@ object versions {
         const val analytics = "17.4.1"
     }
 
-    const val blueprint = "1.7.1"
+    const val blueprint = "1.8.0"
     const val flowbinding = "0.11.1"
     const val flowRedux = "0.3.0"
 
