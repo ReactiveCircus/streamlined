@@ -116,7 +116,7 @@ internal class FeedsListAdapter(
             }
         }
 
-        if (position > lastAnimatedPosition && holder.itemView.context.isAnimationOn()) {
+        if (position > lastAnimatedPosition && holder.itemView.context.isAnimationOn) {
             val animation = AnimationUtils.loadAnimation(
                 holder.itemView.context,
                 ThemeResource.anim.slide_in_and_fade_in
