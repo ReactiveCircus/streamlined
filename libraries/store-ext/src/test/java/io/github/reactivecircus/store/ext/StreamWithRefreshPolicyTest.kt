@@ -150,8 +150,6 @@ class StreamWithRefreshPolicyTest {
                 .isEqualTo(2)
         }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
     private fun buildStoreWithNonFlowingPersister(
         fetcher: TestFetcher<String, Int>,
         persister: NonFlowingTestPersister<String, Int> = inMemoryPersister,
@@ -169,8 +167,6 @@ class StreamWithRefreshPolicyTest {
             .build()
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
     private fun buildStoreWithFlowingPersister(
         fetcher: TestFetcher<String, Int>,
         persister: FlowingTestPersister<String, Int>,

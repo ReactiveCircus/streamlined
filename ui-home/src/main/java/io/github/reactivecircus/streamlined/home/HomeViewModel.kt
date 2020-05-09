@@ -1,13 +1,11 @@
 package io.github.reactivecircus.streamlined.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -15,18 +13,18 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
-@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class, ExperimentalTime::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalTime::class)
 class HomeViewModel @Inject constructor(
     private val homeStateMachine: HomeStateMachine
 ) : ViewModel() {
 
-    private val mutableState = MutableLiveData<HomeState>()
+    private val mutableState = MutableStateFlow<HomeState>(HomeState.InFlight.Initial)
 
-    val state: LiveData<HomeState> = mutableState
+    val state: Flow<HomeState> = mutableState
 
     init {
+        // TODO convert homeStateMachine.state directly to StateFlow with stateIn()
         homeStateMachine.state
-            .distinctUntilChanged()
             .onEach { newState ->
                 mutableState.value = newState
             }

@@ -38,7 +38,6 @@ dependencies {
     implementation(libraries.androidx.recyclerView)
     implementation(libraries.androidx.archCore.runtime)
     implementation(libraries.androidx.lifecycle.viewModelKtx)
-    implementation(libraries.androidx.lifecycle.liveDataKtx)
     implementation(libraries.androidx.lifecycle.commonJava8)
 
     // Dagger
@@ -54,7 +53,6 @@ dependencies {
     testImplementation(libraries.truth)
     testImplementation(libraries.androidx.archCore.testing)
     testImplementation(project(":coroutines-test-ext"))
-    testImplementation(project(":livedata-test-ext"))
 
     // Android tests
     androidTestImplementation(project(":ui-testing-framework"))
