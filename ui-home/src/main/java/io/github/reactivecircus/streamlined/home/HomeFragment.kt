@@ -14,7 +14,6 @@ import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import reactivecircus.flowbinding.android.view.clicks
@@ -23,7 +22,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeFragment @Inject constructor(
     private val navigatorProvider: NavigatorProvider,
     private val viewModelProvider: Provider<HomeViewModel>

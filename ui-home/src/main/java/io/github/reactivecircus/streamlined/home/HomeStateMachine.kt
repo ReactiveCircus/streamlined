@@ -10,18 +10,22 @@ import io.github.reactivecircus.streamlined.domain.interactor.FetchPersonalizedS
 import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStories
 import io.github.reactivecircus.streamlined.domain.interactor.StreamPersonalizedStories
 import io.github.reactivecircus.streamlined.domain.model.Story
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import reactivecircus.blueprint.interactor.EmptyParams
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
+@ExperimentalCoroutinesApi
 class HomeStateMachine @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories,
     streamPersonalizedStories: StreamPersonalizedStories,
@@ -52,11 +56,9 @@ class HomeStateMachine @Inject constructor(
             }
 
             inState<HomeState.Error.Transient> {
-                val timer = flow {
-                    delay(homeUiConfigs.transientErrorDisplayDuration)
-                    emit(Unit)
-                }.flowOn(homeUiConfigs.delayDispatcher)
-                collectWhileInState(timer, FlatMapPolicy.LATEST, ::dismissTransientError)
+                collectWhileInState(
+                    transientErrorDelayFlow(), FlatMapPolicy.LATEST, ::dismissTransientError
+                )
             }
 
             val combinedStories = combine(
@@ -188,6 +190,13 @@ class HomeStateMachine @Inject constructor(
             }
         }
     }
+
+    /**
+     * Create and return a [Flow] that emits after delaying for a period as defined in [homeUiConfigs].
+     */
+    private fun transientErrorDelayFlow() = flowOf(Unit)
+        .onStart { delay(homeUiConfigs.transientErrorDisplayDuration) }
+        .flowOn(homeUiConfigs.delayDispatcher)
 }
 
 internal typealias CombinedStoryResponses = Pair<StoreResponse<List<Story>>, StoreResponse<List<Story>>>
