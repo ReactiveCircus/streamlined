@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
 
     private val mutableState = MutableStateFlow<HomeState>(HomeState.InFlight.Initial)
 
-    val state: Flow<HomeState> = mutableState
+    val state: Flow<HomeState> get() = mutableState
 
     init {
         // TODO convert homeStateMachine.state directly to StateFlow with stateIn()
