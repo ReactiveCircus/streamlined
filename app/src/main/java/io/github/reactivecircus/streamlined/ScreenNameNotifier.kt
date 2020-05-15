@@ -13,7 +13,6 @@ class ScreenNameNotifier @Inject constructor(
     private val analyticsApi: AnalyticsApi
 ) : FragmentManager.FragmentLifecycleCallbacks() {
     override fun onFragmentResumed(fragmentManager: FragmentManager, fragment: Fragment) {
-        super.onFragmentResumed(fragmentManager, fragment)
         if (fragment is ScreenForAnalytics) {
             analyticsApi.setCurrentScreenName(
                 fragment.requireActivity(),

@@ -24,8 +24,8 @@ object versions {
 
     object androidx {
         const val core = "1.3.0-rc01"
-        const val annotation = "1.1.0"
-        const val appCompat = "1.2.0-beta01"
+        const val annotation = "1.2.0-alpha01"
+        const val appCompat = "1.2.0-rc01"
         const val activity = "1.2.0-alpha04"
         const val fragment = "1.3.0-alpha04"
         const val coordinatorLayout = "1.1.0"
