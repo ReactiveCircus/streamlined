@@ -23,40 +23,40 @@ object versions {
     const val flowRedux = "0.3.0"
 
     object androidx {
-        const val core = "1.3.0-rc01"
+        const val core = "1.4.0-alpha01"
         const val annotation = "1.2.0-alpha01"
-        const val appCompat = "1.2.0-rc01"
-        const val activity = "1.2.0-alpha04"
-        const val fragment = "1.3.0-alpha04"
+        const val appCompat = "1.3.0-alpha01"
+        const val activity = "1.2.0-alpha05"
+        const val fragment = "1.3.0-alpha05"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha03"
         const val swipeRefreshLayout = "1.1.0-rc01"
         const val constraintLayout = "2.0.0-beta6"
         const val arch = "2.1.0"
-        const val lifecycle = "2.3.0-alpha02"
-        const val navigation = "2.3.0-alpha06"
-        const val work = "2.4.0-alpha03"
+        const val lifecycle = "2.3.0-alpha03"
+        const val navigation = "2.3.0-beta01"
+        const val work = "2.4.0-beta01"
 
         object test {
-            const val core = "1.3.0-beta01"
-            const val monitor = "1.3.0-beta01"
-            const val rules = "1.3.0-beta01"
-            const val runner = "1.3.0-beta01"
+            const val core = "1.3.0-beta02"
+            const val monitor = "1.3.0-beta02"
+            const val rules = "1.3.0-beta02"
+            const val runner = "1.3.0-beta02"
 
             object ext {
-                const val junit = "1.1.2-beta01"
-                const val truth = "1.3.0-beta01"
+                const val junit = "1.1.2-beta02"
+                const val truth = "1.3.0-beta02"
             }
 
-            const val espresso = "3.3.0-beta01"
+            const val espresso = "3.3.0-beta02"
         }
     }
 
     const val material = "1.2.0-alpha06"
     const val dagger = "2.27"
     const val assistedInject = "0.5.2"
-    const val okhttp = "4.7.1"
-    const val retrofit = "2.8.2"
+    const val okhttp = "4.7.2"
+    const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.5.0"
     const val sqldelight = "1.3.0"
     const val store = "4.0.0-alpha06"
