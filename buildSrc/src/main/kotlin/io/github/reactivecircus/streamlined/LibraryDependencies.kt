@@ -63,7 +63,7 @@ object versions {
     const val coil = "0.11.0"
     const val timber = "4.7.1"
     const val junit = "4.13"
-    const val mockk = "1.9.3"
+    const val mockk = "1.10.0"
     const val truth = "1.0.1"
 }
 
