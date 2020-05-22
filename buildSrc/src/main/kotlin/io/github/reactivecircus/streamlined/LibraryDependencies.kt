@@ -15,7 +15,7 @@ object versions {
     }
 
     object firebase {
-        const val analytics = "17.4.1"
+        const val analytics = "17.4.2"
     }
 
     const val blueprint = "1.8.1"
