@@ -39,22 +39,22 @@ internal fun Project.configureForAllProjects() {
         jcenter()
     }
 
-    tasks.withType<JavaCompile>().configureEach {
+    tasks.withType<JavaCompile> {
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
     }
 
-    tasks.withType<KotlinJvmCompile>().configureEach {
+    tasks.withType<KotlinJvmCompile> {
         kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    tasks.withType<KotlinCompile>().configureEach {
+    tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
         }
     }
 
-    tasks.withType<Test>().configureEach {
+    tasks.withType<Test> {
         maxParallelForks = Runtime.getRuntime().availableProcessors() * 2
         testLogging {
             events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
