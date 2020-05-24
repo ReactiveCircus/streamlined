@@ -22,7 +22,6 @@ import org.gradle.language.nativeplatform.internal.BuildType
 class AppVersioningPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val appVersioningExtension = project.extensions.create("appVersioning", AppVersioningExtension::class.java)
-        validateExtensions(appVersioningExtension)
 
         project.plugins.withType<AppPlugin> {
             project.extensions.getByType<BaseAppModuleExtension>().onVariantProperties {
@@ -58,6 +57,7 @@ class AppVersioningPlugin : Plugin<Project> {
             require(project.hasAndroidAppPlugin) {
                 "The Android App Versioning plugin should only be applied to an Android Application project but ${project.displayName} doesn't have the 'com.android.application' plugin applied."
             }
+            validateExtensions(appVersioningExtension)
         }
     }
 
