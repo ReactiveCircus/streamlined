@@ -34,38 +34,36 @@ import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
  */
 class StreamlinedPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.afterEvaluate {
-            // apply common baseline configurations for all projects including the root project
-            configureForAllProjects()
+        // apply common baseline configurations for all projects including the root project
+        project.configureForAllProjects()
 
-            // apply configurations specific to root project
-            if (isRoot) {
-                configureForRootProject()
-            }
+        // apply configurations specific to root project
+        if (project.isRoot) {
+            project.configureForRootProject()
+        }
 
-            // apply baseline configurations based on plugins applied
-            plugins.all {
-                when (this) {
-                    is JavaPlugin,
-                    is JavaLibraryPlugin -> {
-                        project.convention.getPlugin<JavaPluginConvention>().apply {
-                            sourceCompatibility = JavaVersion.VERSION_1_8
-                            targetCompatibility = JavaVersion.VERSION_1_8
-                        }
+        // apply baseline configurations based on plugins applied
+        project.plugins.all {
+            when (this) {
+                is JavaPlugin,
+                is JavaLibraryPlugin -> {
+                    project.convention.getPlugin<JavaPluginConvention>().apply {
+                        sourceCompatibility = JavaVersion.VERSION_1_8
+                        targetCompatibility = JavaVersion.VERSION_1_8
                     }
-                    is LibraryPlugin -> {
-                        extensions.getByType<LibraryExtension>().configureAndroidLibraryOptions(project)
-                        extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
-                        configureSlimTests()
-                    }
-                    is AppPlugin -> {
-                        extensions.getByType<BaseAppModuleExtension>().configureAndroidApplicationOptions(project)
-                        extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
-                        configureSlimTests()
-                    }
-                    is Kapt3GradleSubplugin -> {
-                        configureKapt()
-                    }
+                }
+                is LibraryPlugin -> {
+                    project.extensions.getByType<LibraryExtension>().configureAndroidLibraryOptions(project)
+                    project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                    project.configureSlimTests()
+                }
+                is AppPlugin -> {
+                    project.extensions.getByType<BaseAppModuleExtension>().configureAndroidApplicationOptions(project)
+                    project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                    project.configureSlimTests()
+                }
+                is Kapt3GradleSubplugin -> {
+                    project.configureKapt()
                 }
             }
         }
