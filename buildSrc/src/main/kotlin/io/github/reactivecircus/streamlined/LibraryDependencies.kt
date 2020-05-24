@@ -53,6 +53,7 @@ object versions {
     }
 
     const val material = "1.2.0-alpha06"
+    const val insetter = "0.2.2"
     const val dagger = "2.27"
     const val assistedInject = "0.5.2"
     const val okhttp = "4.7.2"
@@ -168,6 +169,8 @@ object libraries {
     }
 
     const val material = "com.google.android.material:material:${versions.material}"
+
+    const val insetter = "dev.chrisbanes:insetter-ktx:${versions.insetter}"
 
     object dagger {
         const val runtime = "com.google.dagger:dagger:${versions.dagger}"

@@ -22,7 +22,9 @@ class StoryDetailsFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentStoryDetailsBinding.bind(view)
 
-        binding.toolbar.title = "Story title..."
+        binding.toolbar.title = "Story title"
+
+        // TODO transparent navigationBarColor for API 29+; #B3FFFFFF (light) and #B3000000 (night) for API < 29
     }
 
     companion object {

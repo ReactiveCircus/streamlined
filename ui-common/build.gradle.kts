@@ -36,6 +36,9 @@ dependencies {
     // Material Components
     api(libraries.material)
 
+    // Window inset handling
+    api(libraries.insetter)
+
     // Image loading
     api(libraries.coil)
 
