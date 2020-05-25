@@ -1,6 +1,8 @@
 package io.github.reactivecircus.streamlined
 
+import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Action
@@ -12,6 +14,8 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
@@ -91,17 +95,19 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
  */
 @Suppress("UnstableApiUsage")
 internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
-    // disable unit test tasks if the unitTest source set is empty
-    if (!project.hasUnitTestSource) {
-        onVariants {
-            unitTest { enabled = false }
+    project.plugins.withType<KotlinAndroidPluginWrapper> {
+        // disable unit test tasks if the unitTest source set is empty
+        if (!project.hasUnitTestSource) {
+            onVariants {
+                unitTest { enabled = false }
+            }
         }
-    }
 
-    // disable android test tasks if the androidTest source set is empty
-    if (!project.hasAndroidTestSource) {
-        onVariants {
-            androidTest { enabled = false }
+        // disable android test tasks if the androidTest source set is empty
+        if (!project.hasAndroidTestSource) {
+            onVariants {
+                androidTest { enabled = false }
+            }
         }
     }
 
@@ -133,17 +139,19 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
  */
 @Suppress("UnstableApiUsage")
 internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
-    // disable unit test tasks if the unitTest source set is empty
-    if (!project.hasUnitTestSource) {
-        onVariants {
-            unitTest { enabled = false }
+    project.plugins.withType<KotlinAndroidPluginWrapper> {
+        // disable unit test tasks if the unitTest source set is empty
+        if (!project.hasUnitTestSource) {
+            onVariants {
+                unitTest { enabled = false }
+            }
         }
-    }
 
-    // disable android test tasks if the androidTest source set is empty
-    if (!project.hasAndroidTestSource) {
-        onVariants {
-            androidTest { enabled = false }
+        // disable android test tasks if the androidTest source set is empty
+        if (!project.hasAndroidTestSource) {
+            onVariants {
+                androidTest { enabled = false }
+            }
         }
     }
 

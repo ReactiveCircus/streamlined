@@ -4,6 +4,8 @@ import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.withType
 
 /**
  * Apply detekt configs to the [Project].
@@ -15,8 +17,8 @@ internal fun Project.configureDetektPlugin() {
     // enable Ktlint formatting
     dependencies.add("detektPlugins", "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}")
 
-    pluginManager.withPlugin("io.gitlab.arturbosch.detekt") {
-        extensions.configure(DetektExtension::class.java) {
+    plugins.withType<DetektPlugin> {
+        extensions.configure<DetektExtension> {
             input = files("src/")
             failFast = true
             config = files("${project.rootDir}/detekt.yml")
