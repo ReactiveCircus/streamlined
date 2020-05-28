@@ -1,3 +1,3 @@
 package io.github.reactivecircus.streamlined.ui.util
 
-typealias ItemClickedCallback<T> = (item: T) -> Unit
+typealias ItemActionListener<A> = (action: A) -> Unit

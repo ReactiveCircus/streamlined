@@ -11,21 +11,22 @@ import io.github.reactivecircus.streamlined.home.databinding.ItemMainStoryBindin
 import io.github.reactivecircus.streamlined.home.databinding.ItemReadMoreHeadlinesBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemSectionHeaderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemStoryBinding
+import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import reactivecircus.blueprint.ui.extension.isAnimationOn
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 internal class FeedsListAdapter(
-    private val actionListener: ActionListener
+    private val itemActionListener: ItemActionListener<ItemAction>
 ) : ListAdapter<FeedItem, FeedViewHolder>(diffCallback) {
 
-    private var lastAnimatedPosition = -1
-
-    interface ActionListener {
-        fun storyClicked(story: Story)
-        fun bookmarkToggled(story: Story)
-        fun moreButtonClicked(story: Story)
-        fun readMoreHeadlinesButtonClicked()
+    sealed class ItemAction {
+        class StoryClicked(val story: Story) : ItemAction()
+        class BookmarkToggled(val story: Story) : ItemAction()
+        class MoreButtonClicked(val story: Story) : ItemAction()
+        object ReadMoreHeadlinesButtonClicked : ItemAction()
     }
+
+    private var lastAnimatedPosition = -1
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -95,21 +96,21 @@ internal class FeedsListAdapter(
                 holder.bind(
                     story = (getItem(position) as FeedItem.Content).story,
                     isLastItem = position == itemCount - 1,
-                    actionListener = actionListener
+                    itemActionListener = itemActionListener
                 )
             }
             is StoryViewHolder -> {
                 holder.bind(
                     story = (getItem(position) as FeedItem.Content).story,
                     isLastItem = position == itemCount - 1,
-                    actionListener = actionListener
+                    itemActionListener = itemActionListener
                 )
             }
             is SectionHeaderViewHolder -> {
                 holder.bind((getItem(position) as FeedItem.Header).feedType)
             }
             is ReadMoreHeadlinesViewHolder -> {
-                holder.bind(actionListener)
+                holder.bind(itemActionListener)
             }
             is EmptyPlaceholderViewHolder -> {
                 holder.bind((getItem(position) as FeedItem.Empty).feedType)

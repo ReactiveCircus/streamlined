@@ -11,6 +11,7 @@ import io.github.reactivecircus.streamlined.home.databinding.ItemMainStoryBindin
 import io.github.reactivecircus.streamlined.home.databinding.ItemReadMoreHeadlinesBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemSectionHeaderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemStoryBinding
+import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import io.github.reactivecircus.streamlined.ui.util.timeAgo
 import reactivecircus.blueprint.ui.extension.setPrecomputedTextFuture
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
@@ -23,7 +24,7 @@ internal class MainStoryViewHolder(
     fun bind(
         story: Story,
         isLastItem: Boolean,
-        actionListener: FeedsListAdapter.ActionListener
+        itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction>
     ) {
         binding.storyImageView.run {
             enableDefaultCornerRadius()
@@ -43,14 +44,16 @@ internal class MainStoryViewHolder(
         binding.bookmarkButton.run {
             setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
             setOnClickListener {
-                actionListener.bookmarkToggled(story)
+                itemActionListener.invoke(FeedsListAdapter.ItemAction.BookmarkToggled(story))
             }
         }
         binding.moreButton.setOnClickListener {
-            actionListener.moreButtonClicked(story)
+            itemActionListener.invoke(FeedsListAdapter.ItemAction.MoreButtonClicked(story))
         }
         binding.divider.isVisible = !isLastItem
-        itemView.setOnClickListener { actionListener.storyClicked(story) }
+        itemView.setOnClickListener {
+            itemActionListener.invoke(FeedsListAdapter.ItemAction.StoryClicked(story))
+        }
     }
 }
 
@@ -60,7 +63,7 @@ internal class StoryViewHolder(
     fun bind(
         story: Story,
         isLastItem: Boolean,
-        actionListener: FeedsListAdapter.ActionListener
+        itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction>
     ) {
         binding.storyImageView.run {
             enableDefaultCornerRadius()
@@ -79,13 +82,15 @@ internal class StoryViewHolder(
         )
         binding.bookmarkButton.setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
         binding.bookmarkButton.setOnClickListener {
-            actionListener.bookmarkToggled(story)
+            itemActionListener.invoke(FeedsListAdapter.ItemAction.BookmarkToggled(story))
         }
         binding.moreButton.setOnClickListener {
-            actionListener.moreButtonClicked(story)
+            itemActionListener.invoke(FeedsListAdapter.ItemAction.MoreButtonClicked(story))
         }
         binding.divider.isVisible = !isLastItem
-        itemView.setOnClickListener { actionListener.storyClicked(story) }
+        itemView.setOnClickListener {
+            itemActionListener.invoke(FeedsListAdapter.ItemAction.StoryClicked(story))
+        }
     }
 }
 
@@ -106,8 +111,10 @@ internal class SectionHeaderViewHolder(
 internal class ReadMoreHeadlinesViewHolder(
     binding: ItemReadMoreHeadlinesBinding
 ) : FeedViewHolder(binding.root) {
-    fun bind(actionListener: FeedsListAdapter.ActionListener) {
-        itemView.setOnClickListener { actionListener.readMoreHeadlinesButtonClicked() }
+    fun bind(itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction>) {
+        itemView.setOnClickListener {
+            itemActionListener.invoke(FeedsListAdapter.ItemAction.ReadMoreHeadlinesButtonClicked)
+        }
     }
 }
 

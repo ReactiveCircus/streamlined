@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
-import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
+import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,21 +29,20 @@ class HomeFragment @Inject constructor(
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
-    private val actionListener = object : FeedsListAdapter.ActionListener {
-        override fun storyClicked(story: Story) {
-            navigatorProvider.get()?.navigateToStoryDetailsScreen(story.id)
-        }
-
-        override fun bookmarkToggled(story: Story) = Unit
-
-        override fun moreButtonClicked(story: Story) = Unit
-
-        override fun readMoreHeadlinesButtonClicked() {
-            navigatorProvider.get()?.navigateToHeadlinesScreen()
+    private val itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction> = { action ->
+        when (action) {
+            is FeedsListAdapter.ItemAction.StoryClicked -> {
+                navigatorProvider.get()?.navigateToStoryDetailsScreen(action.story.id)
+            }
+            is FeedsListAdapter.ItemAction.BookmarkToggled -> Unit
+            is FeedsListAdapter.ItemAction.MoreButtonClicked -> Unit
+            FeedsListAdapter.ItemAction.ReadMoreHeadlinesButtonClicked -> {
+                navigatorProvider.get()?.navigateToHeadlinesScreen()
+            }
         }
     }
 
-    private val feedsListAdapter = FeedsListAdapter(actionListener).apply {
+    private val feedsListAdapter = FeedsListAdapter(itemActionListener).apply {
         stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
 
