@@ -2,7 +2,6 @@ import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`
-    `core-library-desugaring`
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
