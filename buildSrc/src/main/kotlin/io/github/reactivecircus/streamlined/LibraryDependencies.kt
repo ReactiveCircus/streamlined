@@ -38,21 +38,21 @@ object versions {
         const val work = "2.4.0-beta01"
 
         object test {
-            const val core = "1.3.0-beta02"
-            const val monitor = "1.3.0-beta02"
-            const val rules = "1.3.0-beta02"
-            const val runner = "1.3.0-beta02"
+            const val core = "1.3.0-rc01"
+            const val monitor = "1.3.0-rc01"
+            const val rules = "1.3.0-rc01"
+            const val runner = "1.3.0-rc01"
 
             object ext {
-                const val junit = "1.1.2-beta02"
-                const val truth = "1.3.0-beta02"
+                const val junit = "1.1.2-rc01"
+                const val truth = "1.3.0-rc01"
             }
 
-            const val espresso = "3.3.0-beta02"
+            const val espresso = "3.3.0-rc01"
         }
     }
 
-    const val material = "1.2.0-alpha06"
+    const val material = "1.2.0-beta01"
     const val insetter = "0.2.2"
     const val dagger = "2.28"
     const val assistedInject = "0.5.2"
