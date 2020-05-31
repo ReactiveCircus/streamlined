@@ -13,7 +13,7 @@ import kotlin.time.minutes
 /**
  * A [RefreshPolicy] implementation which determines whether data should be refreshed
  * for a [RefreshScope] based on the duration since a refresh was last recorded for the same [RefreshScope].
- * Once a refresh has been recorded for a [RefreshScope], refresh won't be necessary for new quests
+ * Once a refresh has been recorded for a [RefreshScope], refresh won't be necessary for new requests
  * until [expiration] time has passed where the [expiration] is updated / extended each time a refresh
  * is recorded, effectively debouncing the expiration of a data set for the given [RefreshScope].
  */
