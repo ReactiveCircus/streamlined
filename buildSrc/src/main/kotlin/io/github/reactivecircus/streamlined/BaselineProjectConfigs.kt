@@ -122,7 +122,7 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
     }
 
     packagingOptions {
-        excludes = setOf(
+        excludes = mutableSetOf(
             "META-INF/*.kotlin_module",
             "META-INF/proguard/coroutines.pro",
             "META-INF/MANIFEST.MF",
