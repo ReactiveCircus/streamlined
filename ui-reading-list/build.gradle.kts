@@ -22,7 +22,7 @@ android {
 dependencies {
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
-    implementation(project(":domain"))
+    implementation(project(":domain-runtime"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

@@ -11,12 +11,15 @@ dependencies {
     implementation(project(":analytics-api-no-op"))
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
-    implementation(project(":domain"))
+    implementation(project(":domain-api"))
     implementation(project(":data"))
     implementation(project(":remote-mock"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)
+
+    // Blueprint
+    implementation(libraries.blueprint.asyncCoroutines)
 
     // Dagger
     implementation(libraries.dagger.runtime)
