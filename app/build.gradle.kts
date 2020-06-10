@@ -162,7 +162,7 @@ dependencies {
     implementation(project(":ui-settings"))
     implementation(project(":ui-story-details"))
 
-    implementation(project(":domain"))
+    implementation(project(":domain-runtime"))
     implementation(project(":data"))
     mockImplementation(project(":remote-mock"))
     devImplementation(project(":remote-real"))

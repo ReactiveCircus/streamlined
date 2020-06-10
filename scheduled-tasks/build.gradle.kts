@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(":domain-runtime"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)

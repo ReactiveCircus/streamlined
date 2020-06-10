@@ -23,7 +23,7 @@ android {
 dependencies {
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
-    implementation(project(":domain"))
+    implementation(project(":domain-runtime"))
 
     // Kotlin stdlib
     implementation(libraries.kotlinStdlib)
@@ -53,6 +53,7 @@ dependencies {
     testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
     testImplementation(libraries.androidx.archCore.testing)
+    testImplementation(project(":domain-testing"))
     testImplementation(project(":coroutines-test-ext"))
 
     // Android tests
