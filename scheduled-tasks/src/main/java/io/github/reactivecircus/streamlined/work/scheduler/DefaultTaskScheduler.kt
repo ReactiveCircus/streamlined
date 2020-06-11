@@ -15,8 +15,10 @@ class DefaultTaskScheduler @Inject constructor(
 
     override fun scheduleHourlyStorySync() {
         val request = PeriodicWorkRequestBuilder<StorySyncWorker>(
-            repeatInterval = 60, repeatIntervalTimeUnit = TimeUnit.MINUTES,
-            flexTimeInterval = 30, flexTimeIntervalUnit = TimeUnit.MINUTES
+            repeatInterval = SYNC_REPEAT_INTERVAL_MINUTES,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES,
+            flexTimeInterval = SYNC_FLEX_TIME_INTERVAL_MINUTES,
+            flexTimeIntervalUnit = TimeUnit.MINUTES
         ).setConstraints(
             Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -29,5 +31,10 @@ class DefaultTaskScheduler @Inject constructor(
             ExistingPeriodicWorkPolicy.REPLACE,
             request
         )
+    }
+
+    companion object {
+        private const val SYNC_REPEAT_INTERVAL_MINUTES = 60L
+        private const val SYNC_FLEX_TIME_INTERVAL_MINUTES = 30L
     }
 }

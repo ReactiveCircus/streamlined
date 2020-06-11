@@ -64,7 +64,6 @@ object versions {
     const val coil = "0.11.0"
     const val timber = "4.7.1"
     const val junit = "4.13"
-    const val mockk = "1.10.0"
     const val truth = "1.0.1"
 }
 
@@ -206,6 +205,5 @@ object libraries {
     const val coil = "io.coil-kt:coil:${versions.coil}"
     const val timber = "com.jakewharton.timber:timber:${versions.timber}"
     const val junit = "junit:junit:${versions.junit}"
-    const val mockk = "io.mockk:mockk:${versions.mockk}"
     const val truth = "com.google.truth:truth:${versions.truth}"
 }
