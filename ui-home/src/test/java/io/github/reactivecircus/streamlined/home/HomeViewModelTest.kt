@@ -11,11 +11,8 @@ import io.github.reactivecircus.streamlined.domain.interactor.FetchPersonalizedS
 import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStories
 import io.github.reactivecircus.streamlined.domain.interactor.StreamPersonalizedStories
 import io.github.reactivecircus.streamlined.domain.model.Story
-import io.mockk.coEvery
-import io.mockk.coVerifyAll
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verifyAll
+import io.github.reactivecircus.streamlined.domain.repository.FakeResponse
+import io.github.reactivecircus.streamlined.domain.repository.FakeStoryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -87,17 +84,37 @@ class HomeViewModelTest {
         )
     )
 
-    private val streamHeadlineStories = mockk<StreamHeadlineStories>()
-
-    private val streamPersonalizedStories = mockk<StreamPersonalizedStories>()
-
-    private val fetchHeadlineStories = mockk<FetchHeadlineStories>()
-
-    private val fetchPersonalizedStories = mockk<FetchPersonalizedStories>()
-
     private val testScope = TestCoroutineScope()
 
     private val testDispatcher = TestCoroutineDispatcher()
+
+    private val testDispatcherProvider = CoroutineDispatcherProvider(
+        io = testDispatcher,
+        computation = testDispatcher,
+        ui = testDispatcher
+    )
+
+    private val fakeStoryRepository = FakeStoryRepository()
+
+    private val streamHeadlineStories = StreamHeadlineStories(
+        storyRepository = fakeStoryRepository,
+        dispatcherProvider = testDispatcherProvider
+    )
+
+    private val streamPersonalizedStories = StreamPersonalizedStories(
+        storyRepository = fakeStoryRepository,
+        dispatcherProvider = testDispatcherProvider
+    )
+
+    private val fetchHeadlineStories = FetchHeadlineStories(
+        storyRepository = fakeStoryRepository,
+        dispatcherProvider = testDispatcherProvider
+    )
+
+    private val fetchPersonalizedStories = FetchPersonalizedStories(
+        storyRepository = fakeStoryRepository,
+        dispatcherProvider = testDispatcherProvider
+    )
 
     private val stateRecorder = FlowRecorder<HomeState>(testScope)
 
@@ -108,28 +125,19 @@ class HomeViewModelTest {
                 streamPersonalizedStories,
                 fetchHeadlineStories,
                 fetchPersonalizedStories,
-                DefaultHomeUiConfigs(
-                    CoroutineDispatcherProvider(
-                        io = testDispatcher,
-                        computation = testDispatcher,
-                        ui = testDispatcher
-                    )
-                )
+                DefaultHomeUiConfigs(testDispatcherProvider)
             )
         )
     }
 
     @Test
     fun `starts streaming headline and personalized stories and emits InFlight#Initial state when initialized`() {
-        every { streamHeadlineStories.buildFlow(any()) } returns emptyFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns emptyFlow()
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(emptyFlow())
+            nextPersonalizedStoriesFlow(emptyFlow())
+        }
 
         viewModel.state.recordWith(stateRecorder)
-
-        verifyAll {
-            streamHeadlineStories.buildFlow(any())
-            streamPersonalizedStories.buildFlow(any())
-        }
 
         assertThat(stateRecorder.takeAll())
             .containsExactly(
@@ -139,12 +147,14 @@ class HomeViewModelTest {
 
     @Test
     fun `emits ShowingContent state with generated feed items when headline and personalized stories streams emit Data responses`() {
-        every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth)
-        )
-        every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth)
-        )
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(
+                flowOf(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
+            )
+            nextPersonalizedStoriesFlow(
+                flowOf(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
+            )
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -156,12 +166,14 @@ class HomeViewModelTest {
 
     @Test
     fun `emits Error#Permanent state when headline stories stream emits Data response and personalized stories stream emits Error response`() {
-        every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher)
-        )
-        every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
-        )
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(
+                flowOf(StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher))
+            )
+            nextPersonalizedStoriesFlow(
+                flowOf(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
+            )
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -173,12 +185,14 @@ class HomeViewModelTest {
 
     @Test
     fun `emits Error#Permanent state when headline stories stream emits Error response and personalized stories stream emits Data response`() {
-        every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
-        )
-        every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher)
-        )
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(
+                flowOf(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
+            )
+            nextPersonalizedStoriesFlow(
+                flowOf(StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher))
+            )
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -190,12 +204,14 @@ class HomeViewModelTest {
 
     @Test
     fun `emits Error#Permanent state when both headline and personalized stories streams emit Error responses`() {
-        every { streamHeadlineStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
-        )
-        every { streamPersonalizedStories.buildFlow(any()) } returns flowOf(
-            StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher)
-        )
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(
+                flowOf(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
+            )
+            nextPersonalizedStoriesFlow(
+                flowOf(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
+            )
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -212,8 +228,10 @@ class HomeViewModelTest {
         val personalizedStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+            nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -259,8 +277,10 @@ class HomeViewModelTest {
         val personalizedStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+            nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -325,11 +345,12 @@ class HomeViewModelTest {
         val personalizedStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
-
-        coEvery { fetchHeadlineStories.execute(any()) } returns headlineStories.subList(0, 1)
-        coEvery { fetchPersonalizedStories.execute(any()) } returns emptyList()
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+            nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+            nextFetchHeadlineStoriesResponse(FakeResponse.Success(headlineStories.subList(0, 1)))
+            nextFetchPersonalizedStoriesResponse(FakeResponse.Success(emptyList()))
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -347,11 +368,6 @@ class HomeViewModelTest {
         }
         personalizedStoriesResponseEmitter.run {
             offer(StoreResponse.Data(emptyList(), ResponseOrigin.Fetcher))
-        }
-
-        coVerifyAll {
-            fetchHeadlineStories.execute(any())
-            fetchPersonalizedStories.execute(any())
         }
 
         assertThat(stateRecorder.takeAll())
@@ -379,11 +395,12 @@ class HomeViewModelTest {
         val personalizedStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
-
-        coEvery { fetchHeadlineStories.execute(any()) } coAnswers { throw IOException() }
-        coEvery { fetchPersonalizedStories.execute(any()) } returns emptyList()
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+            nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+            nextFetchHeadlineStoriesResponse(FakeResponse.Error(IOException()))
+            nextFetchPersonalizedStoriesResponse(FakeResponse.Success(emptyList()))
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -395,11 +412,6 @@ class HomeViewModelTest {
         }
 
         viewModel.refreshHomeFeeds()
-
-        coVerifyAll {
-            fetchHeadlineStories.execute(any())
-            fetchHeadlineStories.execute(any())
-        }
 
         assertThat(stateRecorder.takeAll())
             .containsExactly(
@@ -424,11 +436,12 @@ class HomeViewModelTest {
             val personalizedStoriesResponseEmitter =
                 BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-            every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-            every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
-
-            coEvery { fetchHeadlineStories.execute(any()) } returns emptyList()
-            coEvery { fetchPersonalizedStories.execute(any()) } coAnswers { throw IOException() }
+            fakeStoryRepository.scheduleNext {
+                nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+                nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+                nextFetchHeadlineStoriesResponse(FakeResponse.Success(emptyList()))
+                nextFetchPersonalizedStoriesResponse(FakeResponse.Error(IOException()))
+            }
 
             viewModel.state.recordWith(stateRecorder)
 
@@ -476,11 +489,12 @@ class HomeViewModelTest {
         val personalizedStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
-
-        coEvery { fetchHeadlineStories.execute(any()) } returns headlineStories
-        coEvery { fetchPersonalizedStories.execute(any()) } returns personalizedStories
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+            nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+            nextFetchHeadlineStoriesResponse(FakeResponse.Success(headlineStories))
+            nextFetchPersonalizedStoriesResponse(FakeResponse.Success(personalizedStories))
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -498,11 +512,6 @@ class HomeViewModelTest {
         }
         personalizedStoriesResponseEmitter.run {
             offer(StoreResponse.Data(personalizedStories.subList(0, 1), ResponseOrigin.Fetcher))
-        }
-
-        coVerifyAll {
-            fetchHeadlineStories.execute(any())
-            fetchPersonalizedStories.execute(any())
         }
 
         assertThat(stateRecorder.takeAll())
@@ -526,11 +535,12 @@ class HomeViewModelTest {
         val personalizedStoriesResponseEmitter =
             BroadcastChannel<StoreResponse<List<Story>>>(Channel.BUFFERED)
 
-        every { streamHeadlineStories.buildFlow(any()) } returns headlineStoriesResponseEmitter.asFlow()
-        every { streamPersonalizedStories.buildFlow(any()) } returns personalizedStoriesResponseEmitter.asFlow()
-
-        coEvery { fetchHeadlineStories.execute(any()) } returns emptyList()
-        coEvery { fetchPersonalizedStories.execute(any()) } coAnswers { throw IOException() }
+        fakeStoryRepository.scheduleNext {
+            nextHeadlineStoriesFlow(headlineStoriesResponseEmitter.asFlow())
+            nextPersonalizedStoriesFlow(personalizedStoriesResponseEmitter.asFlow())
+            nextFetchHeadlineStoriesResponse(FakeResponse.Success(emptyList()))
+            nextFetchPersonalizedStoriesResponse(FakeResponse.Error(IOException()))
+        }
 
         viewModel.state.recordWith(stateRecorder)
 
@@ -542,11 +552,6 @@ class HomeViewModelTest {
         }
 
         viewModel.refreshHomeFeeds()
-
-        coVerifyAll {
-            fetchHeadlineStories.execute(any())
-            fetchPersonalizedStories.execute(any())
-        }
 
         assertThat(stateRecorder.takeAll())
             .containsExactly(
