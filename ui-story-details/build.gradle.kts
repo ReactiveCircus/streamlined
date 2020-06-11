@@ -52,7 +52,6 @@ dependencies {
 
     // Unit tests
     testImplementation(libraries.junit)
-    testImplementation(libraries.mockk)
     testImplementation(libraries.truth)
     testImplementation(libraries.androidx.archCore.testing)
     testImplementation(project(":coroutines-test-ext"))
