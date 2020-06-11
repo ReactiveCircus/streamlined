@@ -120,15 +120,6 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
         isCheckDependencies = true
         isIgnoreTestSources = true
     }
-
-    packagingOptions {
-        excludes = mutableSetOf(
-            "META-INF/*.kotlin_module",
-            "META-INF/proguard/coroutines.pro",
-            "META-INF/MANIFEST.MF",
-            "LICENSE.txt"
-        )
-    }
 }
 
 /**
@@ -154,8 +145,4 @@ internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
 
     // Disable generating BuildConfig.java
     buildFeatures.buildConfig = false
-
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
-    }
 }
