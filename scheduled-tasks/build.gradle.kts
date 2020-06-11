@@ -25,9 +25,4 @@ dependencies {
 
     // timber
     implementation(libraries.timber)
-
-    // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.mockk)
-    testImplementation(libraries.truth)
 }
