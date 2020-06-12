@@ -6,7 +6,7 @@ object versions {
     const val kotlin = "1.3.72"
     const val detekt = "1.9.1"
     const val bugsnag = "5.0.0"
-    const val leakCanary = "2.3"
+    const val leakCanary = "2.4"
     const val desugarLibs = "1.0.5"
 
     object kotlinx {
@@ -70,8 +70,12 @@ object versions {
 object libraries {
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
     const val bugsnag = "com.bugsnag:bugsnag-android:${versions.bugsnag}"
-    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
     const val desugarLibs = "com.android.tools:desugar_jdk_libs:${versions.desugarLibs}"
+
+    object leakCanary {
+        const val android = "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
+        const val plumber = "com.squareup.leakcanary:plumber-android:${versions.leakCanary}"
+    }
 
     object firebase {
         const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:${versions.firebase.analytics}"

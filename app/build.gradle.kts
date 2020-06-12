@@ -195,7 +195,9 @@ dependencies {
     implementation(libraries.timber)
 
     // Enable LeakCanary for debug builds
-    debugImplementation(libraries.leakCanary)
+    debugImplementation(libraries.leakCanary.android)
+    // Fix SDK leaks
+    implementation(libraries.leakCanary.plumber)
 
     // Unit tests
     testImplementation(libraries.junit)
