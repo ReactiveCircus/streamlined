@@ -31,7 +31,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow
+        with:
+          fetch-depth: 0
 
       - uses: gradle/wrapper-validation-action@v1
 
