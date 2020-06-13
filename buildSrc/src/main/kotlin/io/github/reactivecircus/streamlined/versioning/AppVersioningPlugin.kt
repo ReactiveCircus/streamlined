@@ -52,20 +52,6 @@ class AppVersioningPlugin : Plugin<Project> {
                 }
             }
         }
-
-        project.afterEvaluate {
-            require(project.hasAndroidAppPlugin) {
-                "The Android App Versioning plugin should only be applied to an Android Application project but ${project.displayName} doesn't have the 'com.android.application' plugin applied."
-            }
-            validateExtensions(appVersioningExtension)
-        }
-    }
-
-    private fun validateExtensions(extension: AppVersioningExtension) {
-        val maxDigits = extension.maxDigits.get()
-        require(maxDigits >= AppVersioningExtension.MAX_DIGITS_RANGE_MIN && maxDigits <= AppVersioningExtension.MAX_DIGITS_RANGE_MAX) {
-            "`maxDigits` must be at least `${AppVersioningExtension.MAX_DIGITS_RANGE_MIN}` and at most `${AppVersioningExtension.MAX_DIGITS_RANGE_MAX}`."
-        }
     }
 
     private fun Project.registerGenerateAppVersionInfoTask(variantName: String, extension: AppVersioningExtension): TaskProvider<GenerateAppVersionInfo> =

@@ -43,6 +43,10 @@ abstract class GenerateAppVersionInfo : DefaultTask() {
     @TaskAction
     fun generate() {
         val maxDigitsAllowed = maxDigits.get()
+        check(maxDigitsAllowed in MAX_DIGITS_RANGE_MIN..MAX_DIGITS_RANGE_MAX) {
+            "`maxDigits` must be at least `$MAX_DIGITS_RANGE_MIN` and at most `$MAX_DIGITS_RANGE_MAX`."
+        }
+
         val gitTagVersion: GitTagVersion = project.getGitTagVersion(maxDigitsAllowed) ?: if (fetchTagsWhenNoneExistsLocally.get()) {
             project.fetchGitTagsIfNoneExistsLocally()
             project.getGitTagVersion(maxDigitsAllowed)
@@ -95,6 +99,8 @@ abstract class GenerateAppVersionInfo : DefaultTask() {
     companion object {
         const val TASK_NAME = "generateAppVersionInfo"
         const val TASK_DESCRIPTION = "Generates versionName and versionCode based on git-tag."
+        const val MAX_DIGITS_RANGE_MIN = 1
+        const val MAX_DIGITS_RANGE_MAX = 4
     }
 }
 

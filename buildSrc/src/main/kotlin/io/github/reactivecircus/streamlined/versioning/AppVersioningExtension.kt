@@ -54,7 +54,5 @@ open class AppVersioningExtension internal constructor(objects: ObjectFactory) {
         const val DEFAULT_REQUIRE_VALID_GIT_TAG = false
         const val DEFAULT_FETCH_TAGS_WHEN_NONE_EXISTS_LOCALLY = false
         const val DEFAULT_MAX_DIGITS = 3
-        const val MAX_DIGITS_RANGE_MIN = 1
-        const val MAX_DIGITS_RANGE_MAX = 4
     }
 }

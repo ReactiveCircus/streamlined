@@ -29,15 +29,6 @@ class CoreLibraryDesugaringPlugin : Plugin<Project> {
         project.plugins.withType<LibraryPlugin> {
             project.extensions.getByType<TestedExtension>().configure(project)
         }
-
-        project.afterEvaluate {
-            val isAndroidAppProject = project.hasAndroidAppPlugin
-            val isAndroidLibraryProject = project.hasAndroidLibraryPlugin
-
-            require(isAndroidAppProject || isAndroidLibraryProject) {
-                "Core library desugaring should only be enabled in Android projects but ${project.displayName} doesn't have either 'com.android.library' or 'com.android.application' plugin applied."
-            }
-        }
     }
 
     private fun TestedExtension.configure(project: Project) {
