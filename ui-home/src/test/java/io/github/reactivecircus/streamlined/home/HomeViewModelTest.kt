@@ -354,21 +354,33 @@ class HomeViewModelTest {
 
         viewModel.state.recordWith(stateRecorder)
 
-        headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
-        }
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
-        }
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                headlineStories,
+                ResponseOrigin.SourceOfTruth
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                personalizedStories,
+                ResponseOrigin.SourceOfTruth
+            )
+        )
 
         viewModel.refreshHomeFeeds()
 
-        headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories.subList(0, 1), ResponseOrigin.Fetcher))
-        }
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(emptyList(), ResponseOrigin.Fetcher))
-        }
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                headlineStories.subList(0, 1),
+                ResponseOrigin.Fetcher
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                emptyList(),
+                ResponseOrigin.Fetcher
+            )
+        )
 
         assertThat(stateRecorder.takeAll())
             .containsExactly(
@@ -404,12 +416,18 @@ class HomeViewModelTest {
 
         viewModel.state.recordWith(stateRecorder)
 
-        headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
-        }
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
-        }
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                headlineStories,
+                ResponseOrigin.SourceOfTruth
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                personalizedStories,
+                ResponseOrigin.SourceOfTruth
+            )
+        )
 
         viewModel.refreshHomeFeeds()
 
@@ -445,12 +463,18 @@ class HomeViewModelTest {
 
             viewModel.state.recordWith(stateRecorder)
 
-            headlineStoriesResponseEmitter.run {
-                offer(StoreResponse.Data(headlineStories, ResponseOrigin.SourceOfTruth))
-            }
-            personalizedStoriesResponseEmitter.run {
-                offer(StoreResponse.Data(personalizedStories, ResponseOrigin.SourceOfTruth))
-            }
+            headlineStoriesResponseEmitter.offer(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+            personalizedStoriesResponseEmitter.offer(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
 
             viewModel.refreshHomeFeeds()
 
@@ -498,21 +522,33 @@ class HomeViewModelTest {
 
         viewModel.state.recordWith(stateRecorder)
 
-        headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories, ResponseOrigin.Fetcher))
-        }
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
-        }
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                headlineStories,
+                ResponseOrigin.Fetcher
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Error.Exception(
+                IOException(),
+                ResponseOrigin.Fetcher
+            )
+        )
 
         viewModel.refreshHomeFeeds()
 
-        headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(headlineStories.subList(0, 1), ResponseOrigin.Fetcher))
-        }
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(personalizedStories.subList(0, 1), ResponseOrigin.Fetcher))
-        }
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                headlineStories.subList(0, 1),
+                ResponseOrigin.Fetcher
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                personalizedStories.subList(0, 1),
+                ResponseOrigin.Fetcher
+            )
+        )
 
         assertThat(stateRecorder.takeAll())
             .containsExactly(
@@ -544,12 +580,18 @@ class HomeViewModelTest {
 
         viewModel.state.recordWith(stateRecorder)
 
-        headlineStoriesResponseEmitter.run {
-            offer(StoreResponse.Error.Exception(IOException(), ResponseOrigin.Fetcher))
-        }
-        personalizedStoriesResponseEmitter.run {
-            offer(StoreResponse.Data(personalizedStories, ResponseOrigin.Fetcher))
-        }
+        headlineStoriesResponseEmitter.offer(
+            StoreResponse.Error.Exception(
+                IOException(),
+                ResponseOrigin.Fetcher
+            )
+        )
+        personalizedStoriesResponseEmitter.offer(
+            StoreResponse.Data(
+                personalizedStories,
+                ResponseOrigin.Fetcher
+            )
+        )
 
         viewModel.refreshHomeFeeds()
 
