@@ -15,12 +15,8 @@ dependencies {
     // Blueprint
     api(libraries.blueprint.ui)
 
-    // FlowBinding
-    api(libraries.flowbinding.android)
-    api(libraries.flowbinding.material)
-
-    // FlowRedux
-    api(libraries.flowRedux.dsl)
+    // Workflow
+    api(libraries.workflow.runtime)
 
     // AndroidX
     api(libraries.androidx.annotation)

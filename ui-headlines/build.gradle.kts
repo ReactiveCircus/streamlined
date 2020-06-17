@@ -27,9 +27,6 @@ dependencies {
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 
-    // FlowBinding
-    implementation(libraries.flowbinding.swipeRefreshLayout)
-
     // AndroidX
     implementation(libraries.androidx.swipeRefreshLayout)
     implementation(libraries.androidx.recyclerView)
@@ -46,7 +43,6 @@ dependencies {
     // Unit tests
     testImplementation(libraries.junit)
     testImplementation(libraries.truth)
-    testImplementation(libraries.androidx.archCore.testing)
     testImplementation(project(":coroutines-test-ext"))
 
     // Android tests

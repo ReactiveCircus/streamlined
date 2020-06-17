@@ -16,8 +16,6 @@ import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import reactivecircus.flowbinding.android.view.clicks
-import reactivecircus.flowbinding.swiperefreshlayout.refreshes
 import javax.inject.Inject
 import javax.inject.Provider
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
@@ -45,17 +43,10 @@ class HomeFragment @Inject constructor(
     private var errorSnackbar: Snackbar? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
 
         binding.toolbar.title = getString(R.string.title_home)
-
-        binding.swipeRefreshLayout.refreshes()
-            .onEach { viewModel.refreshHomeFeeds() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        binding.retryButton.clicks()
-            .onEach { viewModel.refreshHomeFeeds() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
 
         val feedsListAdapter = FeedsListAdapter(viewLifecycleOwner, itemActionListener).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -65,8 +56,12 @@ class HomeFragment @Inject constructor(
             adapter = feedsListAdapter
         }
 
-        viewModel.state
-            .onEach { state ->
+        viewModel.rendering
+            .onEach { rendering ->
+                binding.swipeRefreshLayout.setOnRefreshListener { rendering.onRefresh() }
+                binding.retryButton.setOnClickListener { rendering.onRefresh() }
+
+                val state = rendering.state
                 when (state) {
                     is HomeState.InFlight -> binding.showInFlightState(
                         hasContent = state.itemsOrNull != null
@@ -77,6 +72,9 @@ class HomeFragment @Inject constructor(
                 }
                 state.itemsOrNull?.run {
                     feedsListAdapter.submitList(this)
+                }
+                if (binding.recyclerView.adapter == null) {
+                    binding.recyclerView.adapter = feedsListAdapter
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)

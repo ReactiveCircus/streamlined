@@ -2,38 +2,18 @@ package io.github.reactivecircus.streamlined.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.squareup.workflow1.renderWorkflowIn
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel @Inject constructor(
-    private val homeStateMachine: HomeStateMachine
+    homeWorkflow: HomeWorkflow
 ) : ViewModel() {
-
-    private val mutableState = MutableStateFlow<HomeState>(HomeState.InFlight.Initial)
-
-    val state: Flow<HomeState> get() = mutableState
-
-    init {
-        // TODO convert homeStateMachine.state directly to StateFlow with stateIn()
-        homeStateMachine.state
-            .onEach { newState ->
-                mutableState.value = newState
-            }
-            .catch { Timber.e(it, "state machine flow cancelled") }
-            .launchIn(viewModelScope)
-    }
-
-    fun refreshHomeFeeds() {
-        viewModelScope.launch {
-            homeStateMachine.dispatch(HomeAction.Refresh)
-        }
-    }
+    val rendering: Flow<HomeRendering> = renderWorkflowIn(
+        homeWorkflow, viewModelScope, MutableStateFlow(Unit)
+    ) {}.mapLatest { it.rendering }
 }
