@@ -19,7 +19,7 @@ object versions {
 
     const val blueprint = "1.11.0"
     const val flowbinding = "1.0.0-alpha02"
-    const val flowRedux = "0.3.0"
+    const val workflow = "1.0.0-alpha.3"
 
     object androidx {
         const val core = "1.5.0-alpha01"
@@ -31,7 +31,6 @@ object versions {
         const val recyclerView = "1.2.0-alpha05"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.0-rc1"
-        const val arch = "2.1.0"
         const val lifecycle = "2.3.0-alpha06"
         const val navigation = "2.3.0"
         const val work = "2.4.0"
@@ -102,8 +101,9 @@ object libraries {
         const val swipeRefreshLayout = "io.github.reactivecircus.flowbinding:flowbinding-swiperefreshlayout:${versions.flowbinding}"
     }
 
-    object flowRedux {
-        const val dsl = "com.freeletics.flowredux:dsl:${versions.flowRedux}"
+    object workflow {
+        const val runtime = "com.squareup.workflow1:workflow-runtime-jvm:${versions.workflow}"
+        const val testing = "com.squareup.workflow1:workflow-testing-jvm:${versions.workflow}"
     }
 
     object androidx {
@@ -127,10 +127,6 @@ object libraries {
         const val recyclerView = "androidx.recyclerview:recyclerview:${versions.androidx.recyclerView}"
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:${versions.androidx.swipeRefreshLayout}"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintLayout}"
-
-        object archCore {
-            const val testing = "androidx.arch.core:core-testing:${versions.androidx.arch}"
-        }
 
         object lifecycle {
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}"

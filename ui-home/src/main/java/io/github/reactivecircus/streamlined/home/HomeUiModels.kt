@@ -2,17 +2,10 @@ package io.github.reactivecircus.streamlined.home
 
 import io.github.reactivecircus.streamlined.domain.model.Story
 
-sealed class FeedItem {
-    data class Header(val feedType: FeedType) : FeedItem()
-    data class Content(val feedType: FeedType, val story: Story) : FeedItem()
-    object TopHeadlinesFooter : FeedItem()
-    data class Empty(val feedType: FeedType) : FeedItem()
-}
-
-sealed class FeedType {
-    object TopHeadlines : FeedType()
-    object ForYou : FeedType()
-}
+data class HomeRendering(
+    val state: HomeState,
+    val onRefresh: () -> Unit
+)
 
 sealed class HomeState {
     sealed class InFlight : HomeState() {
@@ -38,6 +31,14 @@ sealed class HomeState {
         }
 }
 
-sealed class HomeAction {
-    object Refresh : HomeAction()
+sealed class FeedItem {
+    data class Header(val feedType: FeedType) : FeedItem()
+    data class Content(val feedType: FeedType, val story: Story) : FeedItem()
+    object TopHeadlinesFooter : FeedItem()
+    data class Empty(val feedType: FeedType) : FeedItem()
+}
+
+sealed class FeedType {
+    object TopHeadlines : FeedType()
+    object ForYou : FeedType()
 }
