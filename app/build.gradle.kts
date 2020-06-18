@@ -23,7 +23,9 @@ plugins {
 android {
     @Suppress("UnstableApiUsage")
     buildFeatures {
+        buildConfig = true
         viewBinding = true
+        resValues = true
     }
 
     defaultConfig {

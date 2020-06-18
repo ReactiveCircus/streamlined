@@ -3,7 +3,6 @@ package io.github.reactivecircus.streamlined
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
@@ -81,10 +80,10 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
 
     testOptions.animationsDisabled = true
 
-    compileOptions(Action {
+    compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    })
+    }
 }
 
 /**
@@ -142,7 +141,4 @@ internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
             }
         }
     }
-
-    // Disable generating BuildConfig.java
-    buildFeatures.buildConfig = false
 }
