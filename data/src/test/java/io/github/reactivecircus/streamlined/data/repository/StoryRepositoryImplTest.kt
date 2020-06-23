@@ -78,7 +78,7 @@ class StoryRepositoryImplTest {
         )
     )
 
-    private val dummyStoryEntity = StoryEntity.Impl(
+    private val dummyStoryEntity = StoryEntity(
         id = 1,
         title = "Article",
         source = "source",

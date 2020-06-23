@@ -23,7 +23,7 @@ class StoryMappersTest {
             publishedAt = "2020-02-07T22:37:23Z"
         )
 
-        val expected = StoryEntity.Impl(
+        val expected = StoryEntity(
             id = -1,
             source = "source",
             title = "Article",
@@ -41,7 +41,7 @@ class StoryMappersTest {
 
     @Test
     fun `StoryEntity to model()`() {
-        val storyEntity = StoryEntity.Impl(
+        val storyEntity = StoryEntity(
             id = 1,
             source = "source",
             title = "Article",

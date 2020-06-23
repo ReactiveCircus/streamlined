@@ -5,7 +5,7 @@ import io.github.reactivecircus.streamlined.persistence.StoryEntity
 import io.github.reactivecircus.streamlined.remote.dto.StoryDTO
 
 internal fun StoryDTO.toEntity(isHeadline: Boolean): StoryEntity {
-    return StoryEntity.Impl(
+    return StoryEntity(
         id = -1,
         source = source.name,
         title = title,

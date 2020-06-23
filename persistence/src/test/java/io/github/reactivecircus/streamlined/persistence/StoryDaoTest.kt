@@ -21,7 +21,7 @@ class StoryDaoTest {
 
     private val dao: StoryDao = StoryDaoImpl(queries, testScope.coroutineContext)
 
-    private val headlineStory1 = StoryEntity.Impl(
+    private val headlineStory1 = StoryEntity(
         id = -1,
         source = "source1",
         title = "Article 1",
@@ -33,7 +33,7 @@ class StoryDaoTest {
         isHeadline = true
     )
 
-    private val headlineStory2 = StoryEntity.Impl(
+    private val headlineStory2 = StoryEntity(
         id = -1,
         source = "source2",
         title = "Article 2",
@@ -45,7 +45,7 @@ class StoryDaoTest {
         isHeadline = true
     )
 
-    private val nonHeadlineStory1 = StoryEntity.Impl(
+    private val nonHeadlineStory1 = StoryEntity(
         id = -1,
         source = "source3",
         title = "Article 3",
@@ -57,7 +57,7 @@ class StoryDaoTest {
         isHeadline = false
     )
 
-    private val nonHeadlineStory2 = StoryEntity.Impl(
+    private val nonHeadlineStory2 = StoryEntity(
         id = -1,
         source = "source4",
         title = "Article 4",
