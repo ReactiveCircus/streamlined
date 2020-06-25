@@ -29,13 +29,13 @@ object versions {
         const val activity = "1.2.0-alpha06"
         const val fragment = "1.3.0-alpha06"
         const val coordinatorLayout = "1.1.0"
-        const val recyclerView = "1.2.0-alpha03"
-        const val swipeRefreshLayout = "1.1.0-rc01"
+        const val recyclerView = "1.2.0-alpha04"
+        const val swipeRefreshLayout = "1.1.0"
         const val constraintLayout = "2.0.0-beta7"
         const val arch = "2.1.0"
-        const val lifecycle = "2.3.0-alpha04"
-        const val navigation = "2.3.0-rc01"
-        const val work = "2.4.0-beta01"
+        const val lifecycle = "2.3.0-alpha05"
+        const val navigation = "2.3.0"
+        const val work = "2.4.0-rc01"
 
         object test {
             const val core = "1.3.0-rc01"
