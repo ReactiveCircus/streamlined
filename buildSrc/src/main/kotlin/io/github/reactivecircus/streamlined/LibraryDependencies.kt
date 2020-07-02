@@ -68,7 +68,7 @@ object versions {
 }
 
 object libraries {
-    const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     const val bugsnag = "com.bugsnag:bugsnag-android:${versions.bugsnag}"
     const val desugarLibs = "com.android.tools:desugar_jdk_libs:${versions.desugarLibs}"
 
