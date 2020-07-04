@@ -7,7 +7,7 @@ object versions {
     const val detekt = "1.10.0"
     const val bugsnag = "5.0.0"
     const val leakCanary = "2.4"
-    const val desugarLibs = "1.0.7"
+    const val desugarLibs = "1.0.9"
 
     object kotlinx {
         const val coroutines = "1.3.7"
