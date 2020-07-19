@@ -37,12 +37,6 @@ android {
 
         // only support English for now
         resConfigs("en")
-
-        // app name
-        resValue("string", "app_name", "streamlined.")
-
-        // database name
-        buildConfigField("String", "DATABASE_NAME", "streamlined.db")
     }
 
     signingConfigs {
@@ -69,12 +63,6 @@ android {
     buildTypes {
         named(BuildType.DEBUG.name) {
             signingConfig = signingConfigs.getByName(BuildType.DEBUG.name)
-
-            // turn on strict mode for non-CI debug builds
-            buildConfigField("boolean", "ENABLE_STRICT_MODE", "${!isCiBuild}")
-
-            // override app name for LeakCanary
-            resValue("string", "leak_canary_display_activity_label", "streamlined leaks")
         }
         named(BuildType.RELEASE.name) {
             if (rootProject.file("secrets/streamlined.jks").exists()) {
@@ -91,25 +79,56 @@ android {
     productFlavors {
         register(ProductFlavors.MOCK) {
             applicationIdSuffix = ".${ProductFlavors.MOCK}"
-            manifestPlaceholders["bugsnagApiKey"] = ""
-            buildConfigField("boolean", "ENABLE_BUGSNAG", "false")
-            buildConfigField("boolean", "ENABLE_ANALYTICS", "false")
         }
         register(ProductFlavors.DEV) {
             applicationIdSuffix = ".${ProductFlavors.DEV}"
-            manifestPlaceholders["bugsnagApiKey"] = envOrProp("STREAMLINED_BUGSNAG_DEV_API_KEY")
-            buildConfigField("boolean", "ENABLE_BUGSNAG", "$isCiBuild")
-            buildConfigField("boolean", "ENABLE_ANALYTICS", "true")
-            buildConfigField("String", "BASE_URL", "https://newsapi.org/v2/")
-            buildConfigField("String", "API_KEY", envOrProp("NEWS_API_DEV_API_KEY"))
         }
-        register(ProductFlavors.PROD) {
-            manifestPlaceholders["bugsnagApiKey"] = envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY")
-            buildConfigField("boolean", "ENABLE_BUGSNAG", "true")
-            buildConfigField("boolean", "ENABLE_ANALYTICS", "true")
-            buildConfigField("String", "BASE_URL", "https://newsapi.org/v2/")
-            buildConfigField("String", "API_KEY", envOrProp("NEWS_API_PROD_API_KEY"))
+        register(ProductFlavors.PROD) {}
+    }
+
+    @Suppress("UnstableApiUsage")
+    onVariantProperties {
+        if (buildType == BuildType.DEBUG.name) {
+            // override app name for LeakCanary
+            addResValue("leak_canary_display_activity_label", "string", "streamlined leaks", null)
+
+            // turn on strict mode for non-CI debug builds
+            addBuildConfigField("ENABLE_STRICT_MODE", !isCiBuild, null)
+
+            // override app name for LeakCanary
+            addResValue("leak_canary_display_activity_label", "string", "streamlined-${name}", null)
+
+            // concatenate build variant to app name
+            addResValue("app_name", "string", "streamlined-${name}", null)
+        } else {
+            // set app_name for release build
+            addResValue("app_name", "string", "streamlined.", null)
         }
+
+        when (flavorName) {
+            ProductFlavors.MOCK -> {
+                manifestPlaceholders.put("bugsnagApiKey", "")
+                addBuildConfigField("ENABLE_BUGSNAG", false, null)
+                addBuildConfigField("ENABLE_ANALYTICS", false, null)
+            }
+            ProductFlavors.DEV -> {
+                manifestPlaceholders.put("bugsnagApiKey", envOrProp("RELEASE_PROBE_BUGSNAG_API_KEY"))
+                addBuildConfigField("ENABLE_BUGSNAG", isCiBuild, null)
+                addBuildConfigField("ENABLE_ANALYTICS", true, null)
+                addBuildConfigField("BASE_URL", "https://newsapi.org/v2/", null)
+                addBuildConfigField("API_KEY", envOrProp("NEWS_API_DEV_API_KEY"), null)
+            }
+            ProductFlavors.PROD -> {
+                manifestPlaceholders.put("bugsnagApiKey", envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY"))
+                addBuildConfigField("ENABLE_BUGSNAG", true, null)
+                addBuildConfigField("ENABLE_ANALYTICS", true, null)
+                addBuildConfigField("BASE_URL", "https://newsapi.org/v2/", null)
+                addBuildConfigField("API_KEY", envOrProp("NEWS_API_PROD_API_KEY"), null)
+            }
+        }
+
+        // database name
+        addBuildConfigField("DATABASE_NAME", "streamlined.db", null)
     }
 
     // filter out mockRelease, devRelease and prodDebug builds.
@@ -120,17 +139,6 @@ android {
             ) {
                 ignore = true
             }
-        }
-    }
-
-    applicationVariants.all {
-        // customize app name for debug builds
-        if (buildType.name == BuildType.DEBUG.name) {
-            // concatenate build variant to app name
-            val appName = "streamlined-${name}"
-
-            // set new app_name
-            resValue("string", "app_name", appName)
         }
     }
 

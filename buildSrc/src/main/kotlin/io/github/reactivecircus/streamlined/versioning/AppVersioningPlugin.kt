@@ -4,7 +4,6 @@ import android.databinding.tool.ext.capitalizeUS
 import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import io.github.reactivecircus.streamlined.hasAndroidAppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
