@@ -95,9 +95,6 @@ android {
             // turn on strict mode for non-CI debug builds
             addBuildConfigField("ENABLE_STRICT_MODE", !isCiBuild, null)
 
-            // override app name for LeakCanary
-            addResValue("leak_canary_display_activity_label", "string", "streamlined-${name}", null)
-
             // concatenate build variant to app name
             addResValue("app_name", "string", "streamlined-${name}", null)
         } else {
