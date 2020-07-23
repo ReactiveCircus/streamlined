@@ -46,7 +46,9 @@ abstract class AppModule {
         @Provides
         @Reusable
         fun imageLoader(context: Context): ImageLoader {
-            return ImageLoaderBuilder(context).build()
+            return ImageLoaderBuilder(context)
+                .crossfade(true)
+                .build()
         }
     }
 }
