@@ -52,7 +52,7 @@ object versions {
         }
     }
 
-    const val material = "1.3.0-alpha01"
+    const val material = "1.3.0-alpha02"
     const val insetter = "0.3.0"
     const val dagger = "2.28"
     const val assistedInject = "0.5.2"
