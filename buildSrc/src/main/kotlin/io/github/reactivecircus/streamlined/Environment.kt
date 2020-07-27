@@ -2,8 +2,12 @@ package io.github.reactivecircus.streamlined
 
 import org.gradle.api.Project
 
-val isCiBuild: Boolean get() = System.getenv("CI") == "true"
+@Suppress("UnstableApiUsage")
+val Project.isCiBuild: Boolean
+    get() = providers.environmentVariable("CI").forUseAtConfigurationTime().orNull == "true"
 
+@Suppress("UnstableApiUsage")
 fun Project.envOrProp(name: String): String {
-    return System.getenv(name) ?: this.properties.getOrDefault(name, "") as String
+    return providers.environmentVariable(name).forUseAtConfigurationTime().orNull
+        ?: providers.gradleProperty(name).forUseAtConfigurationTime().getOrElse("")
 }
