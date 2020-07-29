@@ -117,23 +117,23 @@ android {
                 addBuildConfigField("ENABLE_ANALYTICS", false, null)
             }
             ProductFlavors.DEV -> {
-                manifestPlaceholders.put("bugsnagApiKey", envOrProp("RELEASE_PROBE_BUGSNAG_API_KEY"))
+                manifestPlaceholders.put("bugsnagApiKey", "\"${envOrProp("RELEASE_PROBE_BUGSNAG_API_KEY")}\"")
                 addBuildConfigField("ENABLE_BUGSNAG", isCiBuild, null)
                 addBuildConfigField("ENABLE_ANALYTICS", true, null)
-                addBuildConfigField("BASE_URL", "https://newsapi.org/v2/", null)
-                addBuildConfigField("API_KEY", envOrProp("NEWS_API_DEV_API_KEY"), null)
+                addBuildConfigField("BASE_URL", "\"https://newsapi.org/v2/\"", null)
+                addBuildConfigField("API_KEY", "\"${envOrProp("NEWS_API_DEV_API_KEY")}\"", null)
             }
             ProductFlavors.PROD -> {
-                manifestPlaceholders.put("bugsnagApiKey", envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY"))
+                manifestPlaceholders.put("bugsnagApiKey", "\"${envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY")}\"")
                 addBuildConfigField("ENABLE_BUGSNAG", true, null)
                 addBuildConfigField("ENABLE_ANALYTICS", true, null)
-                addBuildConfigField("BASE_URL", "https://newsapi.org/v2/", null)
-                addBuildConfigField("API_KEY", envOrProp("NEWS_API_PROD_API_KEY"), null)
+                addBuildConfigField("BASE_URL", "\"https://newsapi.org/v2/\"", null)
+                addBuildConfigField("API_KEY", "\"${envOrProp("NEWS_API_PROD_API_KEY")}\"", null)
             }
         }
 
         // database name
-        addBuildConfigField("DATABASE_NAME", "streamlined.db", null)
+        addBuildConfigField("DATABASE_NAME", "\"streamlined.db\"", null)
     }
 
     // filter out mockRelease, devRelease and prodDebug builds.
