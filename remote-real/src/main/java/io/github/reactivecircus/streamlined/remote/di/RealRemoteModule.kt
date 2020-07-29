@@ -6,9 +6,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.reactivecircus.streamlined.remote.AuthInterceptor
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
-import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -35,7 +33,6 @@ internal object RealRemoteModule {
 
     @Provides
     @Singleton
-    @UnstableDefault
     fun retrofit(
         @BaseUrl baseUrl: String,
         okhttpClient: Lazy<OkHttpClient>
@@ -49,8 +46,7 @@ internal object RealRemoteModule {
                 }
             })
             .addConverterFactory(
-                Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true))
-                    .asConverterFactory(contentType)
+                Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)
             )
             .build()
     }

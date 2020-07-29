@@ -9,6 +9,8 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.maven
+import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
@@ -33,10 +35,12 @@ internal fun Project.configureForAllProjects() {
     // apply and configure detekt plugin
     configureDetektPlugin()
 
-    repositories.apply {
+    repositories {
         mavenCentral()
         google()
         jcenter()
+        // TODO remove once new store release is available
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 
     tasks.withType<JavaCompile> {

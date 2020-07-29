@@ -1,9 +1,9 @@
 package io.github.reactivecircus.streamlined.data.di
 
 import android.content.Context
+import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.StoreBuilder
-import com.dropbox.android.external.store4.nonFlowValueFetcher
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -77,12 +77,12 @@ internal abstract class DataModule {
             longLifetimeCoroutineScope: CoroutineScope
         ): HeadlineStoryStore {
             return StoreBuilder.from<Unit, List<StoryEntity>, List<Story>>(
-                fetcher = nonFlowValueFetcher {
+                fetcher = Fetcher.of {
                     // TODO source country (hardcode ISO 3166-1 country code) from user preference
                     val country = "au"
                     newsApiService.headlines(country).stories.map { it.toEntity(isHeadline = true) }
                 },
-                sourceOfTruth = SourceOfTruth.from(
+                sourceOfTruth = SourceOfTruth.of(
                     reader = {
                         storyDao.headlineStories().map { stories ->
                             stories.map { it.toModel() }.ifEmpty { null }
@@ -108,11 +108,11 @@ internal abstract class DataModule {
             longLifetimeCoroutineScope: CoroutineScope
         ): PersonalizedStoryStore {
             return StoreBuilder.from<String, List<StoryEntity>, List<Story>>(
-                fetcher = nonFlowValueFetcher { query ->
+                fetcher = Fetcher.of { query ->
                     // TODO use custom query type instead of string
                     newsApiService.everything(query).stories.map { it.toEntity(isHeadline = false) }
                 },
-                sourceOfTruth = SourceOfTruth.from(
+                sourceOfTruth = SourceOfTruth.of(
                     reader = {
                         storyDao.nonHeadlineStories().map { stories ->
                             if (stories.isNotEmpty()) {

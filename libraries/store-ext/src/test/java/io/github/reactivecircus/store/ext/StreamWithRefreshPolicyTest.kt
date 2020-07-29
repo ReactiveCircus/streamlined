@@ -1,12 +1,12 @@
 package io.github.reactivecircus.store.ext
 
+import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreResponse
 import com.dropbox.android.external.store4.fresh
-import com.dropbox.android.external.store4.nonFlowValueFetcher
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
 import io.github.reactivecircus.coroutines.test.ext.recordWith
@@ -156,9 +156,9 @@ class StreamWithRefreshPolicyTest {
         scope: CoroutineScope = testScope
     ): Store<String, Int> {
         return StoreBuilder.from(
-            fetcher = nonFlowValueFetcher(fetcher::fetch),
-            sourceOfTruth = SourceOfTruth.fromNonFlow(
-                reader = persister::read,
+            fetcher = Fetcher.of(fetcher::fetch),
+            sourceOfTruth = SourceOfTruth.of(
+                nonFlowReader = persister::read,
                 writer = persister::write
             )
         )
@@ -173,8 +173,8 @@ class StreamWithRefreshPolicyTest {
         scope: CoroutineScope = testScope
     ): Store<String, Int> {
         return StoreBuilder.from(
-            fetcher = nonFlowValueFetcher(fetcher::fetch),
-            sourceOfTruth = SourceOfTruth.from(
+            fetcher = Fetcher.of(fetcher::fetch),
+            sourceOfTruth = SourceOfTruth.of(
                 reader = persister::read,
                 writer = persister::write
             )

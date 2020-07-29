@@ -3,15 +3,15 @@
 package io.github.reactivecircus.streamlined
 
 object versions {
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.0-rc"
     const val detekt = "1.10.0"
     const val bugsnag = "5.0.1"
     const val leakCanary = "2.4"
     const val desugarLibs = "1.0.9"
 
     object kotlinx {
-        const val coroutines = "1.3.8"
-        const val serialization = "0.20.0"
+        const val coroutines = "1.3.8-1.4.0-rc"
+        const val serialization = "1.0-M1-1.4.0-rc"
     }
 
     object firebase {
@@ -60,7 +60,7 @@ object versions {
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.5.0"
     const val sqldelight = "1.4.0"
-    const val store = "4.0.0-alpha06"
+    const val store = "4.0.0-SNAPSHOT"
     const val coil = "0.11.0"
     const val timber = "4.7.1"
     const val junit = "4.13"

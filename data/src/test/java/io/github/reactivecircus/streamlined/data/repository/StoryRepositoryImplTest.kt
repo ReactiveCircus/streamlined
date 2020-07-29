@@ -1,11 +1,11 @@
 package io.github.reactivecircus.streamlined.data.repository
 
+import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreResponse
-import com.dropbox.android.external.store4.nonFlowValueFetcher
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.coroutines.test.ext.FlowRecorder
 import io.github.reactivecircus.coroutines.test.ext.recordWith
@@ -285,9 +285,9 @@ private fun <Key : Any, Output : Any> buildStore(
     scope: CoroutineScope
 ): Store<Key, Output> {
     return StoreBuilder.from(
-        fetcher = nonFlowValueFetcher(fetcher::fetch),
-        sourceOfTruth = SourceOfTruth.fromNonFlow(
-            reader = persister::read,
+        fetcher = Fetcher.of(fetcher::fetch),
+        sourceOfTruth = SourceOfTruth.of(
+            nonFlowReader = persister::read,
             writer = persister::write
         )
     )
