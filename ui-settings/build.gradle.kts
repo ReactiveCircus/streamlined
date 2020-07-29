@@ -31,7 +31,6 @@ dependencies {
     implementation(libraries.kotlinx.coroutines.core)
 
     // AndroidX
-    implementation(libraries.androidx.archCore.runtime)
     implementation(libraries.androidx.lifecycle.viewModelKtx)
     implementation(libraries.androidx.lifecycle.commonJava8)
 

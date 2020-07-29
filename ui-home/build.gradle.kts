@@ -37,7 +37,6 @@ dependencies {
     // AndroidX
     implementation(libraries.androidx.swipeRefreshLayout)
     implementation(libraries.androidx.recyclerView)
-    implementation(libraries.androidx.archCore.runtime)
     implementation(libraries.androidx.lifecycle.viewModelKtx)
     implementation(libraries.androidx.lifecycle.commonJava8)
 

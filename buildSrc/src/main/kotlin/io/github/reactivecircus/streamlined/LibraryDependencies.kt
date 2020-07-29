@@ -38,17 +38,17 @@ object versions {
         const val work = "2.4.0"
 
         object test {
-            const val core = "1.3.0-rc01"
-            const val monitor = "1.3.0-rc01"
-            const val rules = "1.3.0-rc01"
-            const val runner = "1.3.0-rc01"
+            const val core = "1.3.0-rc02"
+            const val monitor = "1.3.0-rc02"
+            const val rules = "1.3.0-rc02"
+            const val runner = "1.3.0-rc02"
 
             object ext {
-                const val junit = "1.1.2-rc01"
-                const val truth = "1.3.0-rc01"
+                const val junit = "1.1.2-rc02"
+                const val truth = "1.3.0-rc02"
             }
 
-            const val espresso = "3.3.0-rc01"
+            const val espresso = "3.3.0-rc02"
         }
     }
 
@@ -131,7 +131,6 @@ object libraries {
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintLayout}"
 
         object archCore {
-            const val runtime = "androidx.arch.core:core-runtime:${versions.androidx.arch}"
             const val testing = "androidx.arch.core:core-testing:${versions.androidx.arch}"
         }
 
