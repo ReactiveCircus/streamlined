@@ -7,17 +7,25 @@ import io.github.reactivecircus.streamlined.envOrProp
 import io.github.reactivecircus.streamlined.isCiBuild
 import io.github.reactivecircus.streamlined.libraries
 import org.gradle.language.nativeplatform.internal.BuildType
+import java.time.Instant
 
 plugins {
     `streamlined-plugin`
     `core-library-desugaring`
-    `app-versioning`
+    id("io.github.reactivecircus.app-versioning")
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("project-report")
     id("com.github.triplet.play")
+}
+
+appVersioning {
+    fetchTagsWhenNoneExistsLocally.set(true)
+    overrideVersionCode { _, _ ->
+        Instant.now().epochSecond.toInt()
+    }
 }
 
 android {
