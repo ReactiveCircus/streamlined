@@ -31,7 +31,7 @@ object versions {
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha05"
         const val swipeRefreshLayout = "1.2.0-alpha01"
-        const val constraintLayout = "2.0.0-beta8"
+        const val constraintLayout = "2.0.0-rc1"
         const val arch = "2.1.0"
         const val lifecycle = "2.3.0-alpha06"
         const val navigation = "2.3.0"
