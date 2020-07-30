@@ -9,9 +9,6 @@ plugins {
 dependencies {
     api(project(":remote-base"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // OkHttp
     implementation(libraries.okhttp.client)
     implementation(libraries.okhttp.loggingInterceptor)

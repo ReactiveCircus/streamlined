@@ -6,7 +6,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libraries.kotlinStdlib)
     implementation(libraries.junit)
     implementation(libraries.truth)
     implementation(libraries.kotlinx.coroutines.core)

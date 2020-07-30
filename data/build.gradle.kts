@@ -14,9 +14,6 @@ dependencies {
     api(project(":persistence"))
     api(project(":store-ext"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Blueprint
     implementation(libraries.blueprint.asyncCoroutines)
 

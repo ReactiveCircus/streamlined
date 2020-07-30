@@ -9,9 +9,6 @@ plugins {
 dependencies {
     api(project(":analytics-api-base"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Firebase
     api(libraries.firebase.analyticsKtx)
 }

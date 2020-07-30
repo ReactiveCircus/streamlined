@@ -1,5 +1,3 @@
-import io.github.reactivecircus.streamlined.libraries
-
 plugins {
     `streamlined-plugin`
     id("com.android.library")
@@ -8,7 +6,4 @@ plugins {
 
 dependencies {
     api(project(":analytics-api-base"))
-
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
 }

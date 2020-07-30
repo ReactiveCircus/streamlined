@@ -64,17 +64,6 @@ internal fun Project.configureForAllProjects() {
             events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
         }
     }
-
-    // force all Kotlin stdlib artifacts to use the same version
-    configurations.configureEach {
-        resolutionStrategy {
-            eachDependency {
-                if (requested.group == "org.jetbrains.kotlin" && requested.name.startsWith("kotlin-stdlib")) {
-                    useVersion(versions.kotlin)
-                }
-            }
-        }
-    }
 }
 
 /**

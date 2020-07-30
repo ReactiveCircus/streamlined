@@ -185,9 +185,6 @@ dependencies {
 
     implementation(project(":scheduled-tasks"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Blueprint
     implementation(libraries.blueprint.interactorCoroutines)
     implementation(libraries.blueprint.asyncCoroutines)

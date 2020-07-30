@@ -6,9 +6,6 @@ plugins {
 }
 
 dependencies {
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 

@@ -9,9 +9,6 @@ plugins {
 dependencies {
     api(project(":remote-base"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 

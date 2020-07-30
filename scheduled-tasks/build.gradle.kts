@@ -10,9 +10,6 @@ plugins {
 dependencies {
     implementation(project(":domain-runtime"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 

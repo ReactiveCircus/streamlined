@@ -9,9 +9,6 @@ plugins {
 dependencies {
     api(project(":domain-api"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Blueprint
     api(libraries.blueprint.interactorCoroutines)
     api(libraries.blueprint.asyncCoroutines)

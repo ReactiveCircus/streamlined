@@ -8,9 +8,6 @@ plugins {
 dependencies {
     implementation(project(":domain-api"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Coroutines
     implementation(libraries.kotlinx.coroutines.core)
 

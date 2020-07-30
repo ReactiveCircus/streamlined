@@ -15,9 +15,6 @@ sqldelight {
 }
 
 dependencies {
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // SQLDelight
     implementation(libraries.sqldelight.driver.android)
     implementation(libraries.sqldelight.coroutinesExtensions)

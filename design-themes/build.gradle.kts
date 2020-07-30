@@ -7,9 +7,6 @@ plugins {
 }
 
 dependencies {
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // AndroidX
     implementation(libraries.androidx.appCompat)
 

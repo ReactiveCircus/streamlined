@@ -15,9 +15,6 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":remote-mock"))
 
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Blueprint
     implementation(libraries.blueprint.asyncCoroutines)
 

@@ -7,9 +7,6 @@ plugins {
 }
 
 dependencies {
-    // Kotlin stdlib
-    implementation(libraries.kotlinStdlib)
-
     // Retrofit
     implementation(libraries.retrofit.client)
 
