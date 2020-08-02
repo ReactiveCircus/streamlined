@@ -43,6 +43,10 @@ class HomeFragment @Inject constructor(
         }
     }
 
+    private val feedsListAdapter = FeedsListAdapter(itemActionListener).apply {
+        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+    }
+
     private var errorSnackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +67,6 @@ class HomeFragment @Inject constructor(
         binding.retryButton.clicks()
             .onEach { viewModel.refreshHomeFeeds() }
             .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        val feedsListAdapter = FeedsListAdapter(itemActionListener).apply {
-            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -128,7 +128,7 @@ class HomeFragment @Inject constructor(
         )
         errorSnackbar = Snackbar
             .make(root, errorMessage, Snackbar.LENGTH_INDEFINITE)
-            .setDefaultBackgroundColor()
-            .apply { show() }
+            .apply { setDefaultBackgroundColor() }
+            .also { it.show() }
     }
 }
