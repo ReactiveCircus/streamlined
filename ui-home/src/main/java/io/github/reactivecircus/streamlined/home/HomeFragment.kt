@@ -8,7 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialFadeThrough
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
@@ -43,19 +42,9 @@ class HomeFragment @Inject constructor(
         }
     }
 
-    private val feedsListAdapter = FeedsListAdapter(itemActionListener).apply {
-        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-    }
-
     private var errorSnackbar: Snackbar? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enterTransition = MaterialFadeThrough()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
 
         binding.toolbar.title = getString(R.string.title_home)
@@ -68,6 +57,9 @@ class HomeFragment @Inject constructor(
             .onEach { viewModel.refreshHomeFeeds() }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
+        val feedsListAdapter = FeedsListAdapter(viewLifecycleOwner, itemActionListener).apply {
+            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = feedsListAdapter

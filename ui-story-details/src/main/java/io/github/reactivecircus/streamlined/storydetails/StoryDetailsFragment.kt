@@ -3,6 +3,7 @@ package io.github.reactivecircus.streamlined.storydetails
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.google.android.material.transition.MaterialElevationScale
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
@@ -19,7 +20,9 @@ class StoryDetailsFragment @Inject constructor(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        enterTransition = MaterialElevationScale(true)
+        returnTransition = MaterialElevationScale(false)
+
         val binding = FragmentStoryDetailsBinding.bind(view)
 
         binding.toolbar.title = "Story title"

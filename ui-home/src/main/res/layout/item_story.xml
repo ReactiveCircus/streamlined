@@ -14,7 +14,9 @@
         android:background="?colorControlHighlight"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+        tools:ignore="ContentDescription" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/storySourceTextView"

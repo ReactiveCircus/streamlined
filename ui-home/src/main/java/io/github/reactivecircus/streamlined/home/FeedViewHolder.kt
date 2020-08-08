@@ -2,9 +2,9 @@ package io.github.reactivecircus.streamlined.home
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import io.github.reactivecircus.streamlined.design.enableDefaultCornerRadius
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.ItemEmptyPlaceholderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemMainStoryBinding
@@ -19,7 +19,8 @@ import io.github.reactivecircus.streamlined.design.R as ThemeResource
 internal sealed class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 internal class MainStoryViewHolder(
-    private val binding: ItemMainStoryBinding
+    private val binding: ItemMainStoryBinding,
+    private val lifecycleOwner: LifecycleOwner
 ) : FeedViewHolder(binding.root) {
     fun bind(
         story: Story,
@@ -27,13 +28,16 @@ internal class MainStoryViewHolder(
         itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction>
     ) {
         binding.storyImageView.run {
-            enableDefaultCornerRadius()
             if (story.imageUrl != null) {
                 isVisible = true
-                load(story.imageUrl)
+                load(story.imageUrl) {
+                    lifecycle(lifecycleOwner)
+                }
             } else {
                 isVisible = false
-                load(story.imageUrl)
+                load(story.imageUrl) {
+                    lifecycle(lifecycleOwner)
+                }
             }
         }
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)
@@ -58,7 +62,8 @@ internal class MainStoryViewHolder(
 }
 
 internal class StoryViewHolder(
-    private val binding: ItemStoryBinding
+    private val binding: ItemStoryBinding,
+    private val lifecycleOwner: LifecycleOwner
 ) : FeedViewHolder(binding.root) {
     fun bind(
         story: Story,
@@ -66,13 +71,16 @@ internal class StoryViewHolder(
         itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction>
     ) {
         binding.storyImageView.run {
-            enableDefaultCornerRadius()
             if (story.imageUrl != null) {
                 isVisible = true
-                load(story.imageUrl)
+                load(story.imageUrl) {
+                    lifecycle(lifecycleOwner)
+                }
             } else {
                 isVisible = false
-                load(story.imageUrl)
+                load(story.imageUrl) {
+                    lifecycle(lifecycleOwner)
+                }
             }
         }
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)

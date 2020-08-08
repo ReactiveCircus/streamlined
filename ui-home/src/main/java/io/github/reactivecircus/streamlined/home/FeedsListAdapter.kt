@@ -3,6 +3,7 @@ package io.github.reactivecircus.streamlined.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import io.github.reactivecircus.streamlined.domain.model.Story
@@ -16,6 +17,7 @@ import reactivecircus.blueprint.ui.extension.isAnimationOn
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 internal class FeedsListAdapter(
+    private val lifecycleOwner: LifecycleOwner,
     private val itemActionListener: ItemActionListener<ItemAction>
 ) : ListAdapter<FeedItem, FeedViewHolder>(diffCallback) {
 
@@ -52,7 +54,7 @@ internal class FeedsListAdapter(
                     parent,
                     false
                 )
-                MainStoryViewHolder(binding)
+                MainStoryViewHolder(binding, lifecycleOwner)
             }
             R.layout.item_story -> {
                 val binding = ItemStoryBinding.inflate(
@@ -60,7 +62,7 @@ internal class FeedsListAdapter(
                     parent,
                     false
                 )
-                StoryViewHolder(binding)
+                StoryViewHolder(binding, lifecycleOwner)
             }
             R.layout.item_section_header -> {
                 val binding = ItemSectionHeaderBinding.inflate(
