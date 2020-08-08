@@ -13,7 +13,6 @@ import java.util.Locale
 /**
  * A logging implementation which buffers the last 200 messages and notifies on error exceptions.
  */
-@OptIn(ExperimentalStdlibApi::class)
 class BugsnagTree : Timber.Tree() {
 
     // Adding one to the initial size accounts for the add before remove.

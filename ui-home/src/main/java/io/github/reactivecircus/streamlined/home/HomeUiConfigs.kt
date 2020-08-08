@@ -4,17 +4,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlin.time.seconds
 
-@ExperimentalTime
 interface HomeUiConfigs {
     val numberOfHeadlinesDisplayed: Int
     val transientErrorDisplayDuration: Duration
     val delayDispatcher: CoroutineDispatcher
 }
 
-@ExperimentalTime
 class DefaultHomeUiConfigs @Inject constructor(
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : HomeUiConfigs {

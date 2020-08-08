@@ -22,12 +22,9 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import kotlin.collections.set
-import kotlin.time.ExperimentalTime
 import kotlin.time.TestTimeSource
 import kotlin.time.seconds
 
-@ExperimentalTime
-@ExperimentalStdlibApi
 @FlowPreview
 @ExperimentalCoroutinesApi
 class StoryRepositoryImplTest {

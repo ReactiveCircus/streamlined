@@ -4,5 +4,7 @@ internal val additionalCompilerArgs = listOf(
     "-progressive",
     "-XXLanguage:+NewInference",
     "-XXLanguage:+InlineClasses",
-    "-Xopt-in=kotlin.Experimental"
+    "-Xopt-in=kotlin.Experimental",
+    "-Xopt-in=kotlin.ExperimentalStdlibApi",
+    "-Xopt-in=kotlin.time.ExperimentalTime"
 )

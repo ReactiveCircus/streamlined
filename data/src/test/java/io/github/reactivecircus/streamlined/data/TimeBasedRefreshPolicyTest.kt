@@ -6,11 +6,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import kotlin.time.ExperimentalTime
 import kotlin.time.TestTimeSource
 import kotlin.time.seconds
 
-@ExperimentalTime
 @ExperimentalCoroutinesApi
 class TimeBasedRefreshPolicyTest {
 

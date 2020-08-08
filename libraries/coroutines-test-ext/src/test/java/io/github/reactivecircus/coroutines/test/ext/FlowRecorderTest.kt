@@ -11,7 +11,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-@ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
 class FlowRecorderTest {
 

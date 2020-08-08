@@ -24,7 +24,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 
 @FlowPreview
-@ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
 class StreamWithRefreshPolicyTest {
 

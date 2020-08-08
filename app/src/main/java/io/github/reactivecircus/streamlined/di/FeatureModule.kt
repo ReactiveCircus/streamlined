@@ -14,7 +14,6 @@ import io.github.reactivecircus.streamlined.settings.SettingsFragment
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsAssistedModule
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
 import io.github.reactivecircus.streamlined.ui.di.FragmentKey
-import kotlin.time.ExperimentalTime
 
 @Module(
     includes = [
@@ -25,7 +24,6 @@ abstract class FeatureModule {
 
     @Binds
     @Reusable
-    @OptIn(ExperimentalTime::class)
     abstract fun homeUiConfigs(impl: DefaultHomeUiConfigs): HomeUiConfigs
 
     @Binds

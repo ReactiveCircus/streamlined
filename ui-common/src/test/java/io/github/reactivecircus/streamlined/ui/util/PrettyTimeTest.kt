@@ -7,13 +7,11 @@ import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
 import java.util.Locale
-import kotlin.time.ExperimentalTime
 import kotlin.time.days
 import kotlin.time.hours
 import kotlin.time.minutes
 import kotlin.time.seconds
 
-@ExperimentalTime
 class PrettyTimeTest {
 
     private val pattern = "EEE d MMM 'at' h:mm a"

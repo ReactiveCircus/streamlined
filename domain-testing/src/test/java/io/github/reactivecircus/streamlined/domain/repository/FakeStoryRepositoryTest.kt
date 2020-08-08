@@ -16,7 +16,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import java.io.IOException
 
-@ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
 class FakeStoryRepositoryTest {
 

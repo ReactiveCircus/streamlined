@@ -22,9 +22,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import reactivecircus.blueprint.interactor.EmptyParams
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 @ExperimentalCoroutinesApi
 class HomeStateMachine @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories,

@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalTime::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel @Inject constructor(
     private val homeStateMachine: HomeStateMachine
 ) : ViewModel() {

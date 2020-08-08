@@ -5,12 +5,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@ExperimentalStdlibApi
 fun <T> Flow<T>.recordWith(recorder: FlowRecorder<T>) {
     onEach { recorder.values += it }.launchIn(recorder.coroutineScope)
 }
 
-@ExperimentalStdlibApi
 class FlowRecorder<T>(internal val coroutineScope: CoroutineScope) {
 
     internal val values = mutableListOf<T>()

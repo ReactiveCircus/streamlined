@@ -27,11 +27,8 @@ import org.junit.Rule
 import org.junit.Test
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import java.io.IOException
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 @FlowPreview
-@ExperimentalStdlibApi
 @ExperimentalCoroutinesApi
 class HomeViewModelTest {
 

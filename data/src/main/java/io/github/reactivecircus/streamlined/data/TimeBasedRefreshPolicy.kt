@@ -5,7 +5,6 @@ import io.github.reactivecircus.store.ext.RefreshScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 import kotlin.time.minutes
@@ -17,7 +16,6 @@ import kotlin.time.minutes
  * until [expiration] time has passed where the [expiration] is updated / extended each time a refresh
  * is recorded, effectively debouncing the expiration of a data set for the given [RefreshScope].
  */
-@OptIn(ExperimentalTime::class)
 class TimeBasedRefreshPolicy(
     private val expiration: Duration = DEFAULT_EXPIRATION,
     private val timeSource: TimeSource = TimeSource.Monotonic

@@ -7,7 +7,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
 import kotlin.time.days
 import kotlin.time.hours
 import kotlin.time.minutes
@@ -31,7 +30,6 @@ fun Long.toFormattedDateString(
 /**
  * Returns prettified duration between a previous timestamp and now.
  */
-@OptIn(ExperimentalTime::class)
 fun Long.timeAgo(
     fallbackDatePattern: String,
     zoneId: ZoneId = ZoneId.systemDefault(),

@@ -13,7 +13,6 @@ import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.testing.NoOpNavigatorProvider
 import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
 import io.github.reactivecircus.streamlined.ui.di.FragmentKey
-import kotlin.time.ExperimentalTime
 
 @Module
 abstract class HomeTestAppModule {
@@ -28,7 +27,6 @@ abstract class HomeTestAppModule {
 
     @Binds
     @Reusable
-    @OptIn(ExperimentalTime::class)
     abstract fun homeUiConfigs(impl: TestHomeUiConfigs): HomeUiConfigs
 
     @Binds
