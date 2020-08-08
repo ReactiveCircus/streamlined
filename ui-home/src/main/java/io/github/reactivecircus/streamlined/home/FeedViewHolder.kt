@@ -35,9 +35,6 @@ internal class MainStoryViewHolder(
                 }
             } else {
                 isVisible = false
-                load(story.imageUrl) {
-                    lifecycle(lifecycleOwner)
-                }
             }
         }
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)
@@ -78,9 +75,6 @@ internal class StoryViewHolder(
                 }
             } else {
                 isVisible = false
-                load(story.imageUrl) {
-                    lifecycle(lifecycleOwner)
-                }
             }
         }
         binding.storySourceTextView.setPrecomputedTextFuture(story.source)

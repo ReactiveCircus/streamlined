@@ -32,12 +32,12 @@ class HomeFragment @Inject constructor(
     private val itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction> = { action ->
         when (action) {
             is FeedsListAdapter.ItemAction.StoryClicked -> {
-                navigatorProvider.get()?.navigateToStoryDetailsScreen(action.story.id)
+                navigatorProvider.get().navigateToStoryDetailsScreen(action.story.id)
             }
             is FeedsListAdapter.ItemAction.BookmarkToggled -> Unit
             is FeedsListAdapter.ItemAction.MoreButtonClicked -> Unit
             FeedsListAdapter.ItemAction.ReadMoreHeadlinesButtonClicked -> {
-                navigatorProvider.get()?.navigateToHeadlinesScreen()
+                navigatorProvider.get().navigateToHeadlinesScreen()
             }
         }
     }
@@ -82,13 +82,18 @@ class HomeFragment @Inject constructor(
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+    override fun onDestroyView() {
+        dismissErrorSnackbar()
+        super.onDestroyView()
+    }
+
     private fun FragmentHomeBinding.showContentState() {
         errorStateView.isVisible = false
         progressBar.isVisible = false
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = true
         recyclerView.isVisible = true
-        errorSnackbar?.dismiss()
+        dismissErrorSnackbar()
     }
 
     private fun FragmentHomeBinding.showInFlightState(hasContent: Boolean) {
@@ -97,7 +102,7 @@ class HomeFragment @Inject constructor(
         swipeRefreshLayout.isRefreshing = hasContent
         swipeRefreshLayout.isEnabled = hasContent
         recyclerView.isVisible = hasContent
-        errorSnackbar?.dismiss()
+        dismissErrorSnackbar()
     }
 
     private fun FragmentHomeBinding.showPermanentErrorState() {
@@ -106,7 +111,7 @@ class HomeFragment @Inject constructor(
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = false
         recyclerView.isVisible = false
-        errorSnackbar?.dismiss()
+        dismissErrorSnackbar()
     }
 
     private fun FragmentHomeBinding.showTransientErrorState() {
@@ -122,5 +127,10 @@ class HomeFragment @Inject constructor(
             .make(root, errorMessage, Snackbar.LENGTH_INDEFINITE)
             .apply { setDefaultBackgroundColor() }
             .also { it.show() }
+    }
+
+    private fun dismissErrorSnackbar() {
+        errorSnackbar?.dismiss()
+        errorSnackbar = null
     }
 }

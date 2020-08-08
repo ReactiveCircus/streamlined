@@ -9,5 +9,5 @@ import javax.inject.Inject
  */
 class NoOpNavigatorProvider @Inject constructor() : NavigatorProvider {
 
-    override fun get(): Navigator? = NoOpNavigator
+    override fun get(): Navigator = NoOpNavigator
 }

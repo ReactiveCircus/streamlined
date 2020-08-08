@@ -16,18 +16,20 @@ class StreamlinedNavigatorProvider @Inject constructor() :
 
     private var navigator: Navigator? = null
 
-    override fun get(): Navigator? {
-        return navigator
+    override fun get(): Navigator {
+        return navigator!!
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity is StreamlinedActivity) {
-            navigator = StreamlinedNavigator { activity }
+            navigator = StreamlinedNavigator(activity)
         }
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        navigator = null
+        if (activity is StreamlinedActivity) {
+            navigator = null
+        }
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
