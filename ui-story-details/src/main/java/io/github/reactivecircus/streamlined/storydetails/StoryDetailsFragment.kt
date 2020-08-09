@@ -3,10 +3,13 @@ package io.github.reactivecircus.streamlined.storydetails
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.transition.MaterialElevationScale
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -28,6 +31,12 @@ class StoryDetailsFragment @Inject constructor(
         binding.toolbar.title = "Story title"
 
         // TODO transparent navigationBarColor for API 29+; #B3FFFFFF (light) and #B3000000 (night) for API < 29
+
+        viewModel.rendering
+            .onEach { rendering ->
+                // TODO
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     companion object {
