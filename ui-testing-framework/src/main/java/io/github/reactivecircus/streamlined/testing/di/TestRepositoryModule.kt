@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package io.github.reactivecircus.streamlined.testing.di
 
 import android.content.Context

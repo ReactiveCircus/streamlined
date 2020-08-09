@@ -33,6 +33,37 @@ class HomeWorkflow @Inject constructor(
     // TODO replace with currently applied filters / configs
     private val query = "android"
 
+    override fun initialState(props: Unit, snapshot: Snapshot?): HomeState {
+        return HomeState.InFlight.Initial
+    }
+
+    override fun render(props: Unit, state: HomeState, context: RenderContext): HomeRendering {
+        context.runningWorker(streamCombinedStoriesWorker) {
+            handleStreamStoriesResponse(it, homeUiConfigs)
+        }
+
+        when (state) {
+            is HomeState.InFlight.Refresh -> {
+                context.runningWorker(refreshStoriesWorker) {
+                    handleRefreshStoriesResponse(it)
+                }
+            }
+            is HomeState.Error.Transient -> {
+                context.runningWorker(
+                    Worker.timer(homeUiConfigs.transientErrorDisplayDuration.inMilliseconds.toLong())
+                        .transform { it.flowOn(homeUiConfigs.delayDispatcher) }
+                ) {
+                    onDismissTransientError()
+                }
+            }
+            else -> Unit
+        }
+
+        return HomeRendering(state, onRefresh = { context.actionSink.send(onRefreshStories()) })
+    }
+
+    override fun snapshotState(state: HomeState): Snapshot? = null
+
     private fun handleStreamStoriesResponse(
         combinedResponses: CombinedStoryResponses,
         homeUiConfigs: HomeUiConfigs
@@ -113,37 +144,6 @@ class HomeWorkflow @Inject constructor(
             else -> currentState
         }
     }
-
-    override fun initialState(props: Unit, snapshot: Snapshot?): HomeState {
-        return HomeState.InFlight.Initial
-    }
-
-    override fun render(props: Unit, state: HomeState, context: RenderContext): HomeRendering {
-        context.runningWorker(streamCombinedStoriesWorker) {
-            handleStreamStoriesResponse(it, homeUiConfigs)
-        }
-
-        when (state) {
-            is HomeState.InFlight.Refresh -> {
-                context.runningWorker(refreshStoriesWorker) {
-                    handleRefreshStoriesResponse(it)
-                }
-            }
-            is HomeState.Error.Transient -> {
-                context.runningWorker(
-                    Worker.timer(homeUiConfigs.transientErrorDisplayDuration.inMilliseconds.toLong())
-                        .transform { it.flowOn(homeUiConfigs.delayDispatcher) }
-                ) {
-                    onDismissTransientError()
-                }
-            }
-            else -> Unit
-        }
-
-        return HomeRendering(state, onRefresh = { context.actionSink.send(onRefreshStories()) })
-    }
-
-    override fun snapshotState(state: HomeState): Snapshot? = null
 
     /**
      * A [Worker] that combines headline and personalized story streams.

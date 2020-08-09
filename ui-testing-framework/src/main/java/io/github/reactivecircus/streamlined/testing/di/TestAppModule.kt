@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package io.github.reactivecircus.streamlined.testing.di
 
 import android.graphics.Color
@@ -31,6 +33,7 @@ internal abstract class TestAppModule {
 
     companion object {
 
+        @Suppress("DEPRECATION")
         @Provides
         @Reusable
         fun coroutineDispatcherProvider(): CoroutineDispatcherProvider {

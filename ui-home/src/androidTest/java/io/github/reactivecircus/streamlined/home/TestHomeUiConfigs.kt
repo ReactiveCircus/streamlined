@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package io.github.reactivecircus.streamlined.home
 
 import android.os.AsyncTask
