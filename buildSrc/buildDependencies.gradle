@@ -3,7 +3,7 @@ rootProject.ext.versions = [
         appVersioning : '0.2.1',
         googleServices: '4.3.3',
         kotlin        : '1.4.0-rc',
-        detekt        : '1.10.0',
+        detekt        : '1.11.0',
         sqldelight    : '1.4.0',
         playPublisher : '2.8.0',
 ]

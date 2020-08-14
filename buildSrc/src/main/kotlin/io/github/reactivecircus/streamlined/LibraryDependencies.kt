@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object versions {
-    const val detekt = "1.10.0"
+    const val detekt = "1.11.0"
     const val bugsnag = "5.0.1"
     const val leakCanary = "2.4"
     const val desugarLibs = "1.0.10"
@@ -14,7 +14,7 @@ object versions {
     }
 
     object firebase {
-        const val analytics = "17.4.3"
+        const val analytics = "17.5.0"
     }
 
     const val blueprint = "1.11.0"
