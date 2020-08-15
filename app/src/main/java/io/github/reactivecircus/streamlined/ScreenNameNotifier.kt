@@ -15,9 +15,8 @@ class ScreenNameNotifier @Inject constructor(
     override fun onFragmentResumed(fragmentManager: FragmentManager, fragment: Fragment) {
         if (fragment is ScreenForAnalytics) {
             analyticsApi.setCurrentScreenName(
-                fragment.requireActivity(),
-                fragment.javaClass.simpleName,
-                fragment.javaClass.simpleName
+                screenName = fragment.javaClass.simpleName,
+                screenClass = fragment.javaClass.simpleName
             )
         }
     }

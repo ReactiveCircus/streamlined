@@ -1,10 +1,8 @@
 package io.github.reactivecircus.analytics
 
-import android.app.Activity
-
 interface AnalyticsApi {
 
-    fun setCurrentScreenName(activity: Activity, name: String, className: String? = null)
+    fun setCurrentScreenName(screenName: String, screenClass: String)
 
     fun setEnableAnalytics(enable: Boolean)
 

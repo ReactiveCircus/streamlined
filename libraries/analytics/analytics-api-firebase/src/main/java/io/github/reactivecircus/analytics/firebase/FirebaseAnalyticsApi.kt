@@ -1,6 +1,5 @@
 package io.github.reactivecircus.analytics.firebase
 
-import android.app.Activity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -11,14 +10,11 @@ object FirebaseAnalyticsApi : AnalyticsApi {
 
     private val firebaseAnalytics: FirebaseAnalytics = Firebase.analytics
 
-    /**
-     * By default Firebase uses the class name of the activity for automatic screen reporting.
-     * Call this in Activity.onResume() to set a custom name for the current screen.
-     * Also call this to define new screens within an Activity triggered by changing
-     * Fragments, navigating in ViewPager, etc.
-     */
-    override fun setCurrentScreenName(activity: Activity, name: String, className: String?) {
-        firebaseAnalytics.setCurrentScreen(activity, name, className)
+    override fun setCurrentScreenName(screenName: String, screenClass: String) {
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
+        }
     }
 
     override fun setEnableAnalytics(enable: Boolean) {
