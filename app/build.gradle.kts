@@ -21,10 +21,20 @@ plugins {
     id("com.github.triplet.play")
 }
 
+@Suppress("UnstableApiUsage")
+val enableAppVersioning = providers
+    .environmentVariable("ENABLE_APP_VERSIONING")
+    .forUseAtConfigurationTime()
+    .getOrElse("false").toString().toBoolean()
+
 appVersioning {
+    enabled.set(enableAppVersioning)
     fetchTagsWhenNoneExistsLocally.set(true)
     overrideVersionCode { _, _ ->
         Instant.now().epochSecond.toInt()
+    }
+    overrideVersionName { gitTag, _ ->
+        "${gitTag.rawTagName} (${gitTag.commitHash})"
     }
 }
 

@@ -72,6 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
+      ENABLE_APP_VERSIONING: false
 
     steps:
       - uses: actions/checkout@v2
@@ -110,6 +111,7 @@ jobs:
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+      ENABLE_APP_VERSIONING: false
 
     steps:
       - uses: actions/checkout@v2
@@ -145,6 +147,7 @@ jobs:
     timeout-minutes: 25
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
+      ENABLE_APP_VERSIONING: false
 
     steps:
       - uses: actions/checkout@v2
@@ -177,6 +180,7 @@ jobs:
       JAVA_TOOL_OPTIONS: -Xmx4g
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
       STREAMLINED_BUGSNAG_PROD_API_KEY: ${{ secrets.STREAMLINED_BUGSNAG_PROD_API_KEY }}
+      ENABLE_APP_VERSIONING: false
 
     steps:
       - uses: actions/checkout@v2
