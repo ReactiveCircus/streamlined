@@ -29,7 +29,6 @@ val enableAppVersioning = providers
 
 appVersioning {
     enabled.set(enableAppVersioning)
-    fetchTagsWhenNoneExistsLocally.set(true)
     overrideVersionCode { _, _ ->
         Instant.now().epochSecond.toInt()
     }
