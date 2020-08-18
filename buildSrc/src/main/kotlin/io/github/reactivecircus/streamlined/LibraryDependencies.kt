@@ -18,7 +18,7 @@ object versions {
     }
 
     const val blueprint = "1.12.0"
-    const val flowbinding = "1.0.0-alpha03"
+    const val flowbinding = "1.0.0-alpha04"
     const val workflow = "1.0.0-alpha.3"
 
     object androidx {
