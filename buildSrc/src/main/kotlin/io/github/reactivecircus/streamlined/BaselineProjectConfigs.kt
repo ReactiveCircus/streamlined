@@ -6,13 +6,11 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
-import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
@@ -43,17 +41,9 @@ internal fun Project.configureForAllProjects() {
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
-    }
-
-    tasks.withType<KotlinJvmCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
     tasks.withType<KotlinCompile> {
         kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
             freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
         }
     }
