@@ -5,14 +5,15 @@ package io.github.reactivecircus.streamlined.testing.di
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
-import coil.DefaultRequestOptions
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
+import coil.bitmap.BitmapPool
 import coil.decode.DataSource
-import coil.request.GetRequest
-import coil.request.LoadRequest
-import coil.request.RequestDisposable
-import coil.request.RequestResult
+import coil.memory.MemoryCache
+import coil.request.DefaultRequestOptions
+import coil.request.Disposable
+import coil.request.ImageRequest
+import coil.request.ImageResult
 import coil.request.SuccessResult
 import dagger.Binds
 import dagger.Module
@@ -52,7 +53,7 @@ internal abstract class TestAppModule {
 
                 private val drawable = ColorDrawable(Color.TRANSPARENT)
 
-                private val disposable = object : RequestDisposable {
+                private val disposable = object : Disposable {
                     override val isDisposed = true
 
                     @OptIn(ExperimentalCoilApi::class)
@@ -63,19 +64,28 @@ internal abstract class TestAppModule {
 
                 override val defaults = DefaultRequestOptions()
 
-                override fun clearMemory() = Unit
+                override val memoryCache get() = throw UnsupportedOperationException()
 
-                override suspend fun execute(request: GetRequest): RequestResult {
-                    return SuccessResult(drawable, DataSource.MEMORY_CACHE)
-                }
+                override val bitmapPool = BitmapPool(0)
 
-                override fun execute(request: LoadRequest): RequestDisposable {
+                override fun enqueue(request: ImageRequest): Disposable {
                     request.target?.onStart(drawable)
                     request.target?.onSuccess(drawable)
                     return disposable
                 }
 
-                override fun invalidate(key: String) = Unit
+                override suspend fun execute(request: ImageRequest): ImageResult {
+                    return SuccessResult(
+                        drawable = drawable,
+                        request = request,
+                        metadata = ImageResult.Metadata(
+                            memoryCacheKey = MemoryCache.Key(""),
+                            isSampled = false,
+                            dataSource = DataSource.MEMORY_CACHE,
+                            isPlaceholderMemoryCacheKeyPresent = false
+                        )
+                    )
+                }
 
                 override fun shutdown() = Unit
             }

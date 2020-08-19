@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.home.databinding.ItemEmptyPlaceholderBinding
 import io.github.reactivecircus.streamlined.home.databinding.ItemMainStoryBinding

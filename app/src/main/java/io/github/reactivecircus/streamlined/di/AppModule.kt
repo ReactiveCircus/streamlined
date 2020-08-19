@@ -3,7 +3,6 @@ package io.github.reactivecircus.streamlined.di
 import android.content.Context
 import androidx.fragment.app.FragmentFactory
 import coil.ImageLoader
-import coil.ImageLoaderBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -46,7 +45,7 @@ abstract class AppModule {
         @Provides
         @Reusable
         fun imageLoader(context: Context): ImageLoader {
-            return ImageLoaderBuilder(context)
+            return ImageLoader.Builder(context)
                 .crossfade(true)
                 .build()
         }
