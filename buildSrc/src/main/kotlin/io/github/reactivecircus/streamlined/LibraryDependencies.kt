@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object versions {
-    const val detekt = "1.11.1"
+    const val detekt = "1.11.2"
     const val bugsnag = "5.0.2"
     const val leakCanary = "2.4"
     const val desugarLibs = "1.0.10"
@@ -22,18 +22,18 @@ object versions {
     const val workflow = "1.0.0-alpha.3"
 
     object androidx {
-        const val core = "1.5.0-alpha01"
+        const val core = "1.5.0-alpha02"
         const val annotation = "1.2.0-alpha01"
-        const val appCompat = "1.3.0-alpha01"
-        const val activity = "1.2.0-alpha07"
-        const val fragment = "1.3.0-alpha07"
+        const val appCompat = "1.3.0-alpha02"
+        const val activity = "1.2.0-alpha08"
+        const val fragment = "1.3.0-alpha08"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha05"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.0-rc1"
-        const val lifecycle = "2.3.0-alpha06"
+        const val lifecycle = "2.3.0-alpha07"
         const val navigation = "2.3.0"
-        const val work = "2.4.0"
+        const val work = "2.5.0-alpha01"
 
         object test {
             const val core = "1.3.0-rc03"
