@@ -14,7 +14,7 @@ class FetchPersonalizedStoriesTest {
 
     private val fetchPersonalizedStories = FetchPersonalizedStories(
         storyRepository = storyRepository,
-        dispatcherProvider = testCoroutineDispatcherProvider
+        dispatcherProvider = testCoroutineDispatcherProvider,
     )
 
     @Test

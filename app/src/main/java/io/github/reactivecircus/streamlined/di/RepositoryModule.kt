@@ -43,7 +43,7 @@ object RepositoryModule {
         longLifetimeCoroutineScope = CoroutineScope(SupervisorJob() + coroutineDispatcherProvider.io),
         refreshPolicy = refreshPolicy,
         newsApiService = newsApiService,
-        databaseName = BuildConfig.DATABASE_NAME
+        databaseName = BuildConfig.DATABASE_NAME,
     )
 
     @Provides

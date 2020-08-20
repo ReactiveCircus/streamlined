@@ -11,7 +11,7 @@ class IntegrationTestApp : StreamlinedApp() {
     override val appComponent: AppComponent = IntegrationTestAppComponent.factory()
         .create(
             context = this,
-            testingFrameworkComponent = TestingFrameworkComponent.getOrCreate(this)
+            testingFrameworkComponent = TestingFrameworkComponent.getOrCreate(this),
         )
 
     override fun onCreate() {

@@ -53,7 +53,7 @@ internal abstract class DataModule {
         fun persistenceComponent(
             context: Context,
             coroutineDispatcherProvider: CoroutineDispatcherProvider,
-            databaseName: String?
+            databaseName: String?,
         ): PersistenceComponent = PersistenceComponent.factory()
             .create(
                 context = context,

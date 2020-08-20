@@ -123,7 +123,7 @@ class FakeStoryRepository : StoryRepository {
                 url = "url",
                 imageUrl = "image-url",
                 publishedTime = 2000L
-            )
+            ),
         )
 
         val DUMMY_PERSONALIZED_STORY_LIST = listOf(
@@ -146,7 +146,7 @@ class FakeStoryRepository : StoryRepository {
                 url = "url",
                 imageUrl = "image-url",
                 publishedTime = 4000L
-            )
+            ),
         )
 
         private val DEFAULT_HEADLINE_STORIES_FLOW = flowOf(

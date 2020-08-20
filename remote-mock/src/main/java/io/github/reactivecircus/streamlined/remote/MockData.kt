@@ -96,7 +96,7 @@ object MockData {
             url = "f.mockarticles.com",
             urlToImage = null,
             publishedAt = "2020-02-08T16:10:00Z"
-        )
+        ),
     )
 
     val mockPersonalizedStories = listOf(
@@ -189,6 +189,6 @@ object MockData {
             url = "10.mockarticles.com",
             urlToImage = null,
             publishedAt = "2020-02-06T13:20:00Z"
-        )
+        ),
     )
 }

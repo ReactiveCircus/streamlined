@@ -17,7 +17,7 @@ interface IntegrationTestAppComponent : AppComponent {
     interface Factory {
         fun create(
             @BindsInstance context: Context,
-            testingFrameworkComponent: TestingFrameworkComponent
+            testingFrameworkComponent: TestingFrameworkComponent,
         ): IntegrationTestAppComponent
     }
 

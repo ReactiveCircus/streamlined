@@ -26,7 +26,7 @@ class FeedItemsGeneratorTest {
             url = "url",
             imageUrl = "image-url",
             publishedTime = 2000L
-        )
+        ),
     )
 
     private val personalizedStories = listOf(
@@ -49,7 +49,7 @@ class FeedItemsGeneratorTest {
             url = "url",
             imageUrl = "image-url",
             publishedTime = 4000L
-        )
+        ),
     )
 
     @Test

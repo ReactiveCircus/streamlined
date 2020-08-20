@@ -49,7 +49,7 @@ class StoryRepositoryImplTest {
             url = "url",
             imageUrl = "image-url",
             publishedTime = 2000L
-        )
+        ),
     )
 
     private val dummyPersonalizedStoryList = listOf(
@@ -72,7 +72,7 @@ class StoryRepositoryImplTest {
             url = "url",
             imageUrl = "image-url",
             publishedTime = 4000L
-        )
+        ),
     )
 
     private val dummyStoryEntity = StoryEntity(

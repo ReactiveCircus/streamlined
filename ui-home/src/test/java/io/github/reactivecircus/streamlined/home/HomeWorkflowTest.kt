@@ -47,7 +47,7 @@ class HomeWorkflowTest {
             url = "url",
             imageUrl = "image-url",
             publishedTime = 2000L
-        )
+        ),
     )
 
     private val personalizedStories = listOf(
@@ -70,7 +70,7 @@ class HomeWorkflowTest {
             url = "url",
             imageUrl = "image-url",
             publishedTime = 4000L
-        )
+        ),
     )
 
     private val testDispatcher = TestCoroutineDispatcher()
