@@ -10,7 +10,7 @@ object versions {
 
     object kotlinx {
         const val coroutines = "1.3.9"
-        const val serialization = "1.0-M1-1.4.0-rc"
+        const val serialization = "1.0.0-RC"
     }
 
     object firebase {
@@ -56,7 +56,7 @@ object versions {
     const val assistedInject = "0.5.2"
     const val okhttp = "4.8.1"
     const val retrofit = "2.9.0"
-    const val retrofitSerializationConverter = "0.5.0"
+    const val retrofitSerializationConverter = "0.6.0"
     const val sqldelight = "1.4.0"
     const val store = "4.0.0-SNAPSHOT"
     const val coil = "1.0.0-rc1"
@@ -85,7 +85,7 @@ object libraries {
             const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.kotlinx.coroutines}"
         }
 
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}"
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.kotlinx.serialization}"
     }
 
     object blueprint {
