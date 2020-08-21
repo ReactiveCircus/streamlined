@@ -37,8 +37,6 @@ internal fun Project.configureForAllProjects() {
         mavenCentral()
         google()
         jcenter()
-        // TODO remove once new store release is available
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 
     tasks.withType<KotlinCompile> {
