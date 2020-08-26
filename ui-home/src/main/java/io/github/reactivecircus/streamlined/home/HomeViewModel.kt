@@ -14,6 +14,8 @@ class HomeViewModel @Inject constructor(
     homeWorkflow: HomeWorkflow
 ) : ViewModel() {
     val rendering: Flow<HomeRendering> = renderWorkflowIn(
-        homeWorkflow, viewModelScope, MutableStateFlow(Unit)
+        homeWorkflow,
+        viewModelScope,
+        MutableStateFlow(Unit)
     ) {}.mapLatest { it.rendering }
 }

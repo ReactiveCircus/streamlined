@@ -7,7 +7,6 @@ import android.content.Context
 import androidx.work.Configuration
 import coil.Coil.setImageLoader
 import com.bugsnag.android.Bugsnag
-import com.bugsnag.android.OnErrorCallback
 import io.github.reactivecircus.bugsnag.BugsnagTree
 import io.github.reactivecircus.streamlined.di.AppComponent
 import timber.log.Timber
@@ -49,10 +48,10 @@ open class StreamlinedApp : Application(), Configuration.Provider {
             val config = com.bugsnag.android.Configuration.load(this).apply {
                 enabledReleaseStages = setOf(BuildConfig.BUILD_TYPE)
                 enabledErrorTypes.ndkCrashes = false
-                addOnError(OnErrorCallback { event ->
+                addOnError { event ->
                     tree.update(event)
                     true
-                })
+                }
             }
             Bugsnag.start(this, config)
         }

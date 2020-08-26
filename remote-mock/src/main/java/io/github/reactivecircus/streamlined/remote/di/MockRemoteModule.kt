@@ -24,9 +24,11 @@ internal object MockRemoteModule {
     @Singleton
     fun okHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            })
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BASIC
+                }
+            )
             .build()
     }
 
@@ -35,11 +37,13 @@ internal object MockRemoteModule {
     fun retrofit(okhttpClient: Lazy<OkHttpClient>): Retrofit {
         return Retrofit.Builder()
             .baseUrl(DUMMY_URL)
-            .callFactory(object : Call.Factory {
-                override fun newCall(request: Request): Call {
-                    return okhttpClient.get().newCall(request)
+            .callFactory(
+                object : Call.Factory {
+                    override fun newCall(request: Request): Call {
+                        return okhttpClient.get().newCall(request)
+                    }
                 }
-            })
+            )
             .build()
     }
 

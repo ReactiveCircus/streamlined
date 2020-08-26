@@ -21,7 +21,11 @@ class PrettyTimeTest {
     @Test
     fun `timestamp can be converted to a formatted date string given a date pattern`() {
         val timestamp = LocalDateTime.of(
-            2019, Month.AUGUST, 24, 20, 0
+            2019,
+            Month.AUGUST,
+            24,
+            20,
+            0
         ).atZone(zoneId).toInstant().toEpochMilli()
 
         assertThat(timestamp.toFormattedDateString(pattern, zoneId, locale))

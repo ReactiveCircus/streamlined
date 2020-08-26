@@ -16,7 +16,9 @@ class StoryDetailsViewModel @AssistedInject constructor(
     storyDetailsWorkflow: StoryDetailsWorkflow
 ) : ViewModel() {
     val rendering: Flow<StoryDetailsRendering> = renderWorkflowIn(
-        storyDetailsWorkflow, viewModelScope, MutableStateFlow(storyId)
+        storyDetailsWorkflow,
+        viewModelScope,
+        MutableStateFlow(storyId)
     ) {}.mapLatest { it.rendering }
 
     @AssistedInject.Factory

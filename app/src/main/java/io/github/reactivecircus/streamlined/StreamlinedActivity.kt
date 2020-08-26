@@ -13,7 +13,8 @@ class StreamlinedActivity : AppCompatActivity(R.layout.activity_streamlined) {
         setDefaultTaskBarColor()
         supportFragmentManager.fragmentFactory = appComponent.fragmentFactory
         supportFragmentManager.registerFragmentLifecycleCallbacks(
-            appComponent.screenNameNotifier, true
+            appComponent.screenNameNotifier,
+            true
         )
         super.onCreate(savedInstanceState)
 
