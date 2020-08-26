@@ -21,7 +21,6 @@ internal fun Project.configureDetektPlugin() {
         extensions.configure<DetektExtension> {
             input = files("src/")
             failFast = true
-            autoCorrect = true
             config = files("${project.rootDir}/detekt.yml")
             buildUponDefaultConfig = true
             reports(Action {
