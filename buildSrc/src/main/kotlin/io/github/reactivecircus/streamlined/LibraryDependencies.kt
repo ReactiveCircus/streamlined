@@ -19,7 +19,7 @@ object versions {
 
     const val blueprint = "1.13.0"
     const val flowbinding = "1.0.0-alpha04"
-    const val workflow = "1.0.0-alpha.3"
+    const val workflow = "1.0.0-alpha.4"
 
     object androidx {
         const val core = "1.5.0-alpha02"
@@ -56,7 +56,7 @@ object versions {
     const val assistedInject = "0.5.2"
     const val okhttp = "4.8.1"
     const val retrofit = "2.9.0"
-    const val retrofitSerializationConverter = "0.6.0"
+    const val retrofitSerializationConverter = "0.7.0"
     const val sqldelight = "1.4.2"
     const val store = "4.0.0-alpha07"
     const val coil = "1.0.0-rc1"
