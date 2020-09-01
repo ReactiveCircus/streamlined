@@ -9,6 +9,8 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
@@ -44,10 +46,55 @@ internal fun Project.configureForAllProjects() {
 }
 
 /**
- * Apply baseline configurations for all Android projects (Application and Library).
+ * Apply baseline project configurations for an Android Application project.
  */
-@Suppress("UnstableApiUsage")
-internal fun TestedExtension.configureCommonAndroidOptions() {
+internal fun Project.configureAndroidApplication() {
+    // common android configs
+    extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+
+    // android variant configs
+    extensions.getByType<ApplicationAndroidComponentsExtension>().configureAndroidApplicationVariants(project)
+
+    // android application configs
+    extensions.configure<BaseAppModuleExtension> {
+        lint {
+            // TODO remove once https://issuetracker.google.com/issues/162155191 is fixed.
+            disable("InvalidFragmentVersionForActivityResult")
+            disable("ParcelCreator")
+            disable("GoogleAppIndexingWarning")
+            isQuiet = false
+            isIgnoreWarnings = false
+            htmlReport = true
+            xmlReport = true
+            htmlOutput = File("${project.buildDir}/reports/lint/lint-reports.html")
+            xmlOutput = File("${project.buildDir}/reports/lint/lint-reports.xml")
+            isCheckDependencies = true
+            isIgnoreTestSources = true
+        }
+    }
+
+    // disable unit tests for some build variants if `slimTests` project property is provided
+    project.configureSlimTests()
+}
+
+/**
+ * Apply baseline project configurations for an Android Library project.
+ */
+internal fun Project.configureAndroidLibrary() {
+    // common android configs
+    extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+
+    // android variant configs
+    extensions.getByType<LibraryAndroidComponentsExtension>().configureAndroidLibraryVariants(project)
+
+    // disable unit tests for some build variants if `slimTests` project property is provided
+    project.configureSlimTests()
+}
+
+/**
+ * Apply baseline configurations for both Android Application and Library projects.
+ */
+private fun TestedExtension.configureCommonAndroidOptions() {
     setCompileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
 
@@ -60,27 +107,6 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     }
 
     testOptions.animationsDisabled = true
-}
-
-/**
- * Apply configuration options for Android Application projects.
- */
-@Suppress("UnstableApiUsage")
-internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
-    lint {
-        // TODO remove once https://issuetracker.google.com/issues/162155191 is fixed.
-        disable("InvalidFragmentVersionForActivityResult")
-        disable("ParcelCreator")
-        disable("GoogleAppIndexingWarning")
-        isQuiet = false
-        isIgnoreWarnings = false
-        htmlReport = true
-        xmlReport = true
-        htmlOutput = File("${project.buildDir}/reports/lint/lint-reports.html")
-        xmlOutput = File("${project.buildDir}/reports/lint/lint-reports.xml")
-        isCheckDependencies = true
-        isIgnoreTestSources = true
-    }
 }
 
 /**
@@ -105,7 +131,7 @@ internal fun LibraryAndroidComponentsExtension.configureAndroidLibraryVariants(p
  * Configure the Application Android Component based on build variants.
  */
 @Suppress("UnstableApiUsage")
-internal fun ApplicationAndroidComponentsExtension.configureAndroidApplicationVariants(project: Project) {
+private fun ApplicationAndroidComponentsExtension.configureAndroidApplicationVariants(project: Project) {
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
         if (!project.hasUnitTestSource) {

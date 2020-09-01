@@ -29,6 +29,7 @@ object Versions {
     const val workflow = "1.0.0-alpha.12"
 
     object androidx {
+        const val compose = "1.0.0-beta01"
         const val core = "1.5.0-beta03"
         const val annotation = "1.2.0-rc01"
         const val appCompat = "1.3.0-beta01"
@@ -40,6 +41,7 @@ object Versions {
         const val constraintLayout = "2.0.4"
         const val lifecycle = "2.3.0"
         const val navigation = "2.3.4"
+        const val navigationCompose = "1.0.0-alpha09"
         const val work = "2.7.0-alpha02"
         const val hilt = "1.0.0-beta01"
 
@@ -59,7 +61,6 @@ object Versions {
     }
 
     const val material = "1.3.0"
-    const val insetter = "0.4.0"
     const val hilt = "2.33-beta"
     const val okhttp = "4.9.1"
     const val retrofit = "2.9.0"
@@ -127,6 +128,13 @@ object Libraries {
     }
 
     object androidx {
+        object compose {
+            const val layout = "androidx.compose.foundation:foundation-layout:${Versions.androidx.compose}"
+            const val material = "androidx.compose.material:material:${Versions.androidx.compose}"
+            const val tooling = "androidx.compose.ui:ui-tooling:${Versions.androidx.compose}"
+            const val test = "androidx.compose.ui:ui-test:${Versions.androidx.compose}"
+        }
+
         object core {
             const val ktx = "androidx.core:core-ktx:${Versions.androidx.core}"
         }
@@ -136,6 +144,7 @@ object Libraries {
 
         object activity {
             const val ktx = "androidx.activity:activity-ktx:${Versions.androidx.activity}"
+            const val compose = "androidx.activity:activity-compose:${Versions.androidx.activity}"
         }
 
         object fragment {
@@ -157,6 +166,7 @@ object Libraries {
         object navigation {
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.androidx.navigation}"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.androidx.navigation}"
+            const val compose = "androidx.navigation:navigation-compose:${Versions.androidx.navigation}"
         }
 
         object work {
@@ -189,9 +199,7 @@ object Libraries {
     }
 
     const val material = "com.google.android.material:material:${Versions.material}"
-
-    const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
-
+    
     object hilt {
         const val android = "com.google.dagger:hilt-android:${Versions.hilt}"
         const val androidTesting = "com.google.dagger:hilt-android-testing:${Versions.hilt}"

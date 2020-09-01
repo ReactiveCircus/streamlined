@@ -1,4 +1,5 @@
 import io.github.reactivecircus.streamlined.Libraries
+import io.github.reactivecircus.streamlined.Versions
 
 plugins {
     `streamlined-plugin`
@@ -8,15 +9,15 @@ plugins {
     kotlin("kapt")
 }
 
-hilt {
-    enableExperimentalClasspathAggregation = true
-}
+hilt.enableExperimentalClasspathAggregation = true
 
 android {
     buildFeatures {
-        viewBinding = true
         androidResources = true
+        compose = true
     }
+
+    composeOptions.kotlinCompilerExtensionVersion = Versions.androidx.compose
 
     defaultConfig {
         testApplicationId = "io.github.reactivecircus.streamlined.headlines.test"
@@ -32,9 +33,12 @@ dependencies {
     // Coroutines
     implementation(Libraries.kotlinx.coroutines.core)
 
+    // Compose
+    implementation(Libraries.androidx.compose.tooling)
+    implementation(Libraries.androidx.compose.layout)
+    implementation(Libraries.androidx.compose.material)
+
     // AndroidX
-    implementation(Libraries.androidx.swipeRefreshLayout)
-    implementation(Libraries.androidx.recyclerView)
     implementation(Libraries.androidx.lifecycle.viewModelKtx)
     implementation(Libraries.androidx.lifecycle.commonJava8)
 
@@ -51,6 +55,7 @@ dependencies {
     testImplementation(project(":coroutines-test-ext"))
 
     // Android tests
+    androidTestImplementation(Libraries.androidx.compose.test)
     androidTestImplementation(project(":ui-testing-framework"))
     debugImplementation(Libraries.androidx.fragment.testing) {
         exclude(group = "androidx.test")

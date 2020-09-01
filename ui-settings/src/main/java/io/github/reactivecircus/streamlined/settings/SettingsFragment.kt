@@ -1,18 +1,27 @@
 package io.github.reactivecircus.streamlined.settings
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.reactivecircus.streamlined.settings.databinding.FragmentSettingsBinding
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment(R.layout.fragment_settings), ScreenForAnalytics {
+class SettingsFragment @Inject constructor() : Fragment(), ScreenForAnalytics {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val binding = FragmentSettingsBinding.bind(view)
-
-        binding.toolbar.title = getString(R.string.title_settings)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(context = requireContext()).apply {
+            setContent {
+                SettingsScreen()
+            }
+        }
     }
 }

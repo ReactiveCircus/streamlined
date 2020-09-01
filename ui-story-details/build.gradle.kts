@@ -8,9 +8,7 @@ plugins {
     kotlin("kapt")
 }
 
-hilt {
-    enableExperimentalClasspathAggregation = true
-}
+hilt.enableExperimentalClasspathAggregation = true
 
 android {
     buildFeatures {

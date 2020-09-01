@@ -9,10 +9,14 @@ formatting:
   MaximumLineLength:
     excludes: ["**/test/**","**/androidTest/**"]
 
+naming:
+  TopLevelPropertyNaming:
+    active: false
+
 style:
   MaxLineLength:
     excludes: ["**/test/**","**/androidTest/**"]
   MagicNumber:
-    ignorePropertyDeclaration: true
+    active: false
   UnnecessaryAbstractClass:
     active: false

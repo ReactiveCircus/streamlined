@@ -3,6 +3,8 @@ rootProject.name= "streamlined"
 include(":app")
 include(":navigator")
 include(":design-themes")
+include(":design-foundation")
+include(":design-core")
 include(":ui-common")
 include(":ui-home")
 include(":ui-headlines")

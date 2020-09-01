@@ -2,7 +2,6 @@ package io.github.reactivecircus.streamlined
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.reactivecircus.streamlined.design.setDefaultTaskBarColor
 import javax.inject.Inject
@@ -24,7 +23,6 @@ class StreamlinedActivity : AppCompatActivity(R.layout.activity_streamlined) {
             true
         )
 
-        // configure edge-to-edge window insets
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        // TODO enable edge-to-edge layout and fix insets
     }
 }
