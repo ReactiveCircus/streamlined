@@ -15,11 +15,12 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.FailureHandler
 import androidx.test.espresso.base.DefaultFailureHandler
 import androidx.test.espresso.intent.Intents
-import androidx.test.runner.screenshot.Screenshot
 import io.github.reactivecircus.streamlined.testing.assumption.assumeNetworkConnected
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
+import radiography.Radiography
+import radiography.ViewStateRenderers.DefaultsIncludingPii
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 abstract class BaseScreenTest {
@@ -72,9 +73,27 @@ abstract class BaseScreenTest {
             delegate = DefaultFailureHandler(targetContext)
         }
 
+        @Suppress("TooGenericExceptionCaught")
         override fun handle(error: Throwable, viewMatcher: Matcher<View>) {
-            Screenshot.capture()
-            delegate.handle(error, viewMatcher)
+            try {
+                delegate.handle(error, viewMatcher)
+            } catch (decoratedError: Throwable) {
+                val detailMessageField = Throwable::class.java.getDeclaredField("detailMessage")
+                val previousAccessible = detailMessageField.isAccessible
+                try {
+                    detailMessageField.isAccessible = true
+                    var message = (detailMessageField[decoratedError] as String?).orEmpty()
+                    message = message.substringBefore("\nView Hierarchy:")
+                    val prettyHierarchy = Radiography.scan(
+                        viewStateRenderers = DefaultsIncludingPii
+                    )
+                    message += "\nView hierarchies:\n$prettyHierarchy"
+                    detailMessageField[decoratedError] = message
+                } finally {
+                    detailMessageField.isAccessible = previousAccessible
+                }
+                throw decoratedError
+            }
         }
     }
 }

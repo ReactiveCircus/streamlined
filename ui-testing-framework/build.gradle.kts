@@ -34,6 +34,7 @@ dependencies {
     implementation(libraries.timber)
 
     implementation(libraries.androidx.fragment.testing)
+    implementation(libraries.radiography)
     api(libraries.blueprint.testingRobot)
     api(libraries.androidx.test.coreKtx)
     api(libraries.androidx.test.monitor)

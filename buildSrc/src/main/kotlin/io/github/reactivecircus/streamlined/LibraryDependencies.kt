@@ -63,6 +63,7 @@ object versions {
     const val timber = "4.7.1"
     const val junit = "4.13"
     const val truth = "1.0.1"
+    const val radiography = "2.0.0-alpha.2"
 }
 
 object libraries {
@@ -203,4 +204,5 @@ object libraries {
     const val timber = "com.jakewharton.timber:timber:${versions.timber}"
     const val junit = "junit:junit:${versions.junit}"
     const val truth = "com.google.truth:truth:${versions.truth}"
+    const val radiography = "com.squareup.radiography:radiography:${versions.radiography}"
 }
