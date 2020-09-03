@@ -63,7 +63,7 @@ object versions {
     const val timber = "4.7.1"
     const val junit = "4.13"
     const val truth = "1.0.1"
-    const val radiography = "2.0.0-alpha.2"
+    const val radiography = "2.0.0-beta.1"
 }
 
 object libraries {
