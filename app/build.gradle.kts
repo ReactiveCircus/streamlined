@@ -220,6 +220,9 @@ dependencies {
     // Fix SDK leaks
     implementation(libraries.leakCanary.plumber)
 
+    // Pretty view hierarchy string
+    implementation(libraries.radiography)
+
     // Unit tests
     testImplementation(libraries.junit)
     testImplementation(libraries.truth)
