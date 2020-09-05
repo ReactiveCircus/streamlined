@@ -57,13 +57,13 @@ object versions {
     const val okhttp = "4.8.1"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.7.0"
-    const val sqldelight = "1.4.2"
+    const val sqldelight = "1.4.3"
     const val store = "4.0.0-alpha07"
     const val coil = "1.0.0-rc1"
     const val timber = "4.7.1"
     const val junit = "4.13"
     const val truth = "1.0.1"
-    const val radiography = "2.0.0-beta.1"
+    const val radiography = "2.0.0"
 }
 
 object libraries {
