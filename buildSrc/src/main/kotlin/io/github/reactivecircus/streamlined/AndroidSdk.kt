@@ -6,5 +6,5 @@ internal object androidSdk {
     const val minSdk = 23
     const val targetSdk = 30
     const val compileSdk = 30
-    const val buildTools = "30.0.1"
+    const val buildTools = "30.0.2"
 }
