@@ -5,7 +5,7 @@ rootProject.ext.versions = [
         kotlin        : '1.4.0',
         detekt        : '1.12.0',
         sqldelight    : '1.4.3',
-        playPublisher : '3.0.0',
+        playPublisher : '2.8.0',
 ]
 
 rootProject.ext.build = [
