@@ -4,11 +4,15 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - '**/*.md'
   push:
     branches:
       - main
     tags:
       - '*'
+    paths-ignore:
+      - '**/*.md'
 
 env:
   CI: true
