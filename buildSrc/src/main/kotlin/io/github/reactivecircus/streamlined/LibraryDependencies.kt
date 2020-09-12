@@ -54,7 +54,7 @@ object versions {
     const val insetter = "0.3.0"
     const val dagger = "2.29"
     const val assistedInject = "0.5.2"
-    const val okhttp = "4.8.1"
+    const val okhttp = "4.9.0"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.7.0"
     const val sqldelight = "1.4.3"
