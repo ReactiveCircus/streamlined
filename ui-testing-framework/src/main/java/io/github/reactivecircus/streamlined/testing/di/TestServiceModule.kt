@@ -5,9 +5,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.reactivecircus.streamlined.remote.api.MockNewsApiService
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
-import okhttp3.Call
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.mock.MockRetrofit
@@ -35,13 +33,7 @@ internal object TestServiceModule {
     fun retrofit(okhttpClient: Lazy<OkHttpClient>): Retrofit {
         return Retrofit.Builder()
             .baseUrl(DUMMY_URL)
-            .callFactory(
-                object : Call.Factory {
-                    override fun newCall(request: Request): Call {
-                        return okhttpClient.get().newCall(request)
-                    }
-                }
-            )
+            .callFactory { request -> okhttpClient.get().newCall(request) }
             .build()
     }
 
