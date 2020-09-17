@@ -22,7 +22,7 @@ object versions {
     const val workflow = "1.0.0-alpha.4"
 
     object androidx {
-        const val core = "1.5.0-alpha02"
+        const val core = "1.5.0-alpha03"
         const val annotation = "1.2.0-alpha01"
         const val appCompat = "1.3.0-alpha02"
         const val activity = "1.2.0-alpha08"
@@ -33,7 +33,7 @@ object versions {
         const val constraintLayout = "2.0.1"
         const val lifecycle = "2.3.0-alpha07"
         const val navigation = "2.3.0"
-        const val work = "2.5.0-alpha01"
+        const val work = "2.5.0-alpha02"
 
         object test {
             const val core = "1.3.0"
