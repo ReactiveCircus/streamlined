@@ -42,7 +42,7 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
 
       - uses: actions/cache@v2
         with:
@@ -89,7 +89,7 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
 
       - uses: actions/cache@v2
         with:
@@ -132,7 +132,7 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
 
       - uses: actions/cache@v2
         with:
@@ -172,7 +172,7 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
 
       - uses: actions/cache@v2
         with:
@@ -209,7 +209,7 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
 
       - uses: actions/cache@v2
         with:
