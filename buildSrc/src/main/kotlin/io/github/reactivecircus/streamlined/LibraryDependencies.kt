@@ -10,7 +10,7 @@ object versions {
 
     object kotlinx {
         const val coroutines = "1.3.9"
-        const val serialization = "1.0.0-RC"
+        const val serialization = "1.0.0-RC2"
     }
 
     object firebase {
@@ -86,7 +86,7 @@ object libraries {
             const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.kotlinx.coroutines}"
         }
 
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.kotlinx.serialization}"
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.serialization}"
     }
 
     object blueprint {
