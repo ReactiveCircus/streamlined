@@ -4,7 +4,7 @@ package io.github.reactivecircus.streamlined
 
 object versions {
     const val detekt = "1.14.1"
-    const val bugsnag = "5.2.0"
+    const val bugsnag = "5.2.1"
     const val leakCanary = "2.4"
     const val desugarLibs = "1.0.10"
 
