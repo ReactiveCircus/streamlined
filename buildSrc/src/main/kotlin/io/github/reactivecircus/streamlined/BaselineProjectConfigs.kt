@@ -99,6 +99,8 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
     }
 
     lintOptions {
+        // TODO remove once https://issuetracker.google.com/issues/162155191 is fied.
+        disable("InvalidFragmentVersionForActivityResult")
         disable("ParcelCreator")
         disable("GoogleAppIndexingWarning")
         isQuiet = false
