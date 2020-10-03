@@ -1,7 +1,8 @@
 package io.github.reactivecircus.streamlined
 
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.extension.ApplicationAndroidComponentsExtension
+import com.android.build.api.extension.LibraryAndroidComponentsExtension
+import com.android.build.api.variant.LibraryVariantBuilder
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.language.nativeplatform.internal.BuildType
@@ -19,22 +20,19 @@ import org.gradle.language.nativeplatform.internal.BuildType
 internal fun Project.configureSlimTests() {
     if (providers.gradleProperty(SLIM_TESTS_PROPERTY).forUseAtConfigurationTime().isPresent) {
         // disable unit test tasks on the release build type for Android Library projects
-        extensions.findByType<LibraryExtension>()?.run {
-            onVariants.withBuildType(BuildType.RELEASE.name) {
-                unitTest { enabled = false }
+        extensions.findByType<LibraryAndroidComponentsExtension>()?.run {
+            val releaseBuild = selector<LibraryVariantBuilder>().withBuildType(BuildType.RELEASE.name)
+            beforeVariants(releaseBuild) {
+                it.unitTest { enabled = false }
             }
         }
 
         // disable unit test tasks on the release build type and all non-mock flavors for Android Application projects.
-        extensions.findByType<BaseAppModuleExtension>()?.run {
-            onVariants.withBuildType(BuildType.RELEASE.name) {
-                unitTest { enabled = false }
-            }
-            onVariants.withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV) {
-                unitTest { enabled = false }
-            }
-            onVariants.withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.PROD) {
-                unitTest { enabled = false }
+        extensions.findByType<ApplicationAndroidComponentsExtension>()?.run {
+            beforeVariants {
+                if (it.buildType == BuildType.RELEASE.name || it.flavorName == ProductFlavors.DEV || it.flavorName == ProductFlavors.PROD) {
+                    it.unitTest { enabled = false }
+                }
             }
         }
     }

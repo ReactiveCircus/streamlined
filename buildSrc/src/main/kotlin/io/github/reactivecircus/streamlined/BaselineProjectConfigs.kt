@@ -1,6 +1,8 @@
 package io.github.reactivecircus.streamlined
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.extension.AndroidComponentsExtension
+import com.android.build.api.variant.Variant
+import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
@@ -70,11 +72,6 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     }
 
     testOptions.animationsDisabled = true
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
 }
 
 /**
@@ -82,22 +79,6 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
  */
 @Suppress("UnstableApiUsage")
 internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
-    project.plugins.withType<KotlinAndroidPluginWrapper> {
-        // disable unit test tasks if the unitTest source set is empty
-        if (!project.hasUnitTestSource) {
-            onVariants {
-                unitTest { enabled = false }
-            }
-        }
-
-        // disable android test tasks if the androidTest source set is empty
-        if (!project.hasAndroidTestSource) {
-            onVariants {
-                androidTest { enabled = false }
-            }
-        }
-    }
-
     lintOptions {
         // TODO remove once https://issuetracker.google.com/issues/162155191 is fied.
         disable("InvalidFragmentVersionForActivityResult")
@@ -115,22 +96,22 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
 }
 
 /**
- * Apply configuration options for Android Library projects.
+ * Configure the Application or Library Android Component based on build variants.
  */
 @Suppress("UnstableApiUsage")
-internal fun LibraryExtension.configureAndroidLibraryOptions(project: Project) {
+internal fun <VariantBuilderT : VariantBuilder, VariantT : Variant> AndroidComponentsExtension<VariantBuilderT, VariantT>.configureAndroidVariants(project: Project) {
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
         if (!project.hasUnitTestSource) {
-            onVariants {
-                unitTest { enabled = false }
+            beforeVariants {
+                it.unitTest { enabled = false }
             }
         }
 
         // disable android test tasks if the androidTest source set is empty
         if (!project.hasAndroidTestSource) {
-            onVariants {
-                androidTest { enabled = false }
+            beforeVariants {
+                it.androidTest { enabled = false }
             }
         }
     }

@@ -2,8 +2,9 @@
 
 package io.github.reactivecircus.streamlined
 
+import com.android.build.api.extension.ApplicationAndroidComponentsExtension
+import com.android.build.api.extension.LibraryAndroidComponentsExtension
 import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -53,13 +54,14 @@ class StreamlinedPlugin : Plugin<Project> {
                     }
                 }
                 is LibraryPlugin -> {
-                    project.extensions.getByType<LibraryExtension>().configureAndroidLibraryOptions(project)
                     project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                    project.extensions.getByType<LibraryAndroidComponentsExtension>().configureAndroidVariants(project)
                     project.configureSlimTests()
                 }
                 is AppPlugin -> {
-                    project.extensions.getByType<BaseAppModuleExtension>().configureAndroidApplicationOptions(project)
                     project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                    project.extensions.getByType<BaseAppModuleExtension>().configureAndroidApplicationOptions(project)
+                    project.extensions.getByType<ApplicationAndroidComponentsExtension>().configureAndroidVariants(project)
                     project.configureSlimTests()
                 }
                 is Kapt3GradleSubplugin -> {
