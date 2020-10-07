@@ -14,7 +14,7 @@ object versions {
     }
 
     object firebase {
-        const val analytics = "17.5.0"
+        const val analytics = "17.6.0"
     }
 
     const val blueprint = "1.14.1"
@@ -30,7 +30,7 @@ object versions {
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha06"
         const val swipeRefreshLayout = "1.2.0-alpha01"
-        const val constraintLayout = "2.0.1"
+        const val constraintLayout = "2.0.2"
         const val lifecycle = "2.3.0-beta01"
         const val navigation = "2.3.0"
         const val work = "2.5.0-alpha02"
