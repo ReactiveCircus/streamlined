@@ -10,7 +10,7 @@ object versions {
 
     object kotlinx {
         const val coroutines = "1.3.9"
-        const val serialization = "1.0.0-RC2"
+        const val serialization = "1.0.0"
     }
 
     object firebase {
@@ -57,7 +57,7 @@ object versions {
     const val okhttp = "4.9.0"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.7.0"
-    const val sqldelight = "1.4.3"
+    const val sqldelight = "1.4.4"
     const val store = "4.0.0-alpha07"
     const val coil = "1.0.0-rc3"
     const val timber = "4.7.1"
