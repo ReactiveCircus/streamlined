@@ -8,8 +8,7 @@ import com.google.android.material.transition.MaterialElevationScale
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -32,11 +31,11 @@ class StoryDetailsFragment @Inject constructor(
 
         // TODO transparent navigationBarColor for API 29+; #B3FFFFFF (light) and #B3000000 (night) for API < 29
 
-        viewModel.rendering
-            .onEach { rendering ->
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.rendering.collect {
                 // TODO
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
     companion object {

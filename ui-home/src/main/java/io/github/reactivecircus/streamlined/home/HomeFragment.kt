@@ -14,8 +14,7 @@ import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import javax.inject.Provider
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
@@ -56,8 +55,8 @@ class HomeFragment @Inject constructor(
             adapter = feedsListAdapter
         }
 
-        viewModel.rendering
-            .onEach { rendering ->
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.rendering.collect { rendering ->
                 binding.swipeRefreshLayout.setOnRefreshListener { rendering.onRefresh() }
                 binding.retryButton.setOnClickListener { rendering.onRefresh() }
 
@@ -77,7 +76,7 @@ class HomeFragment @Inject constructor(
                     binding.recyclerView.adapter = feedsListAdapter
                 }
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
     override fun onDestroyView() {
