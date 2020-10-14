@@ -13,11 +13,11 @@ import io.github.reactivecircus.streamlined.domain.repository.FakeResponse
 import io.github.reactivecircus.streamlined.domain.repository.FakeStoryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import java.io.IOException
@@ -80,9 +80,15 @@ class HomeWorkflowTest {
         ui = testDispatcher
     )
 
-    private val headlineStoriesResponseEmitter = MutableSharedFlow<StoreResponse<List<Story>>>()
+    private val headlineStoriesResponseEmitter = MutableSharedFlow<StoreResponse<List<Story>>>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
-    private val personalizedStoriesResponseEmitter = MutableSharedFlow<StoreResponse<List<Story>>>()
+    private val personalizedStoriesResponseEmitter = MutableSharedFlow<StoreResponse<List<Story>>>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     private val fakeStoryRepository = FakeStoryRepository()
 
@@ -220,36 +226,34 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                // cached data is emitted first
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.SourceOfTruth
-                    )
+            // cached data is emitted first
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.SourceOfTruth
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories,
-                        ResponseOrigin.SourceOfTruth
-                    )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.SourceOfTruth
                 )
+            )
 
-                // then loading responses are emitted while fetching data from network
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Loading(ResponseOrigin.Fetcher)
-                )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Loading(ResponseOrigin.Fetcher)
-                )
+            // then loading responses are emitted while fetching data from network
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Loading(ResponseOrigin.Fetcher)
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Loading(ResponseOrigin.Fetcher)
+            )
 
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.InFlight.FetchWithCache(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.InFlight.FetchWithCache(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
-            }
+                )
         }
     }
 
@@ -261,50 +265,48 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                // cached data is emitted first
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.SourceOfTruth
-                    )
+            // cached data is emitted first
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.SourceOfTruth
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories,
-                        ResponseOrigin.SourceOfTruth
-                    )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.SourceOfTruth
                 )
+            )
 
-                // then loading responses are emitted while fetching data from network
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Loading(ResponseOrigin.Fetcher)
-                )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Loading(ResponseOrigin.Fetcher)
-                )
+            // then loading responses are emitted while fetching data from network
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Loading(ResponseOrigin.Fetcher)
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Loading(ResponseOrigin.Fetcher)
+            )
 
-                // then error returned when fetching data from network
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.Fetcher
-                    )
+            // then error returned when fetching data from network
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.Fetcher
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Error.Exception(
-                        IOException(),
-                        ResponseOrigin.Fetcher
-                    )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Error.Exception(
+                    IOException(),
+                    ResponseOrigin.Fetcher
                 )
+            )
 
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.Error.Transient(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.Error.Transient(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
-            }
+                )
         }
     }
 
@@ -318,63 +320,61 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.SourceOfTruth
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+
+            awaitNextRendering().onRefresh()
+
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories.subList(0, 1),
+                    ResponseOrigin.Fetcher
+                )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    emptyList(),
+                    ResponseOrigin.Fetcher
+                )
+            )
+
+            assertThat(awaitNextRendering(skipIntermediate = false).state)
+                .isEqualTo(
+                    HomeState.InFlight.Refresh(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories,
-                        ResponseOrigin.SourceOfTruth
+
+            assertThat(awaitNextRendering(skipIntermediate = false).state)
+                .isEqualTo(
+                    HomeState.InFlight.Refresh(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
                 )
 
-                awaitNextRendering().onRefresh()
-
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories.subList(0, 1),
-                        ResponseOrigin.Fetcher
-                    )
-                )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        emptyList(),
-                        ResponseOrigin.Fetcher
+            assertThat(awaitNextRendering(skipIntermediate = false).state)
+                .isEqualTo(
+                    HomeState.ShowingContent(
+                        expectedFeedItems(headlineStories.subList(0, 1), personalizedStories)
                     )
                 )
 
-                assertThat(awaitNextRendering(skipIntermediate = false).state)
-                    .isEqualTo(
-                        HomeState.InFlight.Refresh(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.ShowingContent(
+                        expectedFeedItems(headlineStories.subList(0, 1), emptyList())
                     )
-
-                assertThat(awaitNextRendering(skipIntermediate = false).state)
-                    .isEqualTo(
-                        HomeState.InFlight.Refresh(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
-                    )
-
-                assertThat(awaitNextRendering(skipIntermediate = false).state)
-                    .isEqualTo(
-                        HomeState.ShowingContent(
-                            expectedFeedItems(headlineStories.subList(0, 1), personalizedStories)
-                        )
-                    )
-
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.ShowingContent(
-                            expectedFeedItems(headlineStories.subList(0, 1), emptyList())
-                        )
-                    )
-            }
+                )
         }
     }
 
@@ -388,29 +388,27 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.SourceOfTruth
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+
+            awaitNextRendering().onRefresh()
+
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.Error.Transient(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories,
-                        ResponseOrigin.SourceOfTruth
-                    )
-                )
-
-                awaitNextRendering().onRefresh()
-
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.Error.Transient(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
-                    )
-            }
         }
     }
 
@@ -424,41 +422,39 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.SourceOfTruth
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.SourceOfTruth
+                )
+            )
+
+            awaitNextRendering().onRefresh()
+
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.Error.Transient(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories,
-                        ResponseOrigin.SourceOfTruth
+
+            // advance virtual clock to when the transient error is expected to be dismissed
+            testDispatcher.advanceTimeBy(
+                DefaultHomeUiConfigs.TRANSIENT_ERROR_DISPLAY_DURATION.toLongMilliseconds()
+            )
+
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.ShowingContent(
+                        expectedFeedItems(headlineStories, personalizedStories)
                     )
                 )
-
-                awaitNextRendering().onRefresh()
-
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.Error.Transient(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
-                    )
-
-                // advance virtual clock to when the transient error is expected to be dismissed
-                testDispatcher.advanceTimeBy(
-                    DefaultHomeUiConfigs.TRANSIENT_ERROR_DISPLAY_DURATION.toLongMilliseconds()
-                )
-
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.ShowingContent(
-                            expectedFeedItems(headlineStories, personalizedStories)
-                        )
-                    )
-            }
         }
     }
 
@@ -472,50 +468,48 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories,
-                        ResponseOrigin.Fetcher
-                    )
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories,
+                    ResponseOrigin.Fetcher
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Error.Exception(
-                        IOException(),
-                        ResponseOrigin.Fetcher
-                    )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Error.Exception(
+                    IOException(),
+                    ResponseOrigin.Fetcher
+                )
+            )
+
+            awaitNextRendering().onRefresh()
+
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    headlineStories.subList(0, 1),
+                    ResponseOrigin.Fetcher
+                )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories.subList(0, 1),
+                    ResponseOrigin.Fetcher
+                )
+            )
+
+            assertThat(awaitNextRendering(skipIntermediate = false).state)
+                .isEqualTo(
+                    HomeState.InFlight.Refresh(null)
                 )
 
-                awaitNextRendering().onRefresh()
-
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        headlineStories.subList(0, 1),
-                        ResponseOrigin.Fetcher
-                    )
-                )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories.subList(0, 1),
-                        ResponseOrigin.Fetcher
-                    )
-                )
-
-                assertThat(awaitNextRendering(skipIntermediate = false).state)
-                    .isEqualTo(
-                        HomeState.InFlight.Refresh(null)
-                    )
-
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.ShowingContent(
-                            expectedFeedItems(
-                                headlineStories.subList(0, 1),
-                                personalizedStories.subList(0, 1)
-                            )
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.ShowingContent(
+                        expectedFeedItems(
+                            headlineStories.subList(0, 1),
+                            personalizedStories.subList(0, 1)
                         )
                     )
-            }
+                )
         }
     }
 
@@ -529,32 +523,30 @@ class HomeWorkflowTest {
         }
 
         workflow.launchForTestingFromStartWith {
-            runBlockingTest {
-                headlineStoriesResponseEmitter.emit(
-                    StoreResponse.Error.Exception(
-                        IOException(),
-                        ResponseOrigin.Fetcher
-                    )
+            headlineStoriesResponseEmitter.tryEmit(
+                StoreResponse.Error.Exception(
+                    IOException(),
+                    ResponseOrigin.Fetcher
                 )
-                personalizedStoriesResponseEmitter.emit(
-                    StoreResponse.Data(
-                        personalizedStories,
-                        ResponseOrigin.Fetcher
-                    )
+            )
+            personalizedStoriesResponseEmitter.tryEmit(
+                StoreResponse.Data(
+                    personalizedStories,
+                    ResponseOrigin.Fetcher
+                )
+            )
+
+            awaitNextRendering().onRefresh()
+
+            assertThat(awaitNextRendering(skipIntermediate = false).state)
+                .isEqualTo(
+                    HomeState.InFlight.Refresh(null)
                 )
 
-                awaitNextRendering().onRefresh()
-
-                assertThat(awaitNextRendering(skipIntermediate = false).state)
-                    .isEqualTo(
-                        HomeState.InFlight.Refresh(null)
-                    )
-
-                assertThat(awaitNextRendering().state)
-                    .isEqualTo(
-                        HomeState.Error.Permanent
-                    )
-            }
+            assertThat(awaitNextRendering().state)
+                .isEqualTo(
+                    HomeState.Error.Permanent
+                )
         }
     }
 
