@@ -4,8 +4,8 @@ plugins {
     `streamlined-plugin`
     `core-library-desugaring`
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("android")
+    kotlin("kapt")
 }
 
 android {

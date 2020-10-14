@@ -1,4 +1,4 @@
 plugins {
     `streamlined-plugin`
-    id("kotlin")
+    kotlin("jvm")
 }

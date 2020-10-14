@@ -2,8 +2,8 @@ import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`
-    id("kotlin")
-    id("kotlin-kapt")
+    kotlin("jvm")
+    kotlin("kapt")
 }
 
 dependencies {

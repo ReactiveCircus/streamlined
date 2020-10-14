@@ -15,11 +15,11 @@ plugins {
     `core-library-desugaring`
     id("io.github.reactivecircus.app-versioning")
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("project-report")
     id("com.github.triplet.play")
+    kotlin("android")
+    kotlin("kapt")
 }
 
 @Suppress("UnstableApiUsage")

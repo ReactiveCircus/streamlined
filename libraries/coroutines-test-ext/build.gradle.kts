@@ -2,7 +2,7 @@ import io.github.reactivecircus.streamlined.libraries
 
 plugins {
     `streamlined-plugin`
-    id("kotlin")
+    kotlin("jvm")
 }
 
 dependencies {
