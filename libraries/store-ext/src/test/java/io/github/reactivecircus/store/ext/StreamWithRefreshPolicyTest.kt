@@ -17,8 +17,7 @@ import io.github.reactivecircus.store.ext.testutil.TestFetcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
@@ -87,11 +86,11 @@ class StreamWithRefreshPolicyTest {
     @Test
     fun `onRefreshed(key, output) is invoked when refreshPolicy#shouldRefresh() returns false and StoreResponse is Data and ResponseOrigin is Fetcher`() =
         testScope.runBlockingTest {
-            val readerChannel = ConflatedBroadcastChannel(1)
+            val readerEmitter = MutableStateFlow(1)
             val refreshPolicy = TestRefreshPolicy(shouldRefresh = false)
             val store = buildStoreWithFlowingPersister(
                 fetcher = TestFetcher(FetcherResponse.Success(output = 1)),
-                persister = FlowingTestPersister(readerChannel.asFlow())
+                persister = FlowingTestPersister(readerEmitter)
             )
 
             store.streamWithRefreshPolicy("key", refreshPolicy)
@@ -108,7 +107,7 @@ class StreamWithRefreshPolicyTest {
                 .isEqualTo(1)
 
             // another response emitted from persister
-            readerChannel.offer(1)
+            readerEmitter.value = 2
 
             // onRefreshed(key, output) should not have been invoked again
             assertThat(refreshPolicy.refreshCounts)
@@ -118,14 +117,14 @@ class StreamWithRefreshPolicyTest {
     @Test
     fun `onRefreshed(key, output) is invoked when refreshPolicy#shouldRefresh() returns true and StoreResponse is Data and ResponseOrigin is Fetcher`() =
         testScope.runBlockingTest {
-            val readerChannel = ConflatedBroadcastChannel(1)
+            val readerEmitter = MutableStateFlow(1)
             val refreshPolicy = TestRefreshPolicy(shouldRefresh = true)
             val store = buildStoreWithFlowingPersister(
                 fetcher = TestFetcher(
                     FetcherResponse.Success(output = 1),
                     FetcherResponse.Success(output = 2)
                 ),
-                persister = FlowingTestPersister(readerChannel.asFlow())
+                persister = FlowingTestPersister(readerEmitter)
             )
 
             store.streamWithRefreshPolicy("key", refreshPolicy)
@@ -142,7 +141,7 @@ class StreamWithRefreshPolicyTest {
                 .isEqualTo(2)
 
             // another response emitted from persister
-            readerChannel.offer(1)
+            readerEmitter.value = 2
 
             // onRefreshed(key, output) should not have been invoked again
             assertThat(refreshPolicy.refreshCounts)
