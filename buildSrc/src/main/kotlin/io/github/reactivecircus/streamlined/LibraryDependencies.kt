@@ -32,8 +32,8 @@ object versions {
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.2"
         const val lifecycle = "2.3.0-beta01"
-        const val navigation = "2.3.0"
-        const val work = "2.5.0-alpha02"
+        const val navigation = "2.3.1"
+        const val work = "2.5.0-alpha03"
 
         object test {
             const val core = "1.3.0"
@@ -63,7 +63,7 @@ object versions {
     const val timber = "4.7.1"
     const val junit = "4.13"
     const val truth = "1.0.1"
-    const val radiography = "2.0.0"
+    const val radiography = "2.1.0"
 }
 
 object libraries {
