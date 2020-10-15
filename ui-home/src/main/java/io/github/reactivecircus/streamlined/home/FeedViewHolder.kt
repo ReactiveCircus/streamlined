@@ -45,15 +45,15 @@ internal class MainStoryViewHolder(
         binding.bookmarkButton.run {
             setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
             setOnClickListener {
-                itemActionListener.invoke(FeedsListAdapter.ItemAction.BookmarkToggled(story))
+                itemActionListener(FeedsListAdapter.ItemAction.BookmarkToggled(story))
             }
         }
         binding.moreButton.setOnClickListener {
-            itemActionListener.invoke(FeedsListAdapter.ItemAction.MoreButtonClicked(story))
+            itemActionListener(FeedsListAdapter.ItemAction.MoreButtonClicked(story))
         }
         binding.divider.isVisible = !isLastItem
         itemView.setOnClickListener {
-            itemActionListener.invoke(FeedsListAdapter.ItemAction.StoryClicked(story))
+            itemActionListener(FeedsListAdapter.ItemAction.StoryClicked(story))
         }
     }
 }
@@ -84,14 +84,14 @@ internal class StoryViewHolder(
         )
         binding.bookmarkButton.setIconResource(ThemeResource.drawable.ic_twotone_bookmark_border_24)
         binding.bookmarkButton.setOnClickListener {
-            itemActionListener.invoke(FeedsListAdapter.ItemAction.BookmarkToggled(story))
+            itemActionListener(FeedsListAdapter.ItemAction.BookmarkToggled(story))
         }
         binding.moreButton.setOnClickListener {
-            itemActionListener.invoke(FeedsListAdapter.ItemAction.MoreButtonClicked(story))
+            itemActionListener(FeedsListAdapter.ItemAction.MoreButtonClicked(story))
         }
         binding.divider.isVisible = !isLastItem
         itemView.setOnClickListener {
-            itemActionListener.invoke(FeedsListAdapter.ItemAction.StoryClicked(story))
+            itemActionListener(FeedsListAdapter.ItemAction.StoryClicked(story))
         }
     }
 }
@@ -115,7 +115,7 @@ internal class ReadMoreHeadlinesViewHolder(
 ) : FeedViewHolder(binding.root) {
     fun bind(itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction>) {
         itemView.setOnClickListener {
-            itemActionListener.invoke(FeedsListAdapter.ItemAction.ReadMoreHeadlinesButtonClicked)
+            itemActionListener(FeedsListAdapter.ItemAction.ReadMoreHeadlinesButtonClicked)
         }
     }
 }

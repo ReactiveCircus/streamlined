@@ -26,7 +26,7 @@ class HomeFragment @Inject constructor(
 
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
-    private val itemActionListener: ItemActionListener<FeedsListAdapter.ItemAction> = { action ->
+    private val itemActionListener = ItemActionListener<FeedsListAdapter.ItemAction> { action ->
         when (action) {
             is FeedsListAdapter.ItemAction.StoryClicked -> {
                 navigatorProvider.get().navigateToStoryDetailsScreen(action.story.id)
