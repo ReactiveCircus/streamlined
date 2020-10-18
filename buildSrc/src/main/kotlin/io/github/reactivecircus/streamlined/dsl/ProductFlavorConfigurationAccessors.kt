@@ -1,8 +1,3 @@
-@file:Suppress(
-    "unused",
-    "RemoveRedundantBackticks"
-)
-
 package io.github.reactivecircus.streamlined.dsl
 
 import org.gradle.api.artifacts.Dependency
@@ -14,7 +9,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
  * @param dependencyNotation notation for the dependency to be added.
  * @return The dependency.
  */
-fun DependencyHandler.`mockImplementation`(dependencyNotation: Any): Dependency? =
+fun DependencyHandler.mockImplementation(dependencyNotation: Any): Dependency? =
     add("mockImplementation", dependencyNotation)
 
 /**
@@ -23,7 +18,7 @@ fun DependencyHandler.`mockImplementation`(dependencyNotation: Any): Dependency?
  * @param dependencyNotation notation for the dependency to be added.
  * @return The dependency.
  */
-fun DependencyHandler.`devImplementation`(dependencyNotation: Any): Dependency? =
+fun DependencyHandler.devImplementation(dependencyNotation: Any): Dependency? =
     add("devImplementation", dependencyNotation)
 
 /**
@@ -32,5 +27,5 @@ fun DependencyHandler.`devImplementation`(dependencyNotation: Any): Dependency? 
  * @param dependencyNotation notation for the dependency to be added.
  * @return The dependency.
  */
-fun DependencyHandler.`prodImplementation`(dependencyNotation: Any): Dependency? =
+fun DependencyHandler.prodImplementation(dependencyNotation: Any): Dependency? =
     add("prodImplementation", dependencyNotation)
