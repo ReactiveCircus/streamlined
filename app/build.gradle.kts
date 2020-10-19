@@ -39,7 +39,6 @@ appVersioning {
 }
 
 android {
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         buildConfig = true
         viewBinding = true
@@ -72,7 +71,6 @@ android {
         }
     }
 
-    @Suppress("UnstableApiUsage")
     bundle {
         // only support English for now
         language.enableSplit = false

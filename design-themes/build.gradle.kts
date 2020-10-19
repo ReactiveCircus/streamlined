@@ -6,6 +6,8 @@ plugins {
     kotlin("android")
 }
 
+android.buildFeatures.androidResources = true
+
 dependencies {
     // AndroidX
     implementation(libraries.androidx.appCompat)

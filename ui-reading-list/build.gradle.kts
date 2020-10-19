@@ -8,9 +8,9 @@ plugins {
 }
 
 android {
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
+        androidResources = true
     }
 
     defaultConfig {

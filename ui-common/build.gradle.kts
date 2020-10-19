@@ -8,6 +8,8 @@ plugins {
     kotlin("kapt")
 }
 
+android.buildFeatures.androidResources = true
+
 dependencies {
     api(project(":analytics-api-base"))
     api(project(":design-themes"))
