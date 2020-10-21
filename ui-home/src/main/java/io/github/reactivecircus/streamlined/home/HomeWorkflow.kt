@@ -59,7 +59,9 @@ class HomeWorkflow @Inject constructor(
             else -> Unit
         }
 
-        return HomeRendering(state, onRefresh = { context.actionSink.send(onRefreshStories()) })
+        return HomeRendering(state, onRefresh = context.eventHandler {
+            this.state = HomeState.InFlight.Refresh(state.itemsOrNull)
+        })
     }
 
     override fun snapshotState(state: HomeState): Snapshot? = null
@@ -114,10 +116,6 @@ class HomeWorkflow @Inject constructor(
             }
             else -> currentState
         }
-    }
-
-    private fun onRefreshStories(): HomeAction = action {
-        state = HomeState.InFlight.Refresh(state.itemsOrNull)
     }
 
     private fun handleRefreshStoriesResponse(successful: Boolean): HomeAction = action {
