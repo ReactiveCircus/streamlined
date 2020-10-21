@@ -133,7 +133,7 @@ android {
 
 androidComponents {
     // disable android test for dev flavor
-    val devFlavor = selector<ApplicationVariantBuilder>().withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)
+    val devFlavor = selector().withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)
     beforeVariants(devFlavor) {
         it.androidTest { enabled = false }
     }

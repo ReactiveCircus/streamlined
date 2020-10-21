@@ -21,7 +21,7 @@ internal fun Project.configureSlimTests() {
     if (providers.gradleProperty(SLIM_TESTS_PROPERTY).forUseAtConfigurationTime().isPresent) {
         // disable unit test tasks on the release build type for Android Library projects
         extensions.findByType<LibraryAndroidComponentsExtension>()?.run {
-            val releaseBuild = selector<LibraryVariantBuilder>().withBuildType(BuildType.RELEASE.name)
+            val releaseBuild = selector().withBuildType(BuildType.RELEASE.name)
             beforeVariants(releaseBuild) {
                 it.unitTest { enabled = false }
             }
