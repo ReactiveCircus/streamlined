@@ -12,7 +12,6 @@ import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.domain.repository.FakeResponse
 import io.github.reactivecircus.streamlined.domain.repository.FakeStoryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -22,7 +21,6 @@ import org.junit.Test
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import java.io.IOException
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 class HomeWorkflowTest {
 

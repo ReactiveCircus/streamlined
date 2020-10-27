@@ -9,7 +9,7 @@ object versions {
     const val desugarLibs = "1.0.10"
 
     object kotlinx {
-        const val coroutines = "1.4.0-M1"
+        const val coroutines = "1.4.0"
         const val serialization = "1.0.0"
     }
 
