@@ -8,8 +8,6 @@ plugins {
 repositories {
     google()
     gradlePluginPortal()
-    // TODO remove after next AGP release
-    maven("https://storage.googleapis.com/r8-releases/raw")
 }
 
 kotlinDslPluginOptions {
@@ -17,8 +15,6 @@ kotlinDslPluginOptions {
 }
 
 dependencies {
-    // TODO remove after next AGP release
-    implementation("com.android.tools:r8:2.2.32")
     implementation(build.getValue("kotlinGradlePlugin"))
     implementation(build.getValue("androidGradlePlugin"))
     implementation(build.getValue("detektGradlePlugin"))
