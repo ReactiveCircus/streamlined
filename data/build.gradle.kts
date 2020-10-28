@@ -8,6 +8,9 @@ plugins {
     kotlin("kapt")
 }
 
+// TODO remove once https://issuetracker.google.com/issues/161586464 is fixed
+android.buildFeatures.androidResources = true
+
 dependencies {
     implementation(project(":domain-api"))
     implementation(project(":remote-base"))
