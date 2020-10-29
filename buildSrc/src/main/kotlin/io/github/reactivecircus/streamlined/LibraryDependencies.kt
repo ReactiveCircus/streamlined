@@ -33,7 +33,7 @@ object versions {
         const val constraintLayout = "2.0.3"
         const val lifecycle = "2.3.0-beta01"
         const val navigation = "2.3.1"
-        const val work = "2.5.0-alpha03"
+        const val work = "2.5.0-beta01"
 
         object test {
             const val core = "1.3.0"
