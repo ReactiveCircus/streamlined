@@ -30,7 +30,7 @@ object versions {
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-alpha06"
         const val swipeRefreshLayout = "1.2.0-alpha01"
-        const val constraintLayout = "2.0.3"
+        const val constraintLayout = "2.0.4"
         const val lifecycle = "2.3.0-beta01"
         const val navigation = "2.3.1"
         const val work = "2.5.0-beta01"
