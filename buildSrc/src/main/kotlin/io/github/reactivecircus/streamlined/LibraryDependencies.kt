@@ -22,7 +22,7 @@ object versions {
     const val workflow = "1.0.0-alpha.6"
 
     object androidx {
-        const val core = "1.5.0-alpha04"
+        const val core = "1.5.0-alpha05"
         const val annotation = "1.2.0-alpha01"
         const val appCompat = "1.3.0-alpha02"
         const val activity = "1.2.0-beta01"
