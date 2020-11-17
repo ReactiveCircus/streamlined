@@ -1,4 +1,3 @@
-import com.android.build.api.variant.ApplicationVariantBuilder
 import io.github.reactivecircus.streamlined.FlavorDimensions
 import io.github.reactivecircus.streamlined.ProductFlavors
 import io.github.reactivecircus.streamlined.dsl.devImplementation
