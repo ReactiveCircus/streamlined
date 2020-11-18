@@ -29,10 +29,10 @@ val enableAppVersioning = providers
 
 appVersioning {
     enabled.set(enableAppVersioning)
-    overrideVersionCode { _, _ ->
+    overrideVersionCode { _, _, _ ->
         Instant.now().epochSecond.toInt()
     }
-    overrideVersionName { gitTag, _ ->
+    overrideVersionName { gitTag, _, _ ->
         "${gitTag.rawTagName} (${gitTag.commitHash})"
     }
 }
