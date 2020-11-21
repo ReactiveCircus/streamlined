@@ -10,13 +10,21 @@ import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 internal fun Project.configureKapt() {
     extensions.configure<KaptExtension> {
         javacOptions {
-            option("-Adagger.fastInit=enabled")
-            option("-Adagger.experimentalDaggerErrorMessages=enabled")
-            if (isCiBuild) {
-                option("-Xmaxerrs", 500)
-            } else {
-                option("-Adagger.moduleBindingValidation=ERROR")
+            if (hasDaggerCompilerDependency) {
+                option("-Adagger.fastInit=enabled")
+                if (isCiBuild) {
+                    option("-Xmaxerrs", 500)
+                } else {
+                    option("-Adagger.moduleBindingValidation=ERROR")
+                }
             }
         }
     }
 }
+
+private val Project.hasDaggerCompilerDependency: Boolean
+    get() = configurations.any {
+        it.dependencies.any { dependency ->
+            dependency.name == "dagger-compiler"
+        }
+    }
