@@ -12,7 +12,7 @@ inline fun <reified T : ViewModel> Fragment.fragmentViewModel(
     crossinline provider: () -> T
 ) = viewModels<T> {
     object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return provider() as T
         }
