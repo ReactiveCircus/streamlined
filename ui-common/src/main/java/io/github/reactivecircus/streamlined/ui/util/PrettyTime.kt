@@ -20,7 +20,6 @@ fun Long.toFormattedDateString(
     zoneId: ZoneId = ZoneId.systemDefault(),
     locale: Locale = Locale.getDefault()
 ): String {
-    require(this > 0) { "Timestamp must be positive." }
     val formatter = DateTimeFormatter.ofPattern(pattern).withLocale(locale)
     return Instant.ofEpochMilli(this).atZone(zoneId).format(formatter)
         // make sure "." is removed when using three-letter abbreviation for month
@@ -36,7 +35,6 @@ fun Long.timeAgo(
     locale: Locale = Locale.getDefault(),
     clock: Clock = RealClock()
 ): String {
-    require(this > 0) { "Timestamp must be positive." }
     val timeAgo = (clock.currentTimeMillis - this)
         .toDuration(DurationUnit.MILLISECONDS)
     return when {

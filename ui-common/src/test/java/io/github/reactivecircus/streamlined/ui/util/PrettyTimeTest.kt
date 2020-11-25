@@ -1,7 +1,6 @@
 package io.github.reactivecircus.streamlined.ui.util
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.Assert.assertThrows
 import org.junit.Test
 import java.time.LocalDateTime
 import java.time.Month
@@ -33,18 +32,32 @@ class PrettyTimeTest {
     }
 
     @Test
-    fun `throws exception when converting 0 or negative timestamp to formatted date string`() {
-        assertThrows(IllegalArgumentException::class.java) {
-            0L.toFormattedDateString(pattern)
-        }
+    fun `0 or negative timestamp can be converted to a formatted date string given a date pattern`() {
+        val timestamp1 = LocalDateTime.of(
+            1970,
+            Month.JANUARY,
+            1,
+            0,
+            0
+        ).atZone(zoneId).toInstant().toEpochMilli()
 
-        assertThrows(IllegalArgumentException::class.java) {
-            (-1L).toFormattedDateString(pattern)
-        }
+        assertThat(timestamp1.toFormattedDateString(pattern, zoneId, locale))
+            .isEqualTo("Thu 1 Jan at 12:00 AM")
+
+        val timestamp2 = LocalDateTime.of(
+            1969,
+            Month.DECEMBER,
+            31,
+            23,
+            59
+        ).atZone(zoneId).toInstant().toEpochMilli()
+
+        assertThat(timestamp2.toFormattedDateString(pattern, zoneId, locale))
+            .isEqualTo("Wed 31 Dec at 11:59 PM")
     }
 
     @Test
-    fun `timeAgo() returns "Moments ago" when given time from now is less than 1 minute`() {
+    fun `timeAgo() returns 'Moments ago' when given time from now is less than 1 minute`() {
         val nowMillis = 61.seconds.inMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
@@ -59,7 +72,7 @@ class PrettyTimeTest {
     }
 
     @Test
-    fun `timeAgo() returns "x minute(s) ago" when given time from now is between 1 hour and 1 minute`() {
+    fun `timeAgo() returns 'x minute(s) ago' when given time from now is between 1 hour and 1 minute`() {
         val nowMillis = 61.minutes.inMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
@@ -72,7 +85,7 @@ class PrettyTimeTest {
     }
 
     @Test
-    fun `timeAgo() returns "x hour(s) ago" when given time from now is between 1 day and 1 hour`() {
+    fun `timeAgo() returns 'x hour(s) ago' when given time from now is between 1 day and 1 hour`() {
         val nowMillis = 25.hours.inMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
@@ -85,7 +98,7 @@ class PrettyTimeTest {
     }
 
     @Test
-    fun `timeAgo() returns "Yesterday" or "x days ago" when given time from now is between 1 week and 1 day`() {
+    fun `timeAgo() returns 'Yesterday' or 'x days ago' when given time from now is between 1 week and 1 day`() {
         val nowMillis = 8.days.inMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
@@ -109,14 +122,14 @@ class PrettyTimeTest {
     }
 
     @Test
-    fun `throws exception when converting 0 or negative timestamp to prettified time-ago string`() {
-        assertThrows(IllegalArgumentException::class.java) {
-            0L.timeAgo(pattern)
-        }
+    fun `timeAgo() returns formatted date string when given time from now is 0 or negative`() {
+        val nowMillis = 10.days.inMilliseconds.toLong()
+        val fixedClock = FixedClock(nowMillis)
 
-        assertThrows(IllegalArgumentException::class.java) {
-            (-1L).timeAgo(pattern)
-        }
+        assertThat(0L.timeAgo(pattern, zoneId, locale, fixedClock))
+            .isEqualTo("Thu 1 Jan at 12:00 AM")
+        assertThat((-1L).timeAgo(pattern, zoneId, locale, fixedClock))
+            .isEqualTo("Wed 31 Dec at 11:59 PM")
     }
 }
 
