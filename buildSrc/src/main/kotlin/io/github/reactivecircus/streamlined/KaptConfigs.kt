@@ -12,6 +12,7 @@ internal fun Project.configureKapt() {
         javacOptions {
             if (hasDaggerCompilerDependency) {
                 option("-Adagger.fastInit=enabled")
+                option("-Adagger.experimentalDaggerErrorMessages=enabled")
                 if (isCiBuild) {
                     option("-Xmaxerrs", 500)
                 } else {
