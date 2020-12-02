@@ -8,9 +8,6 @@ plugins {
     kotlin("kapt")
 }
 
-// TODO remove once https://issuetracker.google.com/issues/161586464 is fixed
-android.buildFeatures.androidResources = true
-
 sqldelight {
     database("StreamlinedDatabase") {
         schemaOutputDirectory = file("src/main/sqldelight/databases")

@@ -2,7 +2,6 @@ package io.github.reactivecircus.streamlined
 
 import com.android.build.api.extension.ApplicationAndroidComponentsExtension
 import com.android.build.api.extension.LibraryAndroidComponentsExtension
-import com.android.build.api.variant.LibraryVariantBuilder
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.language.nativeplatform.internal.BuildType
@@ -22,17 +21,19 @@ internal fun Project.configureSlimTests() {
         // disable unit test tasks on the release build type for Android Library projects
         extensions.findByType<LibraryAndroidComponentsExtension>()?.run {
             val releaseBuild = selector().withBuildType(BuildType.RELEASE.name)
-            beforeVariants(releaseBuild) {
-                it.unitTest { enabled = false }
+            beforeUnitTest(releaseBuild) {
+                it.enabled = false
             }
         }
 
         // disable unit test tasks on the release build type and all non-mock flavors for Android Application projects.
         extensions.findByType<ApplicationAndroidComponentsExtension>()?.run {
-            beforeVariants {
-                if (it.buildType == BuildType.RELEASE.name || it.flavorName == ProductFlavors.DEV || it.flavorName == ProductFlavors.PROD) {
-                    it.unitTest { enabled = false }
-                }
+            val releaseBuildTypeAndNonMockFlavors = selector()
+                .withBuildType(BuildType.RELEASE.name)
+                .withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)
+                .withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.PROD)
+            beforeUnitTest(releaseBuildTypeAndNonMockFlavors) {
+                it.enabled = false
             }
         }
     }
