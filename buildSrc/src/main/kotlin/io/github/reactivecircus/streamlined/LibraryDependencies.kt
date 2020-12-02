@@ -36,17 +36,17 @@ object versions {
         const val work = "2.5.0-beta01"
 
         object test {
-            const val core = "1.3.0"
-            const val monitor = "1.3.0"
-            const val rules = "1.3.0"
-            const val runner = "1.3.0"
+            const val core = "1.3.1-alpha02"
+            const val monitor = "1.3.1-alpha02"
+            const val rules = "1.3.1-alpha02"
+            const val runner = "1.3.1-alpha02"
 
             object ext {
-                const val junit = "1.1.2"
-                const val truth = "1.3.0"
+                const val junit = "1.1.1-alpha02"
+                const val truth = "1.3.1-alpha02"
             }
 
-            const val espresso = "3.3.0"
+            const val espresso = "3.4.0-alpha02"
         }
     }
 

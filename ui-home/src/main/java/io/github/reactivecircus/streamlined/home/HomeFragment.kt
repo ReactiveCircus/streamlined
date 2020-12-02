@@ -13,6 +13,7 @@ import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavigatorProvider
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
+import io.github.reactivecircus.streamlined.ui.util.disableItemAnimatorIfTurnedOffGlobally
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -51,6 +52,7 @@ class HomeFragment @Inject constructor(
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
         binding.recyclerView.apply {
+            disableItemAnimatorIfTurnedOffGlobally()
             layoutManager = LinearLayoutManager(activity)
             adapter = feedsListAdapter
         }

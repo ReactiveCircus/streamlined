@@ -63,7 +63,7 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     setCompileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
 
-    defaultConfig.apply {
+    defaultConfig {
         minSdkVersion(androidSdk.minSdk)
         targetSdkVersion(androidSdk.targetSdk)
 
