@@ -28,11 +28,13 @@ internal fun Project.configureSlimTests() {
 
         // disable unit test tasks on the release build type and all non-mock flavors for Android Application projects.
         extensions.findByType<ApplicationAndroidComponentsExtension>()?.run {
-            val releaseBuildTypeAndNonMockFlavors = selector()
-                .withBuildType(BuildType.RELEASE.name)
-                .withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)
-                .withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.PROD)
-            beforeUnitTest(releaseBuildTypeAndNonMockFlavors) {
+            beforeUnitTest(selector().withBuildType(BuildType.RELEASE.name)) {
+                it.enabled = false
+            }
+            beforeUnitTest(selector().withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)) {
+                it.enabled = false
+            }
+            beforeUnitTest(selector().withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.PROD)) {
                 it.enabled = false
             }
         }
