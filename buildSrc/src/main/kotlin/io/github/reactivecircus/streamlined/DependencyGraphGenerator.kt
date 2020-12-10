@@ -11,9 +11,15 @@ import org.gradle.kotlin.dsl.withType
 
 /**
  * Configure project dependency graph generation.
- * Run ./gradlew generateDependencyGraph to generate the project dependency graph.
- * Generated file will be available at <rootProject>/build/reports/dependency-graph/dependency-graph.svg
+ * Run `./gradlew generateDependencyGraph` to generate the project dependency graph.
+ * Generated svg file will be available at ./build/reports/dependency-graph/dependency-graph.svg.
+ *
+ * To also generate a png file:
+ * `./gradlew generateDependencyGraph -PgeneratePng`
+ * Generated png file will be available at ./build/reports/dependency-graph/dependency-graph.png.
+ *
  */
+@Suppress("UnstableApiUsage")
 internal fun Project.configureDependencyGraphGenerator() {
     require(isRoot)
     pluginManager.apply(DependencyGraphGeneratorPlugin::class.java)
@@ -33,9 +39,17 @@ internal fun Project.configureDependencyGraphGenerator() {
                     includeConfiguration = { configuration ->
                         configuration.name.contains("runtimeClasspath", ignoreCase = true)
                     },
-                    outputFormats = listOf(Format.SVG)
+                    outputFormats = mutableListOf(Format.SVG).apply {
+                        if (providers.gradleProperty(GENERATE_PNG_PROPERTY)
+                                .forUseAtConfigurationTime().isPresent
+                        ) {
+                            add(Format.PNG)
+                        }
+                    }
                 )
             )
         }
     }
 }
+
+private const val GENERATE_PNG_PROPERTY = "generatePng"
