@@ -6,6 +6,7 @@ rootProject.ext.versions = [
         detekt        : '1.14.2',
         sqldelight    : '1.4.4',
         playPublisher : '2.8.0',
+        dependencyGraphGenerator : '0.5.0',
 ]
 
 rootProject.ext.build = [
@@ -17,4 +18,5 @@ rootProject.ext.build = [
         detektGradlePlugin        : "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}",
         sqldelightGradlePlugin    : "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}",
         playPublisherPlugin       : "com.github.triplet.gradle:play-publisher:${versions.playPublisher}",
+        dependencyGraphGeneratorPlugin: "com.vanniktech:gradle-dependency-graph-generator-plugin:${versions.dependencyGraphGenerator}",
 ]

@@ -14,6 +14,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.tasks.Delete
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.getPlugin
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
@@ -40,7 +41,11 @@ class StreamlinedPlugin : Plugin<Project> {
 
         // apply configurations specific to root project
         if (project.isRoot) {
-            project.configureForRootProject()
+            // register task for cleaning the build directory in the root project
+            project.tasks.register("clean", Delete::class.java) {
+                delete(project.rootProject.buildDir)
+            }
+            project.configureDependencyGraphGenerator()
         }
 
         // apply baseline configurations based on plugins applied
@@ -72,4 +77,4 @@ class StreamlinedPlugin : Plugin<Project> {
     }
 }
 
-private val Project.isRoot get() = this == this.rootProject
+internal val Project.isRoot get() = this == this.rootProject

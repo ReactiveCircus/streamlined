@@ -7,7 +7,6 @@ import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.kotlin.dsl.repositories
@@ -15,17 +14,6 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
-
-/**
- * Configure root project.
- * Note that classpath dependencies still need to be defined in the `buildscript` block in the top-level build.gradle.kts file.
- */
-internal fun Project.configureForRootProject() {
-    // register task for cleaning the build directory in the root project
-    tasks.register("clean", Delete::class.java) {
-        delete(rootProject.buildDir)
-    }
-}
 
 /**
  * Apply baseline configurations for all projects (including the root project).
