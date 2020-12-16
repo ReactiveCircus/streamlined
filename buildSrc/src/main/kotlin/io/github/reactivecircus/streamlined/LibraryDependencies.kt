@@ -25,13 +25,13 @@ object versions {
         const val core = "1.5.0-alpha05"
         const val annotation = "1.2.0-alpha01"
         const val appCompat = "1.3.0-alpha02"
-        const val activity = "1.2.0-beta02"
-        const val fragment = "1.3.0-beta02"
+        const val activity = "1.2.0-rc01"
+        const val fragment = "1.3.0-rc01"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-beta01"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.4"
-        const val lifecycle = "2.3.0-beta01"
+        const val lifecycle = "2.3.0-rc01"
         const val navigation = "2.3.2"
         const val work = "2.5.0-beta02"
 
@@ -50,7 +50,7 @@ object versions {
         }
     }
 
-    const val material = "1.3.0-alpha04"
+    const val material = "1.3.0-beta01"
     const val insetter = "0.3.0"
     const val dagger = "2.30.1"
     const val assistedInject = "0.6.0"
