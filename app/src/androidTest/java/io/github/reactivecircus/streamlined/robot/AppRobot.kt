@@ -46,25 +46,22 @@ class AppRobot : ScreenRobot<AppRobot.Actions, AppRobot.Assertions>(Actions(), A
 
         fun homeScreenDisplayed() {
             toolbarHasTitle(R.string.title_home)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.homeFragment)
+            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.homeScreen)
         }
 
         fun headlinesScreenDisplayed() {
             toolbarHasTitle(R.string.title_headlines)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.headlinesFragment)
+            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.headlinesScreen)
         }
 
         fun readingListScreenDisplayed() {
             toolbarHasTitle(R.string.title_reading_list)
-            bottomNavigationViewItemSelected(
-                R.id.bottomNavigationView,
-                R.id.readingListFragment
-            )
+            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.readingListScreen)
         }
 
         fun settingsScreenDisplayedSelected() {
             toolbarHasTitle(R.string.title_settings)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.settingsFragment)
+            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.settingsScreen)
         }
     }
 }

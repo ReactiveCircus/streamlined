@@ -21,11 +21,6 @@ class IntegrationTestApp : StreamlinedApp() {
         // initialize analytics api (disable)
         appComponent.analyticsApi.setEnableAnalytics(false)
 
-        // register lifecycle hook for NavigatorProvider
-        registerActivityLifecycleCallbacks(
-            appComponent.navigatorProvider as StreamlinedNavigatorProvider
-        )
-
         // set default image loader
         setImageLoader(appComponent.imageLoader)
     }

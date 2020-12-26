@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@id/homeScreen"
         android:icon="@drawable/ic_twotone_home_24"
         android:title="@string/menu_title_home" />
 
     <item
-        android:id="@+id/headlinesFragment"
+        android:id="@id/headlinesScreen"
         android:icon="@drawable/ic_twotone_language_24"
         android:title="@string/menu_title_headlines" />
 
     <item
-        android:id="@+id/readingListFragment"
+        android:id="@id/readingListScreen"
         android:icon="@drawable/ic_twotone_bookmark_24"
         android:title="@string/menu_title_reading_list" />
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@id/settingsScreen"
         android:icon="@drawable/ic_twotone_settings_24"
         android:title="@string/menu_title_settings" />
 

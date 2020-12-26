@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="rootNavHostFragment" type="id" />
+    <item name="mainScreen" type="id" />
+    <item name="storyDetailsScreen" type="id" />
+    <item name="openStoryDetailsScreen" type="id" />
+
+    <item name="homeScreen" type="id" />
+    <item name="headlinesScreen" type="id" />
+    <item name="readingListScreen" type="id" />
+    <item name="settingsScreen" type="id" />
+</resources>

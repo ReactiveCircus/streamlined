@@ -2,21 +2,21 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/mainScreen">
 
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@id/mainScreen"
         android:name="io.github.reactivecircus.streamlined.MainFragment"
         tools:layout="@layout/fragment_main" />
 
     <fragment
-        android:id="@+id/storyDetailsFragment"
+        android:id="@id/storyDetailsScreen"
         android:name="io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment"
         tools:layout="@layout/fragment_story_details" />
 
     <action
-        android:id="@+id/action_global_storyDetailsFragment"
-        app:destination="@id/storyDetailsFragment"
+        android:id="@id/openStoryDetailsScreen"
+        app:destination="@id/storyDetailsScreen"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"

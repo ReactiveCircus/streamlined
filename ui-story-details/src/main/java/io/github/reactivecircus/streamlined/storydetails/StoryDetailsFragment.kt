@@ -5,20 +5,24 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.transition.MaterialElevationScale
+import io.github.reactivecircus.streamlined.navigator.Navigator
+import io.github.reactivecircus.streamlined.navigator.input.StoryDetailsInput
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlinx.coroutines.flow.collect
 
 class StoryDetailsFragment @Inject constructor(
     private val viewModelProvider: Provider<StoryDetailsViewModel.Factory>
 ) : Fragment(R.layout.fragment_story_details), ScreenForAnalytics {
 
+    private val navigator: Navigator = Navigator(this)
+
     private val viewModel: StoryDetailsViewModel by fragmentViewModel {
-        val id = requireArguments().getLong(ARG_STORY_ID)
-        viewModelProvider.get().create(id)
+        val storyId = navigator.requireNavInput<StoryDetailsInput>().storyId
+        viewModelProvider.get().create(storyId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,9 +40,5 @@ class StoryDetailsFragment @Inject constructor(
                 // TODO
             }
         }
-    }
-
-    companion object {
-        const val ARG_STORY_ID = "ARG_STORY_ID"
     }
 }

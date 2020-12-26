@@ -29,11 +29,6 @@ open class StreamlinedApp : Application(), Configuration.Provider {
         // schedule background sync
         appComponent.taskScheduler.scheduleHourlyStorySync()
 
-        // register lifecycle hook for NavigatorProvider
-        registerActivityLifecycleCallbacks(
-            appComponent.navigatorProvider as StreamlinedNavigatorProvider
-        )
-
         // set default image loader
         setImageLoader(appComponent.imageLoader)
     }
