@@ -11,8 +11,8 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavControllerType
-import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.navigator.input.StoryDetailsInput
+import io.github.reactivecircus.streamlined.navigator.navigate
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import io.github.reactivecircus.streamlined.ui.util.disableItemAnimatorIfTurnedOffGlobally
@@ -27,14 +27,12 @@ class HomeFragment @Inject constructor(
     private val viewModelProvider: Provider<HomeViewModel>
 ) : Fragment(R.layout.fragment_home), ScreenForAnalytics {
 
-    private val navigator: Navigator = Navigator(this)
-
     private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
 
     private val itemActionListener = ItemActionListener<FeedsListAdapter.ItemAction> { action ->
         when (action) {
             is FeedsListAdapter.ItemAction.StoryClicked -> {
-                navigator.navigate(
+                navigate(
                     destination = NavigatorResource.id.openStoryDetailsScreen,
                     args = StoryDetailsInput(action.story.id),
                     navControllerType = NavControllerType.Root,
@@ -43,7 +41,7 @@ class HomeFragment @Inject constructor(
             is FeedsListAdapter.ItemAction.BookmarkToggled -> Unit
             is FeedsListAdapter.ItemAction.MoreButtonClicked -> Unit
             FeedsListAdapter.ItemAction.ReadMoreHeadlinesButtonClicked -> {
-                navigator.navigate(NavigatorResource.id.headlinesScreen)
+                navigate(NavigatorResource.id.headlinesScreen)
             }
         }
     }

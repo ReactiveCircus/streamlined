@@ -5,8 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.transition.MaterialElevationScale
-import io.github.reactivecircus.streamlined.navigator.Navigator
 import io.github.reactivecircus.streamlined.navigator.input.StoryDetailsInput
+import io.github.reactivecircus.streamlined.navigator.requireNavInput
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
@@ -18,10 +18,8 @@ class StoryDetailsFragment @Inject constructor(
     private val viewModelProvider: Provider<StoryDetailsViewModel.Factory>
 ) : Fragment(R.layout.fragment_story_details), ScreenForAnalytics {
 
-    private val navigator: Navigator = Navigator(this)
-
     private val viewModel: StoryDetailsViewModel by fragmentViewModel {
-        val storyId = navigator.requireNavInput<StoryDetailsInput>().storyId
+        val storyId = requireNavInput<StoryDetailsInput>().storyId
         viewModelProvider.get().create(storyId)
     }
 
