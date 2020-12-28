@@ -1,6 +1,6 @@
 rootProject.ext.versions = [
         agp           : '7.0.0-alpha03',
-        appVersioning : '0.8.0',
+        appVersioning : '0.8.1',
         googleServices: '4.3.4',
         kotlin        : '1.4.21',
         detekt        : '1.15.0',
