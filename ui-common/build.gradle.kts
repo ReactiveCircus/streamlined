@@ -18,7 +18,7 @@ dependencies {
     api(libraries.blueprint.ui)
 
     // Workflow
-    api(libraries.workflow.runtime)
+    api(libraries.workflow.ui)
 
     // AndroidX
     api(libraries.androidx.annotation)

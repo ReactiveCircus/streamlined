@@ -2,20 +2,17 @@ package io.github.reactivecircus.streamlined.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.squareup.workflow1.renderWorkflowIn
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.mapLatest
+import com.squareup.workflow1.ui.WorkflowUiExperimentalApi
+import com.squareup.workflow1.ui.renderWorkflowIn
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel @Inject constructor(
     homeWorkflow: HomeWorkflow
 ) : ViewModel() {
+    @OptIn(WorkflowUiExperimentalApi::class)
     val rendering: Flow<HomeRendering> = renderWorkflowIn(
-        homeWorkflow,
-        viewModelScope,
-        MutableStateFlow(Unit)
-    ) {}.mapLatest { it.rendering }
+        workflow = homeWorkflow,
+        scope = viewModelScope,
+    )
 }

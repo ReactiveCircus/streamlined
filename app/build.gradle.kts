@@ -130,6 +130,7 @@ android {
     }
 }
 
+@Suppress("UnstableApiUsage")
 androidComponents {
     // disable android test for dev flavor
     val devFlavor = selector().withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)

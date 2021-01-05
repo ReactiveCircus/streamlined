@@ -19,7 +19,7 @@ object versions {
 
     const val blueprint = "1.14.1"
     const val flowbinding = "1.0.0-beta02"
-    const val workflow = "1.0.0-alpha.8"
+    const val workflow = "1.0.0-alpha.9"
 
     object androidx {
         const val core = "1.5.0-alpha05"
@@ -103,7 +103,7 @@ object libraries {
     }
 
     object workflow {
-        const val runtime = "com.squareup.workflow1:workflow-runtime-jvm:${versions.workflow}"
+        const val ui = "com.squareup.workflow1:workflow-ui-core-android:${versions.workflow}"
         const val testing = "com.squareup.workflow1:workflow-testing-jvm:${versions.workflow}"
     }
 
