@@ -17,12 +17,8 @@ class StorySyncWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
-        return runCatching {
-            syncStories.execute(EmptyParams)
-            Result.success()
-        }.getOrElse {
-            Result.failure()
-        }
+        syncStories.execute(EmptyParams)
+        return Result.success()
     }
 
     class Factory @Inject constructor(

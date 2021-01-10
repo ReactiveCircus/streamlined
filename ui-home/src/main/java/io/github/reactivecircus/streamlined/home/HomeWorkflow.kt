@@ -14,13 +14,14 @@ import io.github.reactivecircus.streamlined.domain.interactor.FetchPersonalizedS
 import io.github.reactivecircus.streamlined.domain.interactor.StreamHeadlineStories
 import io.github.reactivecircus.streamlined.domain.interactor.StreamPersonalizedStories
 import io.github.reactivecircus.streamlined.domain.model.Story
+import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import reactivecircus.blueprint.interactor.EmptyParams
-import javax.inject.Inject
 
 class HomeWorkflow @Inject constructor(
     streamHeadlineStories: StreamHeadlineStories,
@@ -157,7 +158,8 @@ class HomeWorkflow @Inject constructor(
      * through the combined stories stream.
      */
     private val refreshStoriesWorker: Worker<Boolean> = Worker.from {
-        runCatching {
+        @Suppress("TooGenericExceptionCaught")
+        try {
             coroutineScope {
                 val headlineStoriesDeferred = async {
                     fetchHeadlineStories.execute(EmptyParams)
@@ -169,7 +171,11 @@ class HomeWorkflow @Inject constructor(
                 }
                 awaitAll(headlineStoriesDeferred, personalizedStoriesDeferred)
             }
-        }.isSuccess
+            true
+        } catch (t: Throwable) {
+            if (t is CancellationException) throw t
+            false
+        }
     }
 }
 
