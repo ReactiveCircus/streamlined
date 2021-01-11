@@ -61,7 +61,7 @@ jobs:
 
       - name: Assemble signed release App Bundle
         run: |
-          ./gradlew app:bundleProdRelease
+          ./gradlew app:bundleProdRelease --stacktrace
 
       - name: Cleanup secrets
         if: always()
