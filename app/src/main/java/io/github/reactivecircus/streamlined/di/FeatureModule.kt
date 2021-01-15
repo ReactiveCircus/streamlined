@@ -11,15 +11,10 @@ import io.github.reactivecircus.streamlined.home.HomeFragment
 import io.github.reactivecircus.streamlined.home.HomeUiConfigs
 import io.github.reactivecircus.streamlined.readinglist.ReadingListFragment
 import io.github.reactivecircus.streamlined.settings.SettingsFragment
-import io.github.reactivecircus.streamlined.storydetails.StoryDetailsAssistedModule
 import io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment
 import io.github.reactivecircus.streamlined.ui.di.FragmentKey
 
-@Module(
-    includes = [
-        StoryDetailsAssistedModule::class
-    ]
-)
+@Module
 abstract class FeatureModule {
 
     @Binds

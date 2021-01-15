@@ -52,8 +52,7 @@ object versions {
 
     const val material = "1.3.0-rc01"
     const val insetter = "0.4.0"
-    const val dagger = "2.30.1"
-    const val assistedInject = "0.6.0"
+    const val dagger = "2.31"
     const val okhttp = "4.9.0"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.8.0"
@@ -171,11 +170,6 @@ object libraries {
     object dagger {
         const val runtime = "com.google.dagger:dagger:${versions.dagger}"
         const val compiler = "com.google.dagger:dagger-compiler:${versions.dagger}"
-    }
-
-    object assistedInject {
-        const val annotations = "com.squareup.inject:assisted-inject-annotations-dagger2:${versions.assistedInject}"
-        const val processor = "com.squareup.inject:assisted-inject-processor-dagger2:${versions.assistedInject}"
     }
 
     object okhttp {

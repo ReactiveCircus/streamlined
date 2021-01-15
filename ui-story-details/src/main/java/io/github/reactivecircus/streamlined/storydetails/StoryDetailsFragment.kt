@@ -11,16 +11,15 @@ import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentSto
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.flow.collect
 
 class StoryDetailsFragment @Inject constructor(
-    private val viewModelProvider: Provider<StoryDetailsViewModel.Factory>
+    private val viewModelFactory: StoryDetailsViewModel.Factory
 ) : Fragment(R.layout.fragment_story_details), ScreenForAnalytics {
 
     private val viewModel: StoryDetailsViewModel by fragmentViewModel {
         val storyId = requireNavInput<StoryDetailsInput>().storyId
-        viewModelProvider.get().create(storyId)
+        viewModelFactory.create(storyId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
