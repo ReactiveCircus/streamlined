@@ -26,4 +26,5 @@ interface RefreshPolicy {
 /**
  * A string representation of a specific data set which the [RefreshPolicy] is concerned with.
  */
-inline class RefreshScope(val scope: String)
+// TODO investigate why making this an inline class crashes with IR.
+data class RefreshScope(val scope: String)

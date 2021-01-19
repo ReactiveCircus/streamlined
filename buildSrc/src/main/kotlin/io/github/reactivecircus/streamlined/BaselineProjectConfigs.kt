@@ -30,6 +30,7 @@ internal fun Project.configureForAllProjects() {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
+            useIR = true
             jvmTarget = JavaVersion.VERSION_11.toString()
             freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
         }
