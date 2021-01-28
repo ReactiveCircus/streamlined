@@ -3,6 +3,7 @@ import io.github.reactivecircus.streamlined.libraries
 plugins {
     `streamlined-plugin`
     kotlin("jvm")
+    id("com.android.lint")
 }
 
 dependencies {

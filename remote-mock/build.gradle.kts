@@ -4,6 +4,7 @@ plugins {
     `streamlined-plugin`
     kotlin("jvm")
     kotlin("kapt")
+    id("com.android.lint")
 }
 
 dependencies {

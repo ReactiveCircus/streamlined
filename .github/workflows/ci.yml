@@ -150,7 +150,7 @@ jobs:
 
       - name: Run detekt and Android Lint
         run: |
-          ./gradlew detekt # TODO re-enable app:lintProdRelease once https://issuetracker.google.com/issues/174605126 is fixed
+          ./gradlew detekt app:lintProdRelease
 
       - name: Cleanup secrets
         if: always()

@@ -4,6 +4,7 @@ plugins {
     `streamlined-plugin`
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("com.android.lint")
 }
 
 dependencies {
