@@ -1,7 +1,7 @@
 rootProject.ext.versions = [
         agp           : '7.0.0-alpha05',
         appVersioning : '0.8.1',
-        googleServices: '4.3.4',
+        googleServices: '4.3.5',
         kotlin        : '1.4.30-RC',
         detekt        : '1.15.0',
         sqldelight    : '1.4.4',
