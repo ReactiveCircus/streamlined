@@ -21,8 +21,6 @@ dependencies {
     implementation(build.getValue("detektGradlePlugin"))
     implementation(build.getValue("dependencyGraphGeneratorPlugin"))
     implementation(build.getValue("androidGradlePlugin"))
-    implementation("com.android.tools.build:builder:${versions.getValue("agp")}")
-    implementation("com.android.tools.build:builder-model:${versions.getValue("agp")}")
 }
 
 gradlePlugin {
