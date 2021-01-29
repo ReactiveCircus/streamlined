@@ -22,6 +22,12 @@ internal fun Project.configureKapt() {
             }
         }
     }
+    // disable kapt tasks for unit tests
+    tasks.matching {
+        it.name.startsWith("kapt") && it.name.endsWith("UnitTestKotlin")
+    }.configureEach {
+        enabled = false
+    }
 }
 
 private val Project.hasDaggerCompilerDependency: Boolean
