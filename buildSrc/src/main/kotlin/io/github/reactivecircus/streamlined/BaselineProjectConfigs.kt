@@ -92,12 +92,12 @@ internal fun <VariantBuilderT : VariantBuilder, VariantT : Variant> AndroidCompo
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
         if (!project.hasUnitTestSource) {
-            beforeUnitTest { it.enabled = false }
+            beforeUnitTests { it.enabled = false }
         }
 
         // disable android test tasks if the androidTest source set is empty
         if (!project.hasAndroidTestSource) {
-            beforeAndroidTest { it.enabled = false }
+            beforeAndroidTests { it.enabled = false }
         }
     }
 }
