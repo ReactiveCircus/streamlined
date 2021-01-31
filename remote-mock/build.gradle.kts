@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -11,14 +11,14 @@ dependencies {
     api(project(":remote-base"))
 
     // OkHttp
-    implementation(libraries.okhttp.client)
-    implementation(libraries.okhttp.loggingInterceptor)
+    implementation(Libraries.okhttp.client)
+    implementation(Libraries.okhttp.loggingInterceptor)
 
     // Retrofit
-    implementation(libraries.retrofit.client)
-    implementation(libraries.retrofit.mock)
+    implementation(Libraries.retrofit.client)
+    implementation(Libraries.retrofit.mock)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 }

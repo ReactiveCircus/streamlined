@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -11,25 +11,25 @@ dependencies {
     api(project(":remote-base"))
 
     // Coroutines
-    implementation(libraries.kotlinx.coroutines.core)
+    implementation(Libraries.kotlinx.coroutines.core)
 
     // OkHttp
-    implementation(libraries.okhttp.client)
-    implementation(libraries.okhttp.loggingInterceptor)
+    implementation(Libraries.okhttp.client)
+    implementation(Libraries.okhttp.loggingInterceptor)
 
     // Retrofit
-    implementation(libraries.retrofit.client)
-    implementation(libraries.retrofit.serializationConverter)
+    implementation(Libraries.retrofit.client)
+    implementation(Libraries.retrofit.serializationConverter)
 
     // Serialization
-    implementation(libraries.kotlinx.serialization)
+    implementation(Libraries.kotlinx.serialization)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
-    testImplementation(libraries.okhttp.mockWebServer)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
+    testImplementation(Libraries.okhttp.mockWebServer)
 }

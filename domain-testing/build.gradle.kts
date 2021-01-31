@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -10,10 +10,10 @@ dependencies {
     implementation(project(":domain-api"))
 
     // Coroutines
-    implementation(libraries.kotlinx.coroutines.core)
+    implementation(Libraries.kotlinx.coroutines.core)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
     testImplementation(project(":coroutines-test-ext"))
 }

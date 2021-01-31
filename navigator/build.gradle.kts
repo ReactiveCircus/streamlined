@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -11,10 +11,10 @@ android.buildFeatures.androidResources = true
 
 dependencies {
     // AndroidX
-    implementation(libraries.androidx.annotation)
-    implementation(libraries.androidx.fragment.ktx)
-    implementation(libraries.androidx.navigation.fragmentKtx)
+    implementation(Libraries.androidx.annotation)
+    implementation(Libraries.androidx.fragment.ktx)
+    implementation(Libraries.androidx.navigation.fragmentKtx)
 
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 }

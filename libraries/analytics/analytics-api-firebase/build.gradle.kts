@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -10,5 +10,5 @@ dependencies {
     api(project(":analytics-api-base"))
 
     // Firebase
-    api(libraries.firebase.analyticsKtx)
+    api(Libraries.firebase.analyticsKtx)
 }

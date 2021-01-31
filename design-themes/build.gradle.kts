@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -10,8 +10,8 @@ android.buildFeatures.androidResources = true
 
 dependencies {
     // AndroidX
-    implementation(libraries.androidx.appCompat)
+    implementation(Libraries.androidx.appCompat)
 
     // Material Components
-    implementation(libraries.material)
+    implementation(Libraries.material)
 }

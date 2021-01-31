@@ -5,7 +5,7 @@ import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
 import io.github.reactivecircus.streamlined.envOrProp
 import io.github.reactivecircus.streamlined.isCiBuild
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 import org.gradle.language.nativeplatform.internal.BuildType
 import java.time.Instant
 
@@ -25,7 +25,7 @@ plugins {
 val enableAppVersioning = providers
     .environmentVariable("ENABLE_APP_VERSIONING")
     .forUseAtConfigurationTime()
-    .getOrElse("true").toString().toBoolean()
+    .getOrElse("true").toBoolean()
 
 appVersioning {
     enabled.set(enableAppVersioning)
@@ -206,39 +206,39 @@ dependencies {
     implementation(project(":scheduled-tasks"))
 
     // Blueprint
-    implementation(libraries.blueprint.interactorCoroutines)
-    implementation(libraries.blueprint.asyncCoroutines)
+    implementation(Libraries.blueprint.interactorCoroutines)
+    implementation(Libraries.blueprint.asyncCoroutines)
 
     // Coroutines
-    implementation(libraries.kotlinx.coroutines.core)
-    implementation(libraries.kotlinx.coroutines.android)
+    implementation(Libraries.kotlinx.coroutines.core)
+    implementation(Libraries.kotlinx.coroutines.android)
 
     // Work manager
-    implementation(libraries.androidx.work.runtimeKtx)
+    implementation(Libraries.androidx.work.runtimeKtx)
 
     // process lifecycle
-    implementation(libraries.androidx.lifecycle.process)
+    implementation(Libraries.androidx.lifecycle.process)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 
     // Enable LeakCanary for debug builds
-    debugImplementation(libraries.leakCanary.android)
+    debugImplementation(Libraries.leakCanary.android)
     // Fix SDK leaks
-    implementation(libraries.leakCanary.plumber)
+    implementation(Libraries.leakCanary.plumber)
 
     // Pretty view hierarchy string
-    implementation(libraries.radiography)
+    implementation(Libraries.radiography)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
 
     // Android tests
     androidTestImplementation(project(":ui-testing-framework"))
-    kaptAndroidTest(libraries.dagger.compiler)
+    kaptAndroidTest(Libraries.dagger.compiler)
 }

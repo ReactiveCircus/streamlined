@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -25,32 +25,32 @@ dependencies {
     implementation(project(":domain-runtime"))
 
     // Coroutines
-    implementation(libraries.kotlinx.coroutines.core)
+    implementation(Libraries.kotlinx.coroutines.core)
 
     // FlowBinding
-    implementation(libraries.flowbinding.swipeRefreshLayout)
+    implementation(Libraries.flowbinding.swipeRefreshLayout)
 
     // AndroidX
-    implementation(libraries.androidx.swipeRefreshLayout)
-    implementation(libraries.androidx.lifecycle.viewModelKtx)
-    implementation(libraries.androidx.lifecycle.commonJava8)
+    implementation(Libraries.androidx.swipeRefreshLayout)
+    implementation(Libraries.androidx.lifecycle.viewModelKtx)
+    implementation(Libraries.androidx.lifecycle.commonJava8)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
     testImplementation(project(":coroutines-test-ext"))
 
     // Android tests
     androidTestImplementation(project(":ui-testing-framework"))
-    debugImplementation(libraries.androidx.fragment.testing) {
+    debugImplementation(Libraries.androidx.fragment.testing) {
         exclude(group = "androidx.test")
     }
-    kaptAndroidTest(libraries.dagger.compiler)
+    kaptAndroidTest(Libraries.dagger.compiler)
 }

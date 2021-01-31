@@ -1,6 +1,4 @@
-apply(from = "buildDependencies.gradle")
-val versions: Map<Any, Any> by extra
-val build: Map<Any, Any> by extra
+import io.github.reactivecircus.streamlined.Plugins
 
 plugins {
     `kotlin-dsl`
@@ -17,10 +15,15 @@ kotlinDslPluginOptions {
 }
 
 dependencies {
-    implementation(build.getValue("kotlinGradlePlugin"))
-    implementation(build.getValue("detektGradlePlugin"))
-    implementation(build.getValue("dependencyGraphGeneratorPlugin"))
-    implementation(build.getValue("androidGradlePlugin"))
+    implementation(Plugins.kotlinGradlePlugin)
+    implementation(Plugins.detektGradlePlugin)
+    implementation(Plugins.dependencyGraphGeneratorPlugin)
+    implementation(Plugins.androidGradlePlugin)
+    implementation(Plugins.appVersioningGradlePlugin)
+    implementation(Plugins.kotlinSerializationPlugin)
+    implementation(Plugins.googleServicesGradlePlugin)
+    implementation(Plugins.sqldelightGradlePlugin)
+    implementation(Plugins.playPublisherPlugin)
 }
 
 gradlePlugin {

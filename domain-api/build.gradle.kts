@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -8,8 +8,8 @@ plugins {
 
 dependencies {
     // Coroutines
-    api(libraries.kotlinx.coroutines.core)
+    api(Libraries.kotlinx.coroutines.core)
 
     // Store
-    api(libraries.store)
+    api(Libraries.store)
 }

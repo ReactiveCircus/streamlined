@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -11,16 +11,16 @@ dependencies {
     api(project(":domain-api"))
 
     // Blueprint
-    api(libraries.blueprint.interactorCoroutines)
-    api(libraries.blueprint.asyncCoroutines)
+    api(Libraries.blueprint.interactorCoroutines)
+    api(Libraries.blueprint.asyncCoroutines)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
     testImplementation(project(":domain-testing"))
     testImplementation(project(":coroutines-test-ext"))
 }

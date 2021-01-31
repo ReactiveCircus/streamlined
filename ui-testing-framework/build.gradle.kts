@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -16,34 +16,34 @@ dependencies {
     implementation(project(":remote-mock"))
 
     // Blueprint
-    implementation(libraries.blueprint.asyncCoroutines)
+    implementation(Libraries.blueprint.asyncCoroutines)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // OkHttp
-    implementation(libraries.okhttp.client)
-    implementation(libraries.okhttp.loggingInterceptor)
+    implementation(Libraries.okhttp.client)
+    implementation(Libraries.okhttp.loggingInterceptor)
 
     // Retrofit
-    implementation(libraries.retrofit.client)
-    implementation(libraries.retrofit.mock)
+    implementation(Libraries.retrofit.client)
+    implementation(Libraries.retrofit.mock)
 
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 
-    implementation(libraries.androidx.fragment.testing)
-    implementation(libraries.radiography)
-    api(libraries.blueprint.testingRobot)
-    api(libraries.androidx.test.coreKtx)
-    api(libraries.androidx.test.monitor)
-    api(libraries.androidx.test.runner)
-    api(libraries.androidx.test.rules)
-    api(libraries.androidx.test.ext.junitKtx)
-    api(libraries.androidx.test.ext.truth)
-    api(libraries.androidx.espresso.core)
-    api(libraries.androidx.espresso.contrib)
-    api(libraries.androidx.espresso.intents)
-    api(libraries.truth)
+    implementation(Libraries.androidx.fragment.testing)
+    implementation(Libraries.radiography)
+    api(Libraries.blueprint.testingRobot)
+    api(Libraries.androidx.test.coreKtx)
+    api(Libraries.androidx.test.monitor)
+    api(Libraries.androidx.test.runner)
+    api(Libraries.androidx.test.rules)
+    api(Libraries.androidx.test.ext.junitKtx)
+    api(Libraries.androidx.test.ext.truth)
+    api(Libraries.androidx.espresso.core)
+    api(Libraries.androidx.espresso.contrib)
+    api(Libraries.androidx.espresso.intents)
+    api(Libraries.truth)
 }

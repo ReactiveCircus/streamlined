@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -11,15 +11,15 @@ dependencies {
     implementation(project(":domain-runtime"))
 
     // Coroutines
-    implementation(libraries.kotlinx.coroutines.core)
+    implementation(Libraries.kotlinx.coroutines.core)
 
     // AndroidX
-    implementation(libraries.androidx.work.runtimeKtx)
+    implementation(Libraries.androidx.work.runtimeKtx)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 }

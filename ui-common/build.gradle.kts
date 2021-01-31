@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -15,36 +15,36 @@ dependencies {
     api(project(":design-themes"))
 
     // Blueprint
-    api(libraries.blueprint.ui)
+    api(Libraries.blueprint.ui)
 
     // Workflow
-    api(libraries.workflow.ui)
+    api(Libraries.workflow.ui)
 
     // AndroidX
-    api(libraries.androidx.annotation)
-    api(libraries.androidx.appCompat)
-    api(libraries.androidx.constraintLayout)
-    api(libraries.androidx.coordinatorLayout)
-    api(libraries.androidx.activity.ktx)
-    api(libraries.androidx.fragment.ktx)
-    api(libraries.androidx.core.ktx)
-    api(libraries.androidx.navigation.fragmentKtx)
-    api(libraries.androidx.navigation.uiKtx)
+    api(Libraries.androidx.annotation)
+    api(Libraries.androidx.appCompat)
+    api(Libraries.androidx.constraintLayout)
+    api(Libraries.androidx.coordinatorLayout)
+    api(Libraries.androidx.activity.ktx)
+    api(Libraries.androidx.fragment.ktx)
+    api(Libraries.androidx.core.ktx)
+    api(Libraries.androidx.navigation.fragmentKtx)
+    api(Libraries.androidx.navigation.uiKtx)
 
     // Material Components
-    api(libraries.material)
+    api(Libraries.material)
 
     // Window inset handling
-    api(libraries.insetter)
+    api(Libraries.insetter)
 
     // Image loading
-    api(libraries.coil)
+    api(Libraries.coil)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
 }

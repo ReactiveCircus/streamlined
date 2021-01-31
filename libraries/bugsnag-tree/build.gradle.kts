@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -8,10 +8,10 @@ plugins {
 
 dependencies {
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 
     // Bugsnag
-    api(libraries.bugsnag) {
+    api(Libraries.bugsnag) {
         exclude(module = "bugsnag-plugin-android-ndk")
     }
 }

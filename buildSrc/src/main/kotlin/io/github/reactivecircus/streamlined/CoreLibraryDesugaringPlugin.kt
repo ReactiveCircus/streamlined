@@ -33,6 +33,6 @@ class CoreLibraryDesugaringPlugin : Plugin<Project> {
 
     private fun TestedExtension.configure(project: Project) {
         compileOptions.isCoreLibraryDesugaringEnabled = true
-        project.dependencies.add("coreLibraryDesugaring", libraries.desugarLibs)
+        project.dependencies.add("coreLibraryDesugaring", Libraries.desugarLibs)
     }
 }

@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -9,8 +9,8 @@ plugins {
 
 dependencies {
     // Retrofit
-    implementation(libraries.retrofit.client)
+    implementation(Libraries.retrofit.client)
 
     // Serialization
-    implementation(libraries.kotlinx.serialization)
+    implementation(Libraries.kotlinx.serialization)
 }

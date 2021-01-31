@@ -1,4 +1,4 @@
-import io.github.reactivecircus.streamlined.libraries
+import io.github.reactivecircus.streamlined.Libraries
 
 plugins {
     `streamlined-plugin`
@@ -16,22 +16,22 @@ sqldelight {
 
 dependencies {
     // SQLDelight
-    implementation(libraries.sqldelight.driver.android)
-    implementation(libraries.sqldelight.coroutinesExtensions)
+    implementation(Libraries.sqldelight.driver.android)
+    implementation(Libraries.sqldelight.coroutinesExtensions)
 
     // Coroutines
-    implementation(libraries.kotlinx.coroutines.core)
+    implementation(Libraries.kotlinx.coroutines.core)
 
     // Dagger
-    implementation(libraries.dagger.runtime)
-    kapt(libraries.dagger.compiler)
+    implementation(Libraries.dagger.runtime)
+    kapt(Libraries.dagger.compiler)
 
     // timber
-    implementation(libraries.timber)
+    implementation(Libraries.timber)
 
     // Unit tests
-    testImplementation(libraries.junit)
-    testImplementation(libraries.truth)
-    testImplementation(libraries.sqldelight.driver.jvm)
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
+    testImplementation(Libraries.sqldelight.driver.jvm)
     testImplementation(project(":coroutines-test-ext"))
 }

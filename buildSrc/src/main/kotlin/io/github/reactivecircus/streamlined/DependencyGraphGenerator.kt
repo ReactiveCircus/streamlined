@@ -40,9 +40,7 @@ internal fun Project.configureDependencyGraphGenerator() {
                         configuration.name.contains("runtimeClasspath", ignoreCase = true)
                     },
                     outputFormats = mutableListOf(Format.SVG).apply {
-                        if (providers.gradleProperty(GENERATE_PNG_PROPERTY)
-                                .forUseAtConfigurationTime().isPresent
-                        ) {
+                        if (providers.gradleProperty(GENERATE_PNG_PROPERTY).forUseAtConfigurationTime().isPresent) {
                             add(Format.PNG)
                         }
                     }
