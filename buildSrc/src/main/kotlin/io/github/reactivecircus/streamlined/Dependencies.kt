@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object Versions {
-    const val kotlin = "1.4.30-RC"
+    const val kotlin = "1.4.30"
     const val androidGradlePlugin = "7.0.0-alpha05"
     const val appVersioning = "0.8.1"
     const val googleServices = "4.3.5"
