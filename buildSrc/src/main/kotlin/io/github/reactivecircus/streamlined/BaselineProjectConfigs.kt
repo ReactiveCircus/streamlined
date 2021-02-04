@@ -25,7 +25,6 @@ internal fun Project.configureForAllProjects() {
     repositories {
         mavenCentral()
         google()
-        jcenter()
     }
 
     tasks.withType<KotlinCompile> {
