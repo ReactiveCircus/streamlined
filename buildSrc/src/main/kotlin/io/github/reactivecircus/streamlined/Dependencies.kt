@@ -57,7 +57,7 @@ object Versions {
         }
     }
 
-    const val material = "1.3.0-rc01"
+    const val material = "1.3.0"
     const val insetter = "0.4.0"
     const val dagger = "2.31.2"
     const val okhttp = "4.9.1"
