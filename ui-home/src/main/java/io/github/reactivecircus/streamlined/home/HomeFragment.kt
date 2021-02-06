@@ -94,7 +94,7 @@ class HomeFragment @Inject constructor(
 
     private fun FragmentHomeBinding.showContentState() {
         errorStateView.isVisible = false
-        progressBar.isVisible = false
+        progressIndicator.isVisible = false
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = true
         recyclerView.isVisible = true
@@ -103,7 +103,7 @@ class HomeFragment @Inject constructor(
 
     private fun FragmentHomeBinding.showInFlightState(hasContent: Boolean) {
         errorStateView.isVisible = false
-        progressBar.isVisible = !hasContent
+        progressIndicator.isVisible = !hasContent
         swipeRefreshLayout.isRefreshing = hasContent
         swipeRefreshLayout.isEnabled = hasContent
         recyclerView.isVisible = hasContent
@@ -112,7 +112,7 @@ class HomeFragment @Inject constructor(
 
     private fun FragmentHomeBinding.showPermanentErrorState() {
         errorStateView.isVisible = true
-        progressBar.isVisible = false
+        progressIndicator.isVisible = false
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = false
         recyclerView.isVisible = false
@@ -121,7 +121,7 @@ class HomeFragment @Inject constructor(
 
     private fun FragmentHomeBinding.showTransientErrorState() {
         errorStateView.isVisible = false
-        progressBar.isVisible = false
+        progressIndicator.isVisible = false
         swipeRefreshLayout.isRefreshing = false
         swipeRefreshLayout.isEnabled = true
         recyclerView.isVisible = true
