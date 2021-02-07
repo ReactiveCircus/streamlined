@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -15,11 +14,11 @@ import io.github.reactivecircus.streamlined.navigator.input.StoryDetailsInput
 import io.github.reactivecircus.streamlined.navigator.navigate
 import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
+import io.github.reactivecircus.streamlined.ui.util.collectWhenStarted
 import io.github.reactivecircus.streamlined.ui.util.disableItemAnimatorIfTurnedOffGlobally
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlinx.coroutines.flow.collect
 import io.github.reactivecircus.streamlined.navigator.R as NavigatorResource
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 
@@ -63,26 +62,24 @@ class HomeFragment @Inject constructor(
             adapter = feedsListAdapter
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.rendering.collect { rendering ->
-                binding.swipeRefreshLayout.setOnRefreshListener { rendering.onRefresh() }
-                binding.retryButton.setOnClickListener { rendering.onRefresh() }
+        collectWhenStarted(viewModel.rendering) { rendering ->
+            binding.swipeRefreshLayout.setOnRefreshListener { rendering.onRefresh() }
+            binding.retryButton.setOnClickListener { rendering.onRefresh() }
 
-                val state = rendering.state
-                when (state) {
-                    is HomeState.InFlight -> binding.showInFlightState(
-                        hasContent = state.itemsOrNull != null
-                    )
-                    is HomeState.ShowingContent -> binding.showContentState()
-                    is HomeState.Error.Permanent -> binding.showPermanentErrorState()
-                    is HomeState.Error.Transient -> binding.showTransientErrorState()
-                }
-                state.itemsOrNull?.run {
-                    feedsListAdapter.submitList(this)
-                }
-                if (binding.recyclerView.adapter == null) {
-                    binding.recyclerView.adapter = feedsListAdapter
-                }
+            val state = rendering.state
+            when (state) {
+                is HomeState.InFlight -> binding.showInFlightState(
+                    hasContent = state.itemsOrNull != null
+                )
+                is HomeState.ShowingContent -> binding.showContentState()
+                is HomeState.Error.Permanent -> binding.showPermanentErrorState()
+                is HomeState.Error.Transient -> binding.showTransientErrorState()
+            }
+            state.itemsOrNull?.run {
+                feedsListAdapter.submitList(this)
+            }
+            if (binding.recyclerView.adapter == null) {
+                binding.recyclerView.adapter = feedsListAdapter
             }
         }
     }
