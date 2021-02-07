@@ -145,7 +145,7 @@ androidComponents {
             it.addBuildConfigField("ENABLE_STRICT_MODE", !isCiBuild, null)
 
             // concatenate build variant to app name
-            it.addResValue("app_name", "string", "streamlined-${name}", null)
+            it.addResValue("app_name", "string", "streamlined-${it.name}", null)
         } else {
             // set app_name for release build
             it.addResValue("app_name", "string", "streamlined.", null)
