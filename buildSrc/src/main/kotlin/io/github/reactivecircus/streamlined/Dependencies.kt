@@ -11,7 +11,7 @@ object Versions {
     const val sqldelight = "1.4.4"
     const val playPublisher = "2.8.0"
     const val dependencyGraphGenerator = "0.5.0"
-    const val bugsnag = "5.3.1"
+    const val bugsnag = "5.6.0"
     const val leakCanary = "2.6"
     const val desugarLibs = "1.0.10"
 
