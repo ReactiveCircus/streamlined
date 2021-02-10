@@ -1,34 +1,27 @@
 package io.github.reactivecircus.streamlined.home
 
 import androidx.test.filters.LargeTest
-import io.github.reactivecircus.streamlined.home.di.HomeTestAppComponent
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.github.reactivecircus.streamlined.testing.BaseScreenTest
-import io.github.reactivecircus.streamlined.testing.assumption.assumeNetworkConnected
-import io.github.reactivecircus.streamlined.testing.assumption.assumeNetworkDisconnected
-import io.github.reactivecircus.streamlined.testing.assumption.assumeNoCachedHeadlineStories
-import io.github.reactivecircus.streamlined.testing.assumption.assumeNoCachedPersonalizedStories
-import io.github.reactivecircus.streamlined.testing.assumption.populateHeadlineStories
-import io.github.reactivecircus.streamlined.testing.assumption.populatePersonalizedStories
 import io.github.reactivecircus.streamlined.testing.testHeadlineStories
 import io.github.reactivecircus.streamlined.testing.testPersonalizedStories
 import org.junit.Test
 
 @LargeTest
+@HiltAndroidTest
 class HomeScreenTest : BaseScreenTest() {
-
-    private val fragmentFactory = HomeTestAppComponent.getOrCreate().fragmentFactory
 
     override fun setUp() {
         super.setUp()
-        assumeNoCachedHeadlineStories()
-        assumeNoCachedPersonalizedStories()
+        dataAssumptions.assumeNoCachedHeadlineStories()
+        dataAssumptions.assumeNoCachedPersonalizedStories()
     }
 
     @Test
     fun launchHomeScreen_homeFeedsDisplayed() {
         homeScreen {
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
             }
             check {
                 homeFeedsDisplayed(testFeedItems)
@@ -40,10 +33,10 @@ class HomeScreenTest : BaseScreenTest() {
     fun launchHomeScreenWithoutConnectivityOrCachedStories_errorMessageAndRetryButtonDisplayed() {
         homeScreen {
             given {
-                assumeNetworkDisconnected()
+                networkAssumptions.assumeNetworkDisconnected()
             }
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
             }
             check {
                 couldNotLoadContentErrorMessageDisplayed()
@@ -56,13 +49,16 @@ class HomeScreenTest : BaseScreenTest() {
     fun clickRetryButtonWithConnectivity_homeFeedsDisplayed() {
         homeScreen {
             given {
-                assumeNetworkDisconnected()
+                networkAssumptions.assumeNetworkDisconnected()
             }
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
+            }
+            check {
+                retryButtonDisplayed()
             }
             given {
-                assumeNetworkConnected()
+                networkAssumptions.assumeNetworkConnected()
             }
             perform {
                 clickRetryButton()
@@ -77,10 +73,10 @@ class HomeScreenTest : BaseScreenTest() {
     fun clickRetryButtonWithoutConnectivity_errorMessageAndRetryButtonDisplayed() {
         homeScreen {
             given {
-                assumeNetworkDisconnected()
+                networkAssumptions.assumeNetworkDisconnected()
             }
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
                 clickRetryButton()
             }
             check {
@@ -94,14 +90,15 @@ class HomeScreenTest : BaseScreenTest() {
     fun launchHomeScreenWithCachedStoriesButNoConnectivity_cachedHomeFeedsAndErrorSnackbarDisplayed() {
         homeScreen {
             given {
-                populateHeadlineStories()
-                populatePersonalizedStories()
-                assumeNetworkDisconnected()
+                dataAssumptions.populateHeadlineStories()
+                dataAssumptions.populatePersonalizedStories()
+                networkAssumptions.assumeNetworkDisconnected()
             }
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
             }
             check {
+                contentDisplayed()
                 couldNotRefreshContentSnackbarDisplayed()
                 homeFeedsDisplayed(testFeedItems)
             }
@@ -112,7 +109,7 @@ class HomeScreenTest : BaseScreenTest() {
     fun swipeToRefreshHomeFeedsWithConnectivity_homeFeedsDisplayed() {
         homeScreen {
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
                 swipeToRefresh()
             }
             check {
@@ -125,17 +122,20 @@ class HomeScreenTest : BaseScreenTest() {
     fun swipeToRefreshHomeFeedsWithoutConnectivity_errorSnackbarDisplayed() {
         homeScreen {
             perform {
-                launchFragmentScenario<HomeFragment>(factory = fragmentFactory)
+                launchFragmentInTest<HomeFragment>()
+            }
+            check {
+                contentDisplayed()
             }
             given {
-                assumeNetworkDisconnected()
+                networkAssumptions.assumeNetworkDisconnected()
             }
             perform {
                 swipeToRefresh()
             }
             check {
+                contentDisplayed()
                 couldNotRefreshContentSnackbarDisplayed()
-                homeFeedsDisplayed(testFeedItems)
             }
         }
     }

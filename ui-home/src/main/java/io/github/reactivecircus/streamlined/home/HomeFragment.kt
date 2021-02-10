@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.reactivecircus.streamlined.design.setDefaultBackgroundColor
 import io.github.reactivecircus.streamlined.home.databinding.FragmentHomeBinding
 import io.github.reactivecircus.streamlined.navigator.NavControllerType
@@ -16,17 +18,13 @@ import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
 import io.github.reactivecircus.streamlined.ui.util.ItemActionListener
 import io.github.reactivecircus.streamlined.ui.util.collectWhenStarted
 import io.github.reactivecircus.streamlined.ui.util.disableItemAnimatorIfTurnedOffGlobally
-import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
-import javax.inject.Inject
-import javax.inject.Provider
 import io.github.reactivecircus.streamlined.navigator.R as NavigatorResource
 import io.github.reactivecircus.streamlined.ui.R as CommonUiResource
 
-class HomeFragment @Inject constructor(
-    private val viewModelProvider: Provider<HomeViewModel>
-) : Fragment(R.layout.fragment_home), ScreenForAnalytics {
+@AndroidEntryPoint
+class HomeFragment : Fragment(R.layout.fragment_home), ScreenForAnalytics {
 
-    private val viewModel: HomeViewModel by fragmentViewModel { viewModelProvider.get() }
+    private val viewModel: HomeViewModel by viewModels()
 
     private val itemActionListener = ItemActionListener<FeedsListAdapter.ItemAction> { action ->
         when (action) {

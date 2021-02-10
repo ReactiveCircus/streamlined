@@ -16,7 +16,11 @@ class AuthInterceptorTest {
     private val server = MockWebServer()
 
     private val client = OkHttpClient.Builder().apply {
-        addInterceptor(AuthInterceptor(apiKey))
+        addInterceptor(
+            AuthInterceptor(
+                ApiConfigs(apiKey = apiKey, baseUrl = "url")
+            )
+        )
     }.build()
 
     @Before

@@ -1,18 +1,17 @@
 package io.github.reactivecircus.streamlined.headlines
 
 import androidx.test.filters.LargeTest
-import io.github.reactivecircus.streamlined.headlines.di.HeadlinesTestAppComponent
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.github.reactivecircus.streamlined.testing.BaseScreenTest
 import org.junit.Test
 
 @LargeTest
+@HiltAndroidTest
 class HeadlinesScreenTest : BaseScreenTest() {
-
-    private val fragmentFactory = HeadlinesTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun launchHeadlinesScreen_headlinesDisplayed() {
-        launchFragmentScenario<HeadlinesFragment>(fragmentFactory)
+        launchFragmentInTest<HeadlinesFragment>()
         // TODO
     }
 }

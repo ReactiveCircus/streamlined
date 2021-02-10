@@ -1,18 +1,17 @@
 package io.github.reactivecircus.streamlined.settings
 
 import androidx.test.filters.LargeTest
-import io.github.reactivecircus.streamlined.settings.di.SettingsTestAppComponent
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.github.reactivecircus.streamlined.testing.BaseScreenTest
 import org.junit.Test
 
 @LargeTest
+@HiltAndroidTest
 class SettingsScreenTest : BaseScreenTest() {
-
-    private val fragmentFactory = SettingsTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun launchSettingsScreen_settingsDisplayed() {
-        launchFragmentScenario<SettingsFragment>(fragmentFactory)
+        launchFragmentInTest<SettingsFragment>()
         // TODO
     }
 }

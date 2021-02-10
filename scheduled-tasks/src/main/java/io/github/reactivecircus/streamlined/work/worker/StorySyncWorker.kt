@@ -1,36 +1,24 @@
 package io.github.reactivecircus.streamlined.work.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
-import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import io.github.reactivecircus.streamlined.domain.interactor.SyncStories
-import io.github.reactivecircus.streamlined.work.di.ChildWorkerFactory
 import reactivecircus.blueprint.interactor.EmptyParams
-import javax.inject.Inject
-import javax.inject.Provider
 
-class StorySyncWorker(
-    appContext: Context,
-    params: WorkerParameters,
+@HiltWorker
+class StorySyncWorker @AssistedInject constructor(
+    @Assisted appContext: Context,
+    @Assisted params: WorkerParameters,
     private val syncStories: SyncStories
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
         syncStories.execute(EmptyParams)
         return Result.success()
-    }
-
-    class Factory @Inject constructor(
-        private val syncStories: Provider<SyncStories>
-    ) : ChildWorkerFactory {
-        override fun create(appContext: Context, params: WorkerParameters): ListenableWorker {
-            return StorySyncWorker(
-                appContext,
-                params,
-                syncStories.get()
-            )
-        }
     }
 
     companion object {

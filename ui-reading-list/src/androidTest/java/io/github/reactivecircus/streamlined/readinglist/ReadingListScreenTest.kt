@@ -1,18 +1,17 @@
 package io.github.reactivecircus.streamlined.readinglist
 
 import androidx.test.filters.LargeTest
-import io.github.reactivecircus.streamlined.readinglist.di.ReadingListTestAppComponent
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.github.reactivecircus.streamlined.testing.BaseScreenTest
 import org.junit.Test
 
 @LargeTest
+@HiltAndroidTest
 class ReadingListScreenTest : BaseScreenTest() {
-
-    private val fragmentFactory = ReadingListTestAppComponent.getOrCreate().fragmentFactory
 
     @Test
     fun launchHeadlinesScreen_readingListDisplayed() {
-        launchFragmentScenario<ReadingListFragment>(fragmentFactory)
+        launchFragmentInTest<ReadingListFragment>()
         // TODO
     }
 }

@@ -17,9 +17,9 @@ dependencies {
     // Blueprint
     implementation(Libraries.blueprint.asyncCoroutines)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    kapt(Libraries.hilt.compiler)
 
     // timber
     implementation(Libraries.timber)

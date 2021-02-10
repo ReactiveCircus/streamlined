@@ -1,24 +1,25 @@
 package io.github.reactivecircus.streamlined.di
 
 import android.content.Context
-import androidx.fragment.app.FragmentFactory
 import coil.ImageLoader
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import io.github.reactivecircus.streamlined.BuildConfig
+import io.github.reactivecircus.streamlined.persistence.DatabaseConfigs
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import io.github.reactivecircus.streamlined.ui.configs.DefaultAnimationConfigs
-import io.github.reactivecircus.streamlined.ui.di.DynamicFragmentFactory
+import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
 @Module
+@InstallIn(SingletonComponent::class)
 abstract class AppModule {
-
-    @Binds
-    @Reusable
-    abstract fun fragmentFactory(impl: DynamicFragmentFactory): FragmentFactory
 
     @Binds
     @Reusable
@@ -27,7 +28,7 @@ abstract class AppModule {
     companion object {
 
         @Provides
-        @Reusable
+        @Singleton
         fun coroutineDispatcherProvider(): CoroutineDispatcherProvider {
             return CoroutineDispatcherProvider(
                 io = Dispatchers.IO,
@@ -37,11 +38,22 @@ abstract class AppModule {
         }
 
         @Provides
-        @Reusable
-        fun imageLoader(context: Context): ImageLoader {
+        @Singleton
+        fun imageLoader(@ApplicationContext context: Context): ImageLoader {
             return ImageLoader.Builder(context)
                 .crossfade(true)
                 .build()
+        }
+
+        @Provides
+        @Reusable
+        fun databaseConfigs(
+            coroutineDispatcherProvider: CoroutineDispatcherProvider
+        ): DatabaseConfigs {
+            return DatabaseConfigs(
+                databaseName = BuildConfig.DATABASE_NAME,
+                coroutineContext = coroutineDispatcherProvider.io,
+            )
         }
     }
 }

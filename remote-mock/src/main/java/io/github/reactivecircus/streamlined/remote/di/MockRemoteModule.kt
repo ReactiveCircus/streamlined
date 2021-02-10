@@ -5,6 +5,8 @@ package io.github.reactivecircus.streamlined.remote.di
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import io.github.reactivecircus.streamlined.remote.api.MockNewsApiService
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
 import okhttp3.OkHttpClient
@@ -16,7 +18,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-internal object MockRemoteModule {
+@InstallIn(SingletonComponent::class)
+object MockRemoteModule {
 
     @Provides
     @Singleton

@@ -3,6 +3,7 @@ import io.github.reactivecircus.streamlined.Libraries
 plugins {
     `streamlined-plugin`
     id("com.android.library")
+    id("dagger.hilt.android.plugin")
     kotlin("android")
     kotlin("kapt")
 }
@@ -12,23 +13,24 @@ dependencies {
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":domain-api"))
-    implementation(project(":data"))
-    implementation(project(":remote-mock"))
+    api(project(":data"))
+    api(project(":remote-mock"))
 
     // Blueprint
     implementation(Libraries.blueprint.asyncCoroutines)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    api(Libraries.hilt.androidTesting)
+    kapt(Libraries.hilt.compiler)
 
     // OkHttp
     implementation(Libraries.okhttp.client)
     implementation(Libraries.okhttp.loggingInterceptor)
 
     // Retrofit
-    implementation(Libraries.retrofit.client)
-    implementation(Libraries.retrofit.mock)
+    api(Libraries.retrofit.client)
+    api(Libraries.retrofit.mock)
 
     // timber
     implementation(Libraries.timber)

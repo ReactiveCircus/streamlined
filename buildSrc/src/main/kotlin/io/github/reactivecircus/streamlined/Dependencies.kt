@@ -41,6 +41,7 @@ object Versions {
         const val lifecycle = "2.3.0"
         const val navigation = "2.3.3"
         const val work = "2.5.0"
+        const val hilt = "1.0.0-alpha03"
 
         object test {
             const val core = "1.3.1-alpha02"
@@ -59,7 +60,7 @@ object Versions {
 
     const val material = "1.3.0"
     const val insetter = "0.4.0"
-    const val dagger = "2.31.2"
+    const val hilt = "2.32-alpha"
     const val okhttp = "4.9.1"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.8.0"
@@ -77,6 +78,7 @@ object Plugins {
     const val googleServicesGradlePlugin = "com.google.gms:google-services:${Versions.googleServices}"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kotlinSerializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+    const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
     const val detektGradlePlugin = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.detekt}"
     const val sqldelightGradlePlugin = "com.squareup.sqldelight:gradle-plugin:${Versions.sqldelight}"
     const val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:${Versions.playPublisher}"
@@ -162,6 +164,11 @@ object Libraries {
             const val testing = "androidx.work:work-testing:${Versions.androidx.work}"
         }
 
+        object hilt {
+            const val work = "androidx.hilt:hilt-work:${Versions.androidx.hilt}"
+            const val compiler = "androidx.hilt:hilt-compiler:${Versions.androidx.hilt}"
+        }
+
         object test {
             const val coreKtx = "androidx.test:core-ktx:${Versions.androidx.test.core}"
             const val monitor = "androidx.test:monitor:${Versions.androidx.test.monitor}"
@@ -185,9 +192,11 @@ object Libraries {
 
     const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
 
-    object dagger {
-        const val runtime = "com.google.dagger:dagger:${Versions.dagger}"
-        const val compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    object hilt {
+        const val android = "com.google.dagger:hilt-android:${Versions.hilt}"
+        const val androidTesting = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
+        const val core = "com.google.dagger:hilt-core:${Versions.hilt}"
+        const val compiler = "com.google.dagger:hilt-compiler:${Versions.hilt}"
     }
 
     object okhttp {

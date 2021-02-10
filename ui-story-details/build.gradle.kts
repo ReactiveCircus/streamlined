@@ -3,8 +3,13 @@ import io.github.reactivecircus.streamlined.Libraries
 plugins {
     `streamlined-plugin`
     id("com.android.library")
+    id("dagger.hilt.android.plugin")
     kotlin("android")
     kotlin("kapt")
+}
+
+hilt {
+    enableExperimentalClasspathAggregation = true
 }
 
 android {
@@ -35,9 +40,9 @@ dependencies {
     implementation(Libraries.androidx.lifecycle.viewModelKtx)
     implementation(Libraries.androidx.lifecycle.commonJava8)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    kapt(Libraries.hilt.compiler)
 
     // timber
     implementation(Libraries.timber)
@@ -52,5 +57,5 @@ dependencies {
     debugImplementation(Libraries.androidx.fragment.testing) {
         exclude(group = "androidx.test")
     }
-    kaptAndroidTest(Libraries.dagger.compiler)
+    kaptAndroidTest(Libraries.hilt.compiler)
 }

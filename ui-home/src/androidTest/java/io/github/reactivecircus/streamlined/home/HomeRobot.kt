@@ -41,6 +41,10 @@ class HomeRobot : ScreenRobot<HomeRobot.Actions, HomeRobot.Assertions>(Actions()
 
     class Assertions : RobotAssertions {
 
+        fun contentDisplayed() {
+            viewDisplayed(R.id.recyclerView)
+        }
+
         fun homeFeedsDisplayed(feedItems: List<FeedItem>) {
             val recyclerViewId = R.id.recyclerView
             val storyImageViewId = R.id.storyImageView
