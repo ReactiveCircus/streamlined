@@ -1,15 +1,17 @@
 package io.github.reactivecircus.streamlined.data.di
 
-import android.content.Context
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import io.github.reactivecircus.store.ext.RefreshPolicy
 import io.github.reactivecircus.streamlined.data.HeadlineStoryStore
 import io.github.reactivecircus.streamlined.data.PersonalizedStoryStore
+import io.github.reactivecircus.streamlined.data.TimeBasedRefreshPolicy
 import io.github.reactivecircus.streamlined.data.mapper.toEntity
 import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.data.repository.BookmarkRepositoryImpl
@@ -19,62 +21,59 @@ import io.github.reactivecircus.streamlined.domain.repository.BookmarkRepository
 import io.github.reactivecircus.streamlined.domain.repository.StoryRepository
 import io.github.reactivecircus.streamlined.persistence.StoryDao
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
-import io.github.reactivecircus.streamlined.persistence.di.PersistenceComponent
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
+import javax.inject.Qualifier
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.map
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
-import javax.inject.Qualifier
 
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 private annotation class InternalApi
 
 @Module
+@InstallIn(SingletonComponent::class)
 internal abstract class DataModule {
 
     @Binds
-    @Reusable
+    @Singleton
     @FlowPreview
     @ExperimentalCoroutinesApi
     abstract fun storyRepository(impl: StoryRepositoryImpl): StoryRepository
 
     @Binds
-    @Reusable
+    @Singleton
     abstract fun bookmarkRepository(impl: BookmarkRepositoryImpl): BookmarkRepository
 
     internal companion object {
 
         @Provides
-        @Reusable
+        @Singleton
         @InternalApi
-        fun persistenceComponent(
-            context: Context,
-            coroutineDispatcherProvider: CoroutineDispatcherProvider,
-            databaseName: String?,
-        ): PersistenceComponent = PersistenceComponent.factory()
-            .create(
-                context = context,
-                coroutineContext = coroutineDispatcherProvider.io,
-                databaseName = databaseName
-            )
-
-        @Provides
-        @Reusable
-        fun storyDao(@InternalApi persistenceComponent: PersistenceComponent): StoryDao {
-            return persistenceComponent.storyDao
+        fun longLifeCoroutineScope(
+            coroutineDispatcherProvider: CoroutineDispatcherProvider
+        ): CoroutineScope {
+            return CoroutineScope(SupervisorJob() + coroutineDispatcherProvider.io)
         }
 
         @Provides
-        @Reusable
+        @Singleton
+        fun refreshPolicy(): RefreshPolicy {
+            return TimeBasedRefreshPolicy()
+        }
+
+        @Provides
+        @Singleton
         @FlowPreview
         @ExperimentalCoroutinesApi
         fun headlineStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            longLifetimeCoroutineScope: CoroutineScope
+            @InternalApi longLifetimeCoroutineScope: CoroutineScope
         ): HeadlineStoryStore {
             return StoreBuilder.from<Unit, List<StoryEntity>, List<Story>>(
                 fetcher = Fetcher.of {
@@ -99,13 +98,13 @@ internal abstract class DataModule {
         }
 
         @Provides
-        @Reusable
+        @Singleton
         @FlowPreview
         @ExperimentalCoroutinesApi
         fun personalizedStoryStore(
             newsApiService: NewsApiService,
             storyDao: StoryDao,
-            longLifetimeCoroutineScope: CoroutineScope
+            @InternalApi longLifetimeCoroutineScope: CoroutineScope,
         ): PersonalizedStoryStore {
             return StoreBuilder.from<String, List<StoryEntity>, List<Story>>(
                 fetcher = Fetcher.of { query ->

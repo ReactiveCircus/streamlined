@@ -1,13 +1,12 @@
 package io.github.reactivecircus.streamlined.testing
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
@@ -15,18 +14,32 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.FailureHandler
 import androidx.test.espresso.base.DefaultFailureHandler
 import androidx.test.espresso.intent.Intents
-import io.github.reactivecircus.streamlined.testing.assumption.assumeNetworkConnected
+import dagger.hilt.android.testing.HiltAndroidRule
+import io.github.reactivecircus.streamlined.testing.assumption.DataAssumptions
+import io.github.reactivecircus.streamlined.testing.assumption.NetworkAssumptions
+import javax.inject.Inject
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import radiography.Radiography
 import radiography.ViewStateRenderers.DefaultsIncludingPii
-import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 abstract class BaseScreenTest {
 
+    @Suppress("LeakingThis")
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var networkAssumptions: NetworkAssumptions
+
+    @Inject
+    lateinit var dataAssumptions: DataAssumptions
+
     @Before
     open fun setUp() {
+        hiltRule.inject()
         Intents.init()
 
         // set up global failure handler
@@ -40,8 +53,7 @@ abstract class BaseScreenTest {
     @After
     open fun tearDown() {
         Intents.release()
-        // reset network connectivity
-        assumeNetworkConnected()
+        networkAssumptions.assumeNetworkConnected()
     }
 
     inline fun <reified A : Activity> launchActivityScenario(
@@ -52,16 +64,28 @@ abstract class BaseScreenTest {
         }
     }
 
-    inline fun <reified F : Fragment> launchFragmentScenario(
-        factory: FragmentFactory,
-        fragmentArgs: Bundle? = null
-    ): FragmentScenario<F> {
-        return launchFragmentInContainer<F>(
-            fragmentArgs = fragmentArgs,
-            themeResId = ThemeResource.style.Theme_Streamlined_DayNight,
-            factory = factory
-        ).also {
-            Espresso.onIdle()
+    inline fun <reified F : Fragment> launchFragmentInTest(
+        fragmentArgs: Bundle? = null,
+        crossinline action: Fragment.() -> Unit = {},
+    ) {
+        val startActivityIntent = Intent.makeMainActivity(
+            ComponentName(
+                ApplicationProvider.getApplicationContext(),
+                HiltTestActivity::class.java,
+            )
+        )
+
+        ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
+            val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
+                checkNotNull(F::class.java.classLoader),
+                F::class.java.name,
+            )
+            fragment.arguments = fragmentArgs
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, fragment, "")
+                .commitNow()
+            fragment.action()
         }
     }
 

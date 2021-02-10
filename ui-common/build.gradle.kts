@@ -40,9 +40,9 @@ dependencies {
     // Image loading
     api(Libraries.coil)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    kapt(Libraries.hilt.compiler)
 
     // Unit tests
     testImplementation(Libraries.junit)

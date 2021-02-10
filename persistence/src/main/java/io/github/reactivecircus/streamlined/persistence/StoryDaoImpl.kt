@@ -2,24 +2,25 @@ package io.github.reactivecircus.streamlined.persistence
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.flow.Flow
 
 internal class StoryDaoImpl @Inject constructor(
     private val queries: StoryEntityQueries,
-    private val context: CoroutineContext
+    private val databaseConfigs: DatabaseConfigs,
 ) : StoryDao {
     override fun allStories(): Flow<List<StoryEntity>> {
-        return queries.findAllStories().asFlow().mapToList(context)
+        return queries.findAllStories().asFlow().mapToList(databaseConfigs.coroutineContext)
     }
 
     override fun headlineStories(): Flow<List<StoryEntity>> {
-        return queries.findStories(isHeadline = true).asFlow().mapToList(context)
+        return queries.findStories(isHeadline = true).asFlow()
+            .mapToList(databaseConfigs.coroutineContext)
     }
 
     override fun nonHeadlineStories(): Flow<List<StoryEntity>> {
-        return queries.findStories(isHeadline = false).asFlow().mapToList(context)
+        return queries.findStories(isHeadline = false).asFlow()
+            .mapToList(databaseConfigs.coroutineContext)
     }
 
     override fun storyById(id: Long): StoryEntity? {

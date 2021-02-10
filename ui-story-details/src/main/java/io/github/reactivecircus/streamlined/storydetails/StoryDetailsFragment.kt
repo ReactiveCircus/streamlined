@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.transition.MaterialElevationScale
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.reactivecircus.streamlined.navigator.input.StoryDetailsInput
 import io.github.reactivecircus.streamlined.navigator.requireNavInput
 import io.github.reactivecircus.streamlined.storydetails.databinding.FragmentStoryDetailsBinding
@@ -12,9 +13,11 @@ import io.github.reactivecircus.streamlined.ui.util.collectWhenStarted
 import io.github.reactivecircus.streamlined.ui.viewmodel.fragmentViewModel
 import javax.inject.Inject
 
-class StoryDetailsFragment @Inject constructor(
-    private val viewModelFactory: StoryDetailsViewModel.Factory
-) : Fragment(R.layout.fragment_story_details), ScreenForAnalytics {
+@AndroidEntryPoint
+class StoryDetailsFragment : Fragment(R.layout.fragment_story_details), ScreenForAnalytics {
+
+    @Inject
+    lateinit var viewModelFactory: StoryDetailsViewModel.Factory
 
     private val viewModel: StoryDetailsViewModel by fragmentViewModel {
         val storyId = requireNavInput<StoryDetailsInput>().storyId

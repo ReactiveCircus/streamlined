@@ -3,18 +3,25 @@ package io.github.reactivecircus.streamlined.testing.di
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import io.github.reactivecircus.streamlined.remote.api.MockNewsApiService
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
+import io.github.reactivecircus.streamlined.remote.di.MockRemoteModule
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.mock.MockRetrofit
 import retrofit2.mock.NetworkBehavior
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
-internal object TestServiceModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [MockRemoteModule::class],
+)
+internal object TestRemoteModule {
 
     @Provides
     @Singleton

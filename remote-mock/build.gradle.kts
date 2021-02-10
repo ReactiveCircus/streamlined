@@ -18,7 +18,7 @@ dependencies {
     implementation(Libraries.retrofit.client)
     implementation(Libraries.retrofit.mock)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.core)
+    kapt(Libraries.hilt.compiler)
 }

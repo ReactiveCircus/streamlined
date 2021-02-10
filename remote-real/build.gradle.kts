@@ -24,9 +24,9 @@ dependencies {
     // Serialization
     implementation(Libraries.kotlinx.serialization)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.core)
+    kapt(Libraries.hilt.compiler)
 
     // Unit tests
     testImplementation(Libraries.junit)

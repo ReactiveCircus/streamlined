@@ -19,6 +19,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import io.github.reactivecircus.streamlined.persistence.DatabaseConfigs
 import io.github.reactivecircus.streamlined.testing.TestAnimationConfigs
 import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 
 @Module
+@InstallIn(SingletonComponent::class)
 internal abstract class TestAppModule {
 
     @Binds
@@ -89,6 +93,17 @@ internal abstract class TestAppModule {
 
                 override fun shutdown() = Unit
             }
+        }
+
+        @Provides
+        @Reusable
+        fun databaseConfigs(
+            coroutineDispatcherProvider: CoroutineDispatcherProvider
+        ): DatabaseConfigs {
+            return DatabaseConfigs(
+                databaseName = null,
+                coroutineContext = coroutineDispatcherProvider.io,
+            )
         }
     }
 }

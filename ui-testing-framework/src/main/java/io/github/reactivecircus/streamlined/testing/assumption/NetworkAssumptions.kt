@@ -2,31 +2,19 @@
 
 package io.github.reactivecircus.streamlined.testing.assumption
 
-import androidx.test.core.app.ApplicationProvider
-import io.github.reactivecircus.streamlined.testing.di.TestingFrameworkComponent
-import retrofit2.mock.NetworkBehavior
+import dagger.Reusable
 import javax.inject.Inject
+import retrofit2.mock.NetworkBehavior
 
+@Reusable
 class NetworkAssumptions @Inject constructor(
     private val networkBehavior: NetworkBehavior
 ) {
-    internal fun assumeNetworkConnected() {
+    fun assumeNetworkConnected() {
         networkBehavior.setFailurePercent(0)
     }
 
-    internal fun assumeNetworkDisconnected() {
+    fun assumeNetworkDisconnected() {
         networkBehavior.setFailurePercent(100)
     }
-}
-
-private val networkAssumptions = TestingFrameworkComponent
-    .getOrCreate(ApplicationProvider.getApplicationContext())
-    .networkAssumptions
-
-fun assumeNetworkConnected() {
-    networkAssumptions.assumeNetworkConnected()
-}
-
-fun assumeNetworkDisconnected() {
-    networkAssumptions.assumeNetworkDisconnected()
 }

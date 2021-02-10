@@ -21,6 +21,7 @@ dependencies {
     implementation(Plugins.androidGradlePlugin)
     implementation(Plugins.appVersioningGradlePlugin)
     implementation(Plugins.kotlinSerializationPlugin)
+    implementation(Plugins.hiltGradlePlugin)
     implementation(Plugins.googleServicesGradlePlugin)
     implementation(Plugins.sqldelightGradlePlugin)
     implementation(Plugins.playPublisherPlugin)

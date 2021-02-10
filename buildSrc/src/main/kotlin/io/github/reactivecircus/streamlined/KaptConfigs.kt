@@ -33,6 +33,6 @@ internal fun Project.configureKapt() {
 private val Project.hasDaggerCompilerDependency: Boolean
     get() = configurations.any {
         it.dependencies.any { dependency ->
-            dependency.name == "dagger-compiler"
+            dependency.name == "hilt-compiler"
         }
     }

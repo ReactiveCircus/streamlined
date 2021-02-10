@@ -22,9 +22,9 @@ dependencies {
     // Coroutines
     implementation(Libraries.kotlinx.coroutines.core)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    kapt(Libraries.hilt.compiler)
 
     // timber
     implementation(Libraries.timber)

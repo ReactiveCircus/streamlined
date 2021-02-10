@@ -14,9 +14,9 @@ dependencies {
     api(Libraries.blueprint.interactorCoroutines)
     api(Libraries.blueprint.asyncCoroutines)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.core)
+    kapt(Libraries.hilt.compiler)
 
     // Unit tests
     testImplementation(Libraries.junit)

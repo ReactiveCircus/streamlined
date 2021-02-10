@@ -16,9 +16,13 @@ dependencies {
     // AndroidX
     implementation(Libraries.androidx.work.runtimeKtx)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    kapt(Libraries.hilt.compiler)
+
+    // Hilt AndroidX
+    implementation(Libraries.androidx.hilt.work)
+    kapt(Libraries.androidx.hilt.compiler)
 
     // timber
     implementation(Libraries.timber)

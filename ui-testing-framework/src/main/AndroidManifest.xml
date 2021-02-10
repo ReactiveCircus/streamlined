@@ -1,1 +1,12 @@
-<manifest package="io.github.reactivecircus.streamlined.testing" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.github.reactivecircus.streamlined.testing">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <activity
+            android:name=".HiltTestActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

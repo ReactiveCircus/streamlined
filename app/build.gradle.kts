@@ -14,6 +14,7 @@ plugins {
     `core-library-desugaring`
     id("io.github.reactivecircus.app-versioning")
     id("com.android.application")
+    id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("project-report")
     id("com.github.triplet.play")
@@ -37,6 +38,10 @@ appVersioning {
     }
 }
 
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
 android {
     buildFeatures {
         buildConfig = true
@@ -49,7 +54,7 @@ android {
         base.archivesBaseName = "streamlined"
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
-        testInstrumentationRunner = "io.github.reactivecircus.streamlined.IntegrationTestRunner"
+        testInstrumentationRunner = "io.github.reactivecircus.streamlined.testing.ScreenTestRunner"
 
         // only support English for now
         resConfigs("en")
@@ -219,9 +224,13 @@ dependencies {
     // process lifecycle
     implementation(Libraries.androidx.lifecycle.process)
 
-    // Dagger
-    implementation(Libraries.dagger.runtime)
-    kapt(Libraries.dagger.compiler)
+    // Hilt
+    implementation(Libraries.hilt.android)
+    kapt(Libraries.hilt.compiler)
+
+    // Hilt AndroidX
+    implementation(Libraries.androidx.hilt.work)
+    kapt(Libraries.androidx.hilt.compiler)
 
     // timber
     implementation(Libraries.timber)
@@ -240,5 +249,5 @@ dependencies {
 
     // Android tests
     androidTestImplementation(project(":ui-testing-framework"))
-    kaptAndroidTest(Libraries.dagger.compiler)
+    kaptAndroidTest(Libraries.hilt.compiler)
 }

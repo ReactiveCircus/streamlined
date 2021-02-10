@@ -4,8 +4,12 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import io.github.reactivecircus.streamlined.remote.ApiConfigs
 import io.github.reactivecircus.streamlined.remote.AuthInterceptor
 import io.github.reactivecircus.streamlined.remote.api.NewsApiService
+import javax.inject.Singleton
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,9 +17,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
-import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 internal object RealRemoteModule {
 
     @Provides
@@ -36,12 +40,12 @@ internal object RealRemoteModule {
     @Provides
     @Singleton
     fun retrofit(
-        @BaseUrl baseUrl: String,
+        apiConfigs: ApiConfigs,
         okhttpClient: Lazy<OkHttpClient>
     ): Retrofit {
         val contentType = "application/json; charset=utf-8".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(apiConfigs.baseUrl)
             .callFactory { request -> okhttpClient.get().newCall(request) }
             .addConverterFactory(
                 Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)
