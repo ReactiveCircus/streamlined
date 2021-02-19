@@ -7,6 +7,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commitNow
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
@@ -65,8 +67,7 @@ abstract class BaseScreenTest {
     }
 
     inline fun <reified F : Fragment> launchFragmentInTest(
-        fragmentArgs: Bundle? = null,
-        crossinline action: Fragment.() -> Unit = {},
+        fragmentArgs: Bundle? = null
     ) {
         val startActivityIntent = Intent.makeMainActivity(
             ComponentName(
@@ -74,19 +75,18 @@ abstract class BaseScreenTest {
                 HiltTestActivity::class.java,
             )
         )
-
         ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
             val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
                 checkNotNull(F::class.java.classLoader),
                 F::class.java.name,
             )
             fragment.arguments = fragmentArgs
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment, "")
-                .commitNow()
-            fragment.action()
+            activity.supportFragmentManager.commitNow {
+                add(android.R.id.content, fragment, "")
+                setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
+            }
         }
+        Espresso.onIdle()
     }
 
     private class GlobalFailureHandler(targetContext: Context) : FailureHandler {

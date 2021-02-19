@@ -50,7 +50,7 @@ object Versions {
             const val runner = "1.3.1-alpha02"
 
             object ext {
-                const val junit = "1.1.1-alpha02"
+                const val junit = "1.1.3-alpha02"
                 const val truth = "1.3.1-alpha02"
             }
 

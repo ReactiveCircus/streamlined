@@ -13,6 +13,6 @@ class ScreenTestRunner : AndroidJUnitRunner() {
         ClassNotFoundException::class,
     )
     override fun newApplication(cl: ClassLoader, className: String, context: Context): Application {
-        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
+        return super.newApplication(cl, ScreenTestApp_Application::class.java.name, context)
     }
 }
