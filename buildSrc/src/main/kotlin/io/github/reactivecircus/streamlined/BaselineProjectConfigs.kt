@@ -101,7 +101,6 @@ internal fun LibraryAndroidComponentsExtension.configureAndroidLibraryVariants(p
     }
 }
 
-
 /**
  * Configure the Application Android Component based on build variants.
  */
