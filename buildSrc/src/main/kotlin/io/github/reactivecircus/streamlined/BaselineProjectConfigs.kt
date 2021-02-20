@@ -1,10 +1,10 @@
 package io.github.reactivecircus.streamlined
 
-import com.android.build.api.extension.AndroidComponentsExtension
-import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantBuilder
+import com.android.build.api.extension.ApplicationAndroidComponentsExtension
+import com.android.build.api.extension.LibraryAndroidComponentsExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import java.io.File
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -13,7 +13,6 @@ import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.File
 
 /**
  * Apply baseline configurations for all projects (including the root project).
@@ -85,19 +84,38 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
 }
 
 /**
- * Configure the Application or Library Android Component based on build variants.
+ * Configure the Application Library Component based on build variants.
  */
 @Suppress("UnstableApiUsage")
-internal fun <VariantBuilderT : VariantBuilder, VariantT : Variant> AndroidComponentsExtension<VariantBuilderT, VariantT>.configureAndroidVariants(project: Project) {
+internal fun LibraryAndroidComponentsExtension.configureAndroidLibraryVariants(project: Project) {
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
         if (!project.hasUnitTestSource) {
-            beforeUnitTests { it.enabled = false }
+            beforeVariants { it.unitTestEnabled = false }
         }
 
         // disable android test tasks if the androidTest source set is empty
         if (!project.hasAndroidTestSource) {
-            beforeAndroidTests { it.enabled = false }
+            beforeVariants { it.androidTestEnabled = false }
+        }
+    }
+}
+
+
+/**
+ * Configure the Application Android Component based on build variants.
+ */
+@Suppress("UnstableApiUsage")
+internal fun ApplicationAndroidComponentsExtension.configureAndroidApplicationVariants(project: Project) {
+    project.plugins.withType<KotlinAndroidPluginWrapper> {
+        // disable unit test tasks if the unitTest source set is empty
+        if (!project.hasUnitTestSource) {
+            beforeVariants { it.unitTestEnabled = false }
+        }
+
+        // disable android test tasks if the androidTest source set is empty
+        if (!project.hasAndroidTestSource) {
+            beforeVariants { it.androidTestEnabled = false }
         }
     }
 }

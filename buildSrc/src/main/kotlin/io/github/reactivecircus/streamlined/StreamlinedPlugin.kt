@@ -60,13 +60,13 @@ class StreamlinedPlugin : Plugin<Project> {
                 }
                 is LibraryPlugin -> {
                     project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
-                    project.extensions.getByType<LibraryAndroidComponentsExtension>().configureAndroidVariants(project)
+                    project.extensions.getByType<LibraryAndroidComponentsExtension>().configureAndroidLibraryVariants(project)
                     project.configureSlimTests()
                 }
                 is AppPlugin -> {
                     project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
                     project.extensions.getByType<BaseAppModuleExtension>().configureAndroidApplicationOptions(project)
-                    project.extensions.getByType<ApplicationAndroidComponentsExtension>().configureAndroidVariants(project)
+                    project.extensions.getByType<ApplicationAndroidComponentsExtension>().configureAndroidApplicationVariants(project)
                     project.configureSlimTests()
                 }
                 is Kapt3GradleSubplugin -> {
