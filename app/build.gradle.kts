@@ -1,13 +1,13 @@
 import io.github.reactivecircus.streamlined.FlavorDimensions
+import io.github.reactivecircus.streamlined.Libraries
 import io.github.reactivecircus.streamlined.ProductFlavors
 import io.github.reactivecircus.streamlined.dsl.devImplementation
 import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
 import io.github.reactivecircus.streamlined.envOrProp
 import io.github.reactivecircus.streamlined.isCiBuild
-import io.github.reactivecircus.streamlined.Libraries
-import org.gradle.language.nativeplatform.internal.BuildType
 import java.time.Instant
+import org.gradle.language.nativeplatform.internal.BuildType
 
 plugins {
     `streamlined-plugin`
@@ -106,17 +106,6 @@ android {
         register(ProductFlavors.PROD) {}
     }
 
-    // filter out mockRelease, devRelease and prodDebug builds.
-    variantFilter = Action {
-        flavors.forEach { flavor ->
-            if (flavor.name != ProductFlavors.PROD && buildType.name == BuildType.RELEASE.name ||
-                flavor.name == ProductFlavors.PROD && buildType.name == BuildType.DEBUG.name
-            ) {
-                ignore = true
-            }
-        }
-    }
-
     sourceSets {
         // common source set for dev and prod
         named(ProductFlavors.DEV) {
@@ -137,6 +126,12 @@ android {
 
 @Suppress("UnstableApiUsage")
 androidComponents {
+    // disable mockRelease, devRelease and prodDebug build variants
+    beforeVariants {
+        it.enabled = it.flavorName == ProductFlavors.PROD && it.buildType == BuildType.RELEASE.name ||
+                it.flavorName != ProductFlavors.PROD && it.buildType == BuildType.DEBUG.name
+    }
+
     // disable android test for dev flavor
     val devFlavor = selector().withFlavor(FlavorDimensions.ENVIRONMENT to ProductFlavors.DEV)
     beforeVariants(devFlavor) { it.androidTestEnabled = false }
