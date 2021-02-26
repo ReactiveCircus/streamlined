@@ -9,11 +9,15 @@ import reactivecircus.blueprint.testing.ScreenRobot
 import reactivecircus.blueprint.testing.action.selectBottomNavigationItem
 import reactivecircus.blueprint.testing.assertion.bottomNavigationViewItemSelected
 import reactivecircus.blueprint.testing.assertion.toolbarHasTitle
+import io.github.reactivecircus.streamlined.headlines.R as HeadlinesResource
+import io.github.reactivecircus.streamlined.home.R as HomeResource
+import io.github.reactivecircus.streamlined.navigator.R as NavigatorResource
+import io.github.reactivecircus.streamlined.readinglist.R as ReadingListResource
+import io.github.reactivecircus.streamlined.settings.R as SettingsResource
 
 fun appScreen(block: AppRobot.() -> Unit) = AppRobot().apply { block() }
 
 class AppRobot : ScreenRobot<AppRobot.Actions, AppRobot.Assertions>(Actions(), Assertions()) {
-    val navHostViewId = R.id.mainNavHostFragment
 
     class Actions : RobotActions {
 
@@ -45,23 +49,35 @@ class AppRobot : ScreenRobot<AppRobot.Actions, AppRobot.Assertions>(Actions(), A
     class Assertions : RobotAssertions {
 
         fun homeScreenDisplayed() {
-            toolbarHasTitle(R.string.title_home)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.homeScreen)
+            toolbarHasTitle(HomeResource.string.title_home)
+            bottomNavigationViewItemSelected(
+                R.id.bottomNavigationView,
+                NavigatorResource.id.homeScreen
+            )
         }
 
         fun headlinesScreenDisplayed() {
-            toolbarHasTitle(R.string.title_headlines)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.headlinesScreen)
+            toolbarHasTitle(HeadlinesResource.string.title_headlines)
+            bottomNavigationViewItemSelected(
+                R.id.bottomNavigationView,
+                NavigatorResource.id.headlinesScreen
+            )
         }
 
         fun readingListScreenDisplayed() {
-            toolbarHasTitle(R.string.title_reading_list)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.readingListScreen)
+            toolbarHasTitle(ReadingListResource.string.title_reading_list)
+            bottomNavigationViewItemSelected(
+                R.id.bottomNavigationView,
+                NavigatorResource.id.readingListScreen
+            )
         }
 
         fun settingsScreenDisplayedSelected() {
-            toolbarHasTitle(R.string.title_settings)
-            bottomNavigationViewItemSelected(R.id.bottomNavigationView, R.id.settingsScreen)
+            toolbarHasTitle(SettingsResource.string.title_settings)
+            bottomNavigationViewItemSelected(
+                R.id.bottomNavigationView,
+                NavigatorResource.id.settingsScreen
+            )
         }
     }
 }
