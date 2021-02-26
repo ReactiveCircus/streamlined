@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object Versions {
-    const val kotlin = "1.4.30"
+    const val kotlin = "1.4.31"
     const val androidGradlePlugin = "7.0.0-alpha08"
     const val appVersioning = "0.8.1"
     const val googleServices = "4.3.5"
@@ -13,7 +13,7 @@ object Versions {
     const val dependencyGraphGenerator = "0.5.0"
     const val bugsnag = "5.6.0"
     const val leakCanary = "2.6"
-    const val desugarLibs = "1.0.10"
+    const val desugarLibs = "1.1.1"
 
     object kotlinx {
         const val coroutines = "1.4.2"
@@ -29,13 +29,13 @@ object Versions {
     const val workflow = "1.0.0-alpha.9"
 
     object androidx {
-        const val core = "1.5.0-beta01"
-        const val annotation = "1.2.0-beta01"
+        const val core = "1.5.0-beta02"
+        const val annotation = "1.2.0-rc01"
         const val appCompat = "1.3.0-beta01"
-        const val activity = "1.2.0"
+        const val activity = "1.3.0-alpha03"
         const val fragment = "1.3.0"
         const val coordinatorLayout = "1.1.0"
-        const val recyclerView = "1.2.0-beta01"
+        const val recyclerView = "1.2.0-beta02"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.4"
         const val lifecycle = "2.3.0"
