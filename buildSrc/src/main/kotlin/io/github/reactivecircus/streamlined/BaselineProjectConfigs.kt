@@ -67,7 +67,7 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
  */
 @Suppress("UnstableApiUsage")
 internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
-    lintOptions {
+    lint {
         // TODO remove once https://issuetracker.google.com/issues/162155191 is fixed.
         disable("InvalidFragmentVersionForActivityResult")
         disable("ParcelCreator")
