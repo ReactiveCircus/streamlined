@@ -59,7 +59,7 @@ abstract class BaseScreenTest {
     }
 
     inline fun <reified A : Activity> launchActivityScenario(
-        intent: android.content.Intent? = null
+        intent: Intent? = null
     ): ActivityScenario<A> {
         return launchActivity<A>(intent).also {
             Espresso.onIdle()
