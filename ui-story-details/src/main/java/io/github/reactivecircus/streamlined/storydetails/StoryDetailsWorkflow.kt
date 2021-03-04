@@ -18,12 +18,12 @@ class StoryDetailsWorkflow @Inject constructor(
     }
 
     override fun render(
-        props: Long,
-        state: StoryDetailsState,
-        context: RenderContext
+        renderProps: Long,
+        renderState: StoryDetailsState,
+        context: RenderContext,
     ): StoryDetailsRendering {
         return StoryDetailsRendering(
-            state,
+            renderState,
             onAddToReadingList = {},
             onRemoveFromReadingList = {}
         )

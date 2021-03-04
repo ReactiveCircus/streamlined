@@ -38,12 +38,16 @@ class HomeWorkflow @Inject constructor(
         return HomeState.InFlight.Initial
     }
 
-    override fun render(props: Unit, state: HomeState, context: RenderContext): HomeRendering {
+    override fun render(
+        renderProps: Unit,
+        renderState: HomeState,
+        context: RenderContext,
+    ): HomeRendering {
         context.runningWorker(streamCombinedStoriesWorker) {
             handleStreamStoriesResponse(it, homeUiConfigs)
         }
 
-        when (state) {
+        when (renderState) {
             is HomeState.InFlight.Refresh -> {
                 context.runningWorker(refreshStoriesWorker) {
                     handleRefreshStoriesResponse(it)
@@ -60,8 +64,8 @@ class HomeWorkflow @Inject constructor(
             else -> Unit
         }
 
-        return HomeRendering(state, onRefresh = context.eventHandler {
-            this.state = HomeState.InFlight.Refresh(state.itemsOrNull)
+        return HomeRendering(renderState, onRefresh = context.eventHandler {
+            this.state = HomeState.InFlight.Refresh(renderState.itemsOrNull)
         })
     }
 
