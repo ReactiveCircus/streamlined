@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -19,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.reactivecircus.streamlined.design.foundation.IconSwitch
 import io.github.reactivecircus.streamlined.design.foundation.IconSwitchConstants
+import io.github.reactivecircus.streamlined.design.theme.StreamlinedTheme
 
 @Composable
 fun NightModeSwitch(
@@ -31,10 +30,10 @@ fun NightModeSwitch(
         onCheckedChange = onChange,
         modifier = modifier,
         colors = IconSwitchConstants.defaultColors(
-            checkedThumbColor = CheckedThumbColor,
+            checkedThumbColor = MaterialTheme.colors.primary,
             checkedTrackColor = MaterialTheme.colors.background,
             checkedTrackAlpha = 1.0f,
-            checkedBorderColor = CheckedThumbColor,
+            checkedBorderColor = MaterialTheme.colors.primary,
             checkedBorderAlpha = CheckedBorderAlpha,
             uncheckedThumbColor = MaterialTheme.colors.onBackground,
             uncheckedTrackColor = MaterialTheme.colors.surface,
@@ -55,8 +54,7 @@ fun NightModeSwitch(
     }
 }
 
-private val CheckedThumbColor = Color(0xFF6E40C9)
-private val UncheckedIconColor = Color(0xFFFFDF5D)
+private val UncheckedIconColor = Color(0xffffdf5d)
 
 private val MoonIconSize = 16.dp
 private const val CheckedBorderAlpha = 0.5f
@@ -97,7 +95,7 @@ private fun MoonIcon(
 @Preview("off", widthDp = 80, heightDp = 50)
 @Composable
 fun NightModeSwitchPreviewOff() {
-    MaterialTheme(colors = lightColors()) {
+    StreamlinedTheme(darkTheme = false) {
         NightModeSwitch(
             isOn = false,
             onChange = {},
@@ -108,7 +106,7 @@ fun NightModeSwitchPreviewOff() {
 @Preview("on", widthDp = 80, heightDp = 50)
 @Composable
 fun NightModeSwitchPreviewOn() {
-    MaterialTheme(colors = darkColors()) {
+    StreamlinedTheme(darkTheme = true) {
         NightModeSwitch(
             isOn = true,
             onChange = {},

@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":design-core"))
+    implementation(project(":design-theme"))
     implementation(project(":domain-runtime"))
 
     // Coroutines

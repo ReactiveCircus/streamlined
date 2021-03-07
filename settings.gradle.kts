@@ -2,7 +2,8 @@ rootProject.name= "streamlined"
 
 include(":app")
 include(":navigator")
-include(":design-themes")
+include(":design-themes") // TODO remove legacy themes module
+include(":design-theme")
 include(":design-foundation")
 include(":design-core")
 include(":ui-common")

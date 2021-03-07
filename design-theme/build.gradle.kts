@@ -8,14 +8,14 @@ plugins {
 }
 
 android {
-    buildFeatures.compose = true
+    buildFeatures {
+        androidResources = true
+        compose = true
+    }
     composeOptions.kotlinCompilerExtensionVersion = Versions.androidx.compose
 }
 
 dependencies {
-    implementation(project(":design-foundation"))
-    implementation(project(":design-theme"))
-
     // Compose
     implementation(Libraries.androidx.compose.tooling)
     implementation(Libraries.androidx.compose.layout)
