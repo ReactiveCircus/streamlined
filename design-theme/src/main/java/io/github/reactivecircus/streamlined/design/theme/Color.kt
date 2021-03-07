@@ -8,6 +8,7 @@ private val Denim = Color(0xff1565c0)
 private val Paua = Color(0xff2e2858)
 private val AliceBlue = Color(0xfff6f9ff)
 private val Carmine = Color(0xffb00020)
+private val Malibu = Color(0xff4fc3f7)
 private val PacificBlue = Color(0xff0093c4)
 
 internal val StreamlinedLightColors = lightColors(
@@ -26,6 +27,7 @@ internal val StreamlinedLightColors = lightColors(
 )
 
 internal val StreamlinedDarkColors = darkColors(
+    primary = Malibu,
     primaryVariant = PacificBlue,
     secondary = AliceBlue,
     secondaryVariant = AliceBlue,

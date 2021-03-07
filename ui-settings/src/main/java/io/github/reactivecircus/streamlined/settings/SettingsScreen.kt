@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.LocalElevationOverlay
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,19 +30,25 @@ fun SettingsScreen() {
         ProvideWindowInsets {
             Scaffold(
                 topBar = {
-                    TopAppBar(
-                        backgroundColor = MaterialTheme.colors.surface,
-                        modifier = Modifier.statusBarsPadding()
-                    ) {
-                        Text(
-                            text = stringResource(R.string.title_settings),
-                            style = MaterialTheme.typography.h5,
-                            color = MaterialTheme.colors.onSurface,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.CenterVertically),
-                        )
+                    CompositionLocalProvider(LocalElevationOverlay provides null) {
+                        TopAppBar(
+                            modifier = Modifier.statusBarsPadding(),
+                            backgroundColor = MaterialTheme.colors.surface,
+                        ) {
+                            Text(
+                                text = stringResource(R.string.title_settings),
+                                style = MaterialTheme.typography.h5,
+                                color = if (MaterialTheme.colors.isLight) {
+                                    MaterialTheme.colors.secondary
+                                } else {
+                                    MaterialTheme.colors.primary
+                                },
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterVertically),
+                            )
+                        }
                     }
                 }
             ) {
