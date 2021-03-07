@@ -2,7 +2,7 @@ package io.github.reactivecircus.streamlined.design.core
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -49,7 +49,7 @@ fun NightModeSwitch(
         )
     ) {
         MoonIcon(
-            modifier = Modifier.size(MoonIconSize),
+            modifier = Modifier.requiredSize(MoonIconSize),
             tint = if (isOn) MaterialTheme.colors.onSurface else UncheckedIconColor,
         )
     }
@@ -81,7 +81,6 @@ private fun MoonIcon(
                 color = tint,
                 radius = sizePx * 0.5f,
             )
-
             drawCircle(
                 color = Color.Black,
                 radius = sizePx * 0.4f,
