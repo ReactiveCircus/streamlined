@@ -60,6 +60,7 @@ object Versions {
         }
     }
 
+    const val accompanist = "0.6.1"
     const val material = "1.3.0"
     const val hilt = "2.33-beta"
     const val okhttp = "4.9.1"
@@ -196,6 +197,11 @@ object Libraries {
             const val contrib = "androidx.test.espresso:espresso-contrib:${Versions.androidx.test.espresso}"
             const val intents = "androidx.test.espresso:espresso-intents:${Versions.androidx.test.espresso}"
         }
+    }
+
+    object accompanist {
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}"
+        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:${Versions.accompanist}"
     }
 
     const val material = "com.google.android.material:material:${Versions.material}"

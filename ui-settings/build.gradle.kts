@@ -31,8 +31,6 @@ dependencies {
     implementation(project(":design-core"))
     implementation(project(":domain-runtime"))
 
-    implementation("androidx.activity:activity-compose:1.3.0-alpha03")
-
     // Coroutines
     implementation(Libraries.kotlinx.coroutines.core)
 
@@ -44,6 +42,7 @@ dependencies {
     implementation(Libraries.androidx.compose.tooling)
     implementation(Libraries.androidx.compose.layout)
     implementation(Libraries.androidx.compose.material)
+    implementation(Libraries.accompanist.insets)
 
     // Hilt
     implementation(Libraries.hilt.android)

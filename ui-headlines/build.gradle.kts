@@ -37,6 +37,7 @@ dependencies {
     implementation(Libraries.androidx.compose.tooling)
     implementation(Libraries.androidx.compose.layout)
     implementation(Libraries.androidx.compose.material)
+    implementation(Libraries.accompanist.insets)
 
     // AndroidX
     implementation(Libraries.androidx.lifecycle.viewModelKtx)

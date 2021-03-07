@@ -22,34 +22,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.reactivecircus.streamlined.design.R as ThemeResource
 
 @Composable
 fun ReadingListScreen() {
     MaterialTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    backgroundColor = Color("#f6f9ff".toColorInt()),
-                ) {
-                    Text(
-                        text = stringResource(R.string.title_reading_list),
-                        color = Color("#2e2858".toColorInt()),
-                        fontFamily = FontFamily(Font(ThemeResource.font.fjalla_one)),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterVertically),
-                    )
+        ProvideWindowInsets {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        backgroundColor = Color("#f6f9ff".toColorInt()),
+                        modifier = Modifier.statusBarsPadding()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.title_reading_list),
+                            color = Color("#2e2858".toColorInt()),
+                            fontFamily = FontFamily(Font(ThemeResource.font.fjalla_one)),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterVertically),
+                        )
+                    }
                 }
+            ) {
+                ReadingListContent(Modifier.background(Color("#f6f9ff".toColorInt())))
             }
-        ) {
-            ReadingListContent(Modifier.background(Color("#f6f9ff".toColorInt())))
+            // TODO add StreamlinedTheme to :design-theme
+            // TODO add TopBar (InsetAware) etc to :design-core
         }
-        // TODO add StreamlinedTheme to :design-theme
-        // TODO add StreamlinedTopBar etc to :design-core
     }
 }
 
