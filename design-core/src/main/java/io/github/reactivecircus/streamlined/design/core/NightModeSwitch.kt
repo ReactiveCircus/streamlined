@@ -3,6 +3,7 @@ package io.github.reactivecircus.streamlined.design.core
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -24,11 +25,13 @@ fun NightModeSwitch(
     isOn: Boolean,
     onChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     IconSwitch(
         checked = isOn,
         onCheckedChange = onChange,
         modifier = modifier,
+        enabled = enabled,
         colors = IconSwitchConstants.defaultColors(
             checkedThumbColor = MaterialTheme.colors.primary,
             checkedTrackColor = MaterialTheme.colors.background,
@@ -49,7 +52,7 @@ fun NightModeSwitch(
     ) {
         MoonIcon(
             modifier = Modifier.requiredSize(MoonIconSize),
-            tint = if (isOn) MaterialTheme.colors.onSurface else UncheckedIconColor,
+            tint = moonIconColor(isOn = isOn, enabled = enabled),
         )
     }
 }
@@ -59,6 +62,17 @@ private val UncheckedIconColor = Color(0xffffdf5d)
 private val MoonIconSize = 16.dp
 private const val CheckedBorderAlpha = 0.5f
 private const val UncheckedBorderAlpha = 0.1f
+
+@Composable
+private fun moonIconColor(isOn: Boolean, enabled: Boolean): Color {
+    return if (enabled) {
+        if (isOn) MaterialTheme.colors.onSurface else UncheckedIconColor
+    } else {
+        MaterialTheme.colors.onSurface.copy(
+            alpha = ContentAlpha.disabled
+        )
+    }
+}
 
 @Composable
 private fun MoonIcon(
@@ -109,6 +123,30 @@ private fun PreviewNightModeSwitchOn() {
     StreamlinedTheme(darkTheme = true) {
         NightModeSwitch(
             isOn = true,
+            onChange = {},
+        )
+    }
+}
+
+@Preview("off, disabled", widthDp = 80, heightDp = 50)
+@Composable
+private fun PreviewNightModeSwitchOffDisabled() {
+    StreamlinedTheme(darkTheme = false) {
+        NightModeSwitch(
+            isOn = false,
+            enabled = false,
+            onChange = {},
+        )
+    }
+}
+
+@Preview("on, disabled", widthDp = 80, heightDp = 50)
+@Composable
+private fun PreviewNightModeSwitchOnDisabled() {
+    StreamlinedTheme(darkTheme = true) {
+        NightModeSwitch(
+            isOn = true,
+            enabled = false,
             onChange = {},
         )
     }
