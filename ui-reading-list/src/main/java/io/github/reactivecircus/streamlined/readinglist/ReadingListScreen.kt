@@ -3,15 +3,11 @@ package io.github.reactivecircus.streamlined.readinglist
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LocalElevationOverlay
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import io.github.reactivecircus.streamlined.design.core.TopBar
 import io.github.reactivecircus.streamlined.design.theme.StreamlinedTheme
 
 @Composable
@@ -28,32 +25,14 @@ fun ReadingListScreen() {
         ProvideWindowInsets {
             Scaffold(
                 topBar = {
-                    CompositionLocalProvider(LocalElevationOverlay provides null) {
-                        TopAppBar(
-                            modifier = Modifier.statusBarsPadding(),
-                            backgroundColor = MaterialTheme.colors.surface,
-                        ) {
-                            Text(
-                                text = stringResource(R.string.title_reading_list),
-                                style = MaterialTheme.typography.h5,
-                                color = if (MaterialTheme.colors.isLight) {
-                                    MaterialTheme.colors.secondary
-                                } else {
-                                    MaterialTheme.colors.primary
-                                },
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .align(Alignment.CenterVertically),
-                            )
-                        }
-                    }
+                    TopBar(
+                        title = stringResource(R.string.title_reading_list),
+                        modifier = Modifier.statusBarsPadding(),
+                    )
                 }
             ) {
                 ReadingListContent(Modifier.background(MaterialTheme.colors.background))
             }
-            // TODO add StreamlinedTheme to :design-theme
-            // TODO add TopBar (InsetAware) etc to :design-core
         }
     }
 }
@@ -76,6 +55,6 @@ fun ReadingListContent(
 
 @Preview
 @Composable
-private fun ReadingListScreenPreview() {
+private fun PreviewReadingListScreen() {
     ReadingListScreen()
 }

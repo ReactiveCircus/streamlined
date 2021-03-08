@@ -94,7 +94,7 @@ private fun MoonIcon(
 
 @Preview("off", widthDp = 80, heightDp = 50)
 @Composable
-fun NightModeSwitchPreviewOff() {
+private fun PreviewNightModeSwitchOff() {
     StreamlinedTheme(darkTheme = false) {
         NightModeSwitch(
             isOn = false,
@@ -105,7 +105,7 @@ fun NightModeSwitchPreviewOff() {
 
 @Preview("on", widthDp = 80, heightDp = 50)
 @Composable
-fun NightModeSwitchPreviewOn() {
+private fun PreviewNightModeSwitchOn() {
     StreamlinedTheme(darkTheme = true) {
         NightModeSwitch(
             isOn = true,
