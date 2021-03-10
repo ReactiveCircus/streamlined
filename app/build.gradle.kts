@@ -54,7 +54,7 @@ android {
         base.archivesBaseName = "streamlined"
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
-        testInstrumentationRunner = "io.github.reactivecircus.streamlined.testing.ScreenTestRunner"
+        testInstrumentationRunner = "io.github.reactivecircus.streamlined.ui.testing.ScreenTestRunner"
 
         // only support English for now
         resConfigs("en")

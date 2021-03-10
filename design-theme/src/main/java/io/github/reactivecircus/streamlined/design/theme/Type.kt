@@ -51,7 +51,6 @@ internal val StreamlinedTypography = Typography(
         lineHeight = 29.sp
     ),
     h6 = TextStyle(
-        fontFamily = FjallaOne,
         fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 24.sp
@@ -64,7 +63,7 @@ internal val StreamlinedTypography = Typography(
     ),
     subtitle2 = TextStyle(
         fontSize = 14.sp,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
         lineHeight = 24.sp,
         letterSpacing = 0.1.sp
     ),

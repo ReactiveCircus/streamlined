@@ -20,4 +20,5 @@ dependencies {
     implementation(Libraries.androidx.compose.tooling)
     implementation(Libraries.androidx.compose.layout)
     implementation(Libraries.androidx.compose.material)
+    implementation(Libraries.androidx.compose.materialIconsExtended)
 }

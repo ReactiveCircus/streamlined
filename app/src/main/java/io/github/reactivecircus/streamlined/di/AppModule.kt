@@ -11,8 +11,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.reactivecircus.streamlined.BuildConfig
 import io.github.reactivecircus.streamlined.persistence.DatabaseConfigs
-import io.github.reactivecircus.streamlined.ui.configs.AnimationConfigs
-import io.github.reactivecircus.streamlined.ui.configs.DefaultAnimationConfigs
+import io.github.reactivecircus.streamlined.ui.common.configs.AnimationConfigs
+import io.github.reactivecircus.streamlined.ui.common.configs.DefaultAnimationConfigs
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider

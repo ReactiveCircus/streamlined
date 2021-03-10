@@ -9,11 +9,11 @@ import reactivecircus.blueprint.testing.ScreenRobot
 import reactivecircus.blueprint.testing.action.selectBottomNavigationItem
 import reactivecircus.blueprint.testing.assertion.bottomNavigationViewItemSelected
 import reactivecircus.blueprint.testing.assertion.toolbarHasTitle
-import io.github.reactivecircus.streamlined.headlines.R as HeadlinesResource
-import io.github.reactivecircus.streamlined.home.R as HomeResource
+import io.github.reactivecircus.streamlined.ui.headlines.R as HeadlinesResource
+import io.github.reactivecircus.streamlined.ui.home.R as HomeResource
 import io.github.reactivecircus.streamlined.navigator.R as NavigatorResource
-import io.github.reactivecircus.streamlined.readinglist.R as ReadingListResource
-import io.github.reactivecircus.streamlined.settings.R as SettingsResource
+import io.github.reactivecircus.streamlined.ui.readinglist.R as ReadingListResource
+import io.github.reactivecircus.streamlined.ui.settings.R as SettingsResource
 
 fun appScreen(block: AppRobot.() -> Unit) = AppRobot().apply { block() }
 

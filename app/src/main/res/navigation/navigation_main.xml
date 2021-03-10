@@ -6,26 +6,23 @@
 
     <fragment
         android:id="@id/homeScreen"
-        android:name="io.github.reactivecircus.streamlined.home.HomeFragment"
+        android:name="io.github.reactivecircus.streamlined.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@id/headlinesScreen"
-        android:name="io.github.reactivecircus.streamlined.headlines.HeadlinesFragment"
-        android:label="@string/title_headlines"
-        tools:layout="@layout/fragment_headlines" />
+        android:name="io.github.reactivecircus.streamlined.ui.headlines.HeadlinesFragment"
+        android:label="@string/title_headlines" />
 
     <fragment
         android:id="@id/readingListScreen"
-        android:name="io.github.reactivecircus.streamlined.readinglist.ReadingListFragment"
-        android:label="@string/title_reading_list"
-        tools:layout="@layout/fragment_reading_list" />
+        android:name="io.github.reactivecircus.streamlined.ui.readinglist.ReadingListFragment"
+        android:label="@string/title_reading_list" />
 
     <fragment
         android:id="@id/settingsScreen"
-        android:name="io.github.reactivecircus.streamlined.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:name="io.github.reactivecircus.streamlined.ui.settings.SettingsFragment"
+        android:label="@string/title_settings" />
 
 </navigation>

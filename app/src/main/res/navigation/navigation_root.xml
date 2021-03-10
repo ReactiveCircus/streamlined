@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@id/storyDetailsScreen"
-        android:name="io.github.reactivecircus.streamlined.storydetails.StoryDetailsFragment"
+        android:name="io.github.reactivecircus.streamlined.ui.storydetails.StoryDetailsFragment"
         tools:layout="@layout/fragment_story_details" />
 
     <action

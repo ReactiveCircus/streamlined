@@ -2,6 +2,7 @@ package io.github.reactivecircus.streamlined
 
 import com.android.build.api.extension.ApplicationAndroidComponentsExtension
 import com.android.build.api.extension.LibraryAndroidComponentsExtension
+import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import java.io.File
@@ -86,6 +87,16 @@ internal fun Project.configureAndroidLibrary() {
 
     // android variant configs
     extensions.getByType<LibraryAndroidComponentsExtension>().configureAndroidLibraryVariants(project)
+
+    // android library configs
+    extensions.configure<LibraryExtension> {
+        packagingOptions {
+            resources {
+                pickFirsts.add("META-INF/AL2.0")
+                pickFirsts.add("META-INF/LGPL2.1")
+            }
+        }
+    }
 
     // disable unit tests for some build variants if `slimTests` project property is provided
     project.configureSlimTests()

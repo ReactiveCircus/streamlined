@@ -20,8 +20,8 @@ android {
     composeOptions.kotlinCompilerExtensionVersion = Versions.androidx.compose
 
     defaultConfig {
-        testApplicationId = "io.github.reactivecircus.streamlined.readinglist.test"
-        testInstrumentationRunner = "io.github.reactivecircus.streamlined.testing.ScreenTestRunner"
+        testApplicationId = "io.github.reactivecircus.streamlined.ui.readinglist.test"
+        testInstrumentationRunner = "io.github.reactivecircus.streamlined.ui.testing.ScreenTestRunner"
     }
 }
 
@@ -35,15 +35,12 @@ dependencies {
     // Coroutines
     implementation(Libraries.kotlinx.coroutines.core)
 
-    // Compose
-    implementation(Libraries.androidx.compose.tooling)
-    implementation(Libraries.androidx.compose.layout)
-    implementation(Libraries.androidx.compose.material)
-    implementation(Libraries.accompanist.insets)
-
     // AndroidX
     implementation(Libraries.androidx.lifecycle.viewModelKtx)
     implementation(Libraries.androidx.lifecycle.commonJava8)
+
+    // insets
+    implementation(Libraries.accompanist.insets)
 
     // Hilt
     implementation(Libraries.hilt.android)

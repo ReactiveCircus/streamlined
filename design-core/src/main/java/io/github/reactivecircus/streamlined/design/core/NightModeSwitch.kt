@@ -38,7 +38,7 @@ fun NightModeSwitch(
             checkedTrackAlpha = 1.0f,
             checkedBorderColor = MaterialTheme.colors.primary,
             checkedBorderAlpha = CheckedBorderAlpha,
-            uncheckedThumbColor = MaterialTheme.colors.onBackground,
+            uncheckedThumbColor = MaterialTheme.colors.secondary,
             uncheckedTrackColor = MaterialTheme.colors.surface,
             uncheckedTrackAlpha = 1.0f,
             uncheckedBorderColor = MaterialTheme.colors.onBackground,
@@ -66,9 +66,9 @@ private const val UncheckedBorderAlpha = 0.1f
 @Composable
 private fun moonIconColor(isOn: Boolean, enabled: Boolean): Color {
     return if (enabled) {
-        if (isOn) MaterialTheme.colors.onSurface else UncheckedIconColor
+        if (isOn) MaterialTheme.colors.secondary else UncheckedIconColor
     } else {
-        MaterialTheme.colors.onSurface.copy(
+        MaterialTheme.colors.secondary.copy(
             alpha = ContentAlpha.disabled
         )
     }

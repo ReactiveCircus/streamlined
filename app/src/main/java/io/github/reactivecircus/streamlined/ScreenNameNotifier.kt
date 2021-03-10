@@ -3,7 +3,7 @@ package io.github.reactivecircus.streamlined
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import io.github.reactivecircus.analytics.AnalyticsApi
-import io.github.reactivecircus.streamlined.ui.ScreenForAnalytics
+import io.github.reactivecircus.streamlined.ui.common.ScreenForAnalytics
 import javax.inject.Inject
 
 /**

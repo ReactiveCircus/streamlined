@@ -21,8 +21,8 @@ internal val StreamlinedLightColors = lightColors(
     error = Carmine,
     onPrimary = Color.White,
     onSecondary = AliceBlue,
-    onBackground = Paua,
-    onSurface = Paua,
+    onBackground = Color.Black,
+    onSurface = Color.Black,
     onError = Color.White,
 )
 
@@ -36,7 +36,7 @@ internal val StreamlinedDarkColors = darkColors(
     error = Carmine,
     onPrimary = Paua,
     onSecondary = Paua,
-    onBackground = AliceBlue,
-    onSurface = AliceBlue,
+    onBackground = Color.White,
+    onSurface = Color.White,
     onError = Paua,
 )
