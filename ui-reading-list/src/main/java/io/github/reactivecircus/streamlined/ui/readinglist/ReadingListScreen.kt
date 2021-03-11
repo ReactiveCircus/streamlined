@@ -58,6 +58,6 @@ fun ReadingListContent(
 
 @Preview
 @Composable
-private fun PreviewReadingListScreen() {
+fun PreviewReadingListScreen() {
     ReadingListScreen()
 }

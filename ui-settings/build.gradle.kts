@@ -42,6 +42,11 @@ dependencies {
     // insets
     implementation(Libraries.accompanist.insets)
 
+    // Compose
+    implementation(Libraries.androidx.compose.tooling)
+    implementation(Libraries.androidx.compose.layout)
+    implementation(Libraries.androidx.compose.material)
+
     // Hilt
     implementation(Libraries.hilt.android)
     kapt(Libraries.hilt.compiler)

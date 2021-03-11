@@ -34,7 +34,7 @@ fun SectionHeaderRow(title: String, modifier: Modifier = Modifier) {
 
 @Preview("light")
 @Composable
-private fun PreviewSectionHeaderRowLight() {
+fun PreviewSectionHeaderRowLight() {
     StreamlinedTheme(darkTheme = false) {
         SectionHeaderRow(title = "Top Headlines")
     }
@@ -42,7 +42,7 @@ private fun PreviewSectionHeaderRowLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewSectionHeaderRowDark() {
+fun PreviewSectionHeaderRowDark() {
     StreamlinedTheme(darkTheme = true) {
         SectionHeaderRow(title = "Top Headlines")
     }

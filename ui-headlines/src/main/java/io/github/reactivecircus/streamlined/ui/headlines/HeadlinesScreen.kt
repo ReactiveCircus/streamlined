@@ -13,6 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import io.github.reactivecircus.streamlined.design.core.TopBar
 import io.github.reactivecircus.streamlined.design.core.row.ButtonRow
 import io.github.reactivecircus.streamlined.design.core.row.EmptyPlaceholderRow
 import io.github.reactivecircus.streamlined.design.core.row.RowDivider
@@ -20,6 +24,7 @@ import io.github.reactivecircus.streamlined.design.core.row.SectionDivider
 import io.github.reactivecircus.streamlined.design.core.row.SectionHeaderRow
 import io.github.reactivecircus.streamlined.design.core.row.story.MainStoryRow
 import io.github.reactivecircus.streamlined.design.core.row.story.StoryRow
+import io.github.reactivecircus.streamlined.design.theme.StreamlinedTheme
 
 @Composable
 fun HeadlinesScreen() {
@@ -171,14 +176,14 @@ fun HeadlinesContent(
 
 @Preview
 @Composable
-private fun PreviewHeadlinesScreen() {
+fun PreviewHeadlinesScreen() {
     HeadlinesScreen()
 }
 
 // TODO move to :ui-home
 @Preview("light", heightDp = 1400)
 @Composable
-private fun PreviewHomeFeedsLight() {
+fun PreviewHomeFeedsLight() {
     StreamlinedTheme(darkTheme = false) {
         PreviewHomeFeeds()
     }
@@ -187,7 +192,7 @@ private fun PreviewHomeFeedsLight() {
 // TODO move to :ui-home
 @Preview("dark", heightDp = 1400)
 @Composable
-private fun PreviewHomeFeedsDark() {
+fun PreviewHomeFeedsDark() {
     StreamlinedTheme(darkTheme = true) {
         PreviewHomeFeeds()
     }

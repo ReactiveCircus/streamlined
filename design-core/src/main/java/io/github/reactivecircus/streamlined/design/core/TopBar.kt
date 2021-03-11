@@ -39,7 +39,7 @@ fun TopBar(title: String, modifier: Modifier = Modifier) {
 
 @Preview("light")
 @Composable
-private fun PreviewTopBarLight() {
+fun PreviewTopBarLight() {
     StreamlinedTheme(darkTheme = false) {
         TopBar(title = "Streamlined.")
     }
@@ -47,7 +47,7 @@ private fun PreviewTopBarLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewTopBarDark() {
+fun PreviewTopBarDark() {
     StreamlinedTheme(darkTheme = true) {
         TopBar(title = "Streamlined.")
     }

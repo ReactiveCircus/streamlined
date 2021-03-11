@@ -39,7 +39,7 @@ fun ButtonRow(
 
 @Preview("light")
 @Composable
-private fun PreviewButtonRowLight() {
+fun PreviewButtonRowLight() {
     StreamlinedTheme(darkTheme = false) {
         ButtonRow(buttonLabel = "Read more", onClick = {})
     }
@@ -47,7 +47,7 @@ private fun PreviewButtonRowLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewButtonRowDark() {
+fun PreviewButtonRowDark() {
     StreamlinedTheme(darkTheme = true) {
         ButtonRow(buttonLabel = "Read more", onClick = {})
     }

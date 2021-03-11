@@ -63,6 +63,6 @@ fun SettingsContent(
 
 @Preview
 @Composable
-private fun PreviewSettingsScreen() {
+fun PreviewSettingsScreen() {
     SettingsScreen()
 }

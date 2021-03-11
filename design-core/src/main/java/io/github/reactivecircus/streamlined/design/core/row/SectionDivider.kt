@@ -29,7 +29,7 @@ private const val DividerAlpha = 0.12f
 
 @Preview("light")
 @Composable
-private fun PreviewSectionDividerLight() {
+fun PreviewSectionDividerLight() {
     StreamlinedTheme(darkTheme = false) {
         Box(
             modifier = Modifier
@@ -44,7 +44,7 @@ private fun PreviewSectionDividerLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewSectionDividerDark() {
+fun PreviewSectionDividerDark() {
     StreamlinedTheme(darkTheme = true) {
         Box(
             modifier = Modifier

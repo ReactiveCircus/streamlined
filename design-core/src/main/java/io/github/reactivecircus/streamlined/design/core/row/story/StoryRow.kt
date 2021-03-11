@@ -114,7 +114,7 @@ fun StoryRow(
 
 @Preview("light")
 @Composable
-private fun PreviewStoryRowLight() {
+fun PreviewStoryRowLight() {
     StreamlinedTheme(darkTheme = false) {
         PreviewStoryRow()
     }
@@ -122,7 +122,7 @@ private fun PreviewStoryRowLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewStoryRowDark() {
+fun PreviewStoryRowDark() {
     StreamlinedTheme(darkTheme = true) {
         PreviewStoryRow()
     }

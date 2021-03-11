@@ -31,7 +31,7 @@ fun EmptyPlaceholderRow(
 
 @Preview("light")
 @Composable
-private fun PreviewEmptyPlaceholderRowLight() {
+fun PreviewEmptyPlaceholderRowLight() {
     StreamlinedTheme(darkTheme = false) {
         EmptyPlaceholderRow(emptyMessage = "No results found.")
     }
@@ -39,7 +39,7 @@ private fun PreviewEmptyPlaceholderRowLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewEmptyPlaceholderRowDark() {
+fun PreviewEmptyPlaceholderRowDark() {
     StreamlinedTheme(darkTheme = true) {
         EmptyPlaceholderRow(emptyMessage = "No results found.")
     }

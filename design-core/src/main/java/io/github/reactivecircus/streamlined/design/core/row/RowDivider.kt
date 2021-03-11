@@ -24,7 +24,7 @@ fun RowDivider(
 
 @Preview("light")
 @Composable
-private fun PreviewRowDividerLight() {
+fun PreviewRowDividerLight() {
     StreamlinedTheme(darkTheme = false) {
         Box(
             modifier = Modifier
@@ -39,7 +39,7 @@ private fun PreviewRowDividerLight() {
 
 @Preview("dark")
 @Composable
-private fun PreviewRowDividerDark() {
+fun PreviewRowDividerDark() {
     StreamlinedTheme(darkTheme = true) {
         Box(
             modifier = Modifier

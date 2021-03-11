@@ -39,6 +39,11 @@ dependencies {
     implementation(Libraries.androidx.lifecycle.viewModelKtx)
     implementation(Libraries.androidx.lifecycle.commonJava8)
 
+    // Compose
+    implementation(Libraries.androidx.compose.tooling)
+    implementation(Libraries.androidx.compose.layout)
+    implementation(Libraries.androidx.compose.material)
+
     // insets
     implementation(Libraries.accompanist.insets)
 
