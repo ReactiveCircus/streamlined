@@ -26,22 +26,22 @@ object Versions {
 
     const val blueprint = "1.15.0"
     const val flowbinding = "1.0.0-beta02"
-    const val workflow = "1.0.0-alpha.10"
+    const val workflow = "1.0.0-alpha.12"
 
     object androidx {
-        const val core = "1.5.0-beta02"
+        const val core = "1.5.0-beta03"
         const val annotation = "1.2.0-rc01"
         const val appCompat = "1.3.0-beta01"
-        const val activity = "1.3.0-alpha03"
-        const val fragment = "1.3.0"
+        const val activity = "1.3.0-alpha04"
+        const val fragment = "1.3.1"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0-beta02"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.4"
         const val lifecycle = "2.3.0"
-        const val navigation = "2.3.3"
-        const val work = "2.5.0"
-        const val hilt = "1.0.0-alpha03"
+        const val navigation = "2.3.4"
+        const val work = "2.7.0-alpha02"
+        const val hilt = "1.0.0-beta01"
 
         object test {
             const val core = "1.3.1-alpha02"
