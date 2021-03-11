@@ -22,6 +22,8 @@ class StoryDetailsWorkflow @Inject constructor(
         renderState: StoryDetailsState,
         context: RenderContext,
     ): StoryDetailsRendering {
+        getStoryById
+
         return StoryDetailsRendering(
             renderState,
             onAddToReadingList = {},

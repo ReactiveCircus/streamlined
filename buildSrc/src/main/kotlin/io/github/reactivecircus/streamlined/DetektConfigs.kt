@@ -2,7 +2,6 @@ package io.github.reactivecircus.streamlined
 
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
-import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
@@ -20,12 +19,12 @@ internal fun Project.configureDetektPlugin() {
     plugins.withType<DetektPlugin> {
         extensions.configure<DetektExtension> {
             input = files("src/")
-            failFast = true
             config = files("${project.rootDir}/detekt.yml")
             buildUponDefaultConfig = true
-            reports(Action {
+            allRules = true
+            reports {
                 reports.html.destination = file("${project.buildDir}/reports/detekt/${project.name}.html")
-            })
+            }
         }
     }
 }
