@@ -71,8 +71,9 @@ fun HeadlinesContent(
                 storySource = "dev.to",
                 storyTitle = "Testing Kotlin Lambda Invocations without Mocking",
                 publishedTime = "2 hours ago",
+                storyBookmarked = true,
                 onClick = {},
-                onBookmarkButtonClick = {},
+                onBookmarkButtonCheckedChange = {},
                 onReadMoreButtonClick = {},
                 storyImageContent = {
                     Box(
@@ -94,8 +95,9 @@ fun HeadlinesContent(
                 storySource = "dev.to",
                 storyTitle = "Exploring Cirrus CI for Android",
                 publishedTime = "2 days ago",
+                storyBookmarked = false,
                 onClick = {},
-                onBookmarkButtonClick = {},
+                onBookmarkButtonCheckedChange = {},
                 onReadMoreButtonClick = {},
                 storyImageContent = {
                     Box(
@@ -125,8 +127,9 @@ fun HeadlinesContent(
                 storySource = "Android Developers Blog",
                 storyTitle = "Android Dev Challenge: lift off with Jetpack Compose",
                 publishedTime = "3 days ago",
+                storyBookmarked = false,
                 onClick = {},
-                onBookmarkButtonClick = {},
+                onBookmarkButtonCheckedChange = {},
                 onReadMoreButtonClick = {},
                 storyImageContent = {
                     Box(
@@ -148,8 +151,9 @@ fun HeadlinesContent(
                 storySource = "Android Developers Blog",
                 storyTitle = "First preview of Android 12",
                 publishedTime = "2 weeks ago",
+                storyBookmarked = true,
                 onClick = {},
-                onBookmarkButtonClick = {},
+                onBookmarkButtonCheckedChange = {},
                 onReadMoreButtonClick = {},
                 storyImageContent = {
                     Box(
@@ -209,8 +213,9 @@ private fun PreviewHomeFeeds() {
             storySource = "dev.to",
             storyTitle = "Testing Kotlin Lambda Invocations without Mocking",
             publishedTime = "2 hours ago",
+            storyBookmarked = true,
             onClick = {},
-            onBookmarkButtonClick = {},
+            onBookmarkButtonCheckedChange = {},
             onReadMoreButtonClick = {},
             storyImageContent = {
                 Box(
@@ -228,8 +233,9 @@ private fun PreviewHomeFeeds() {
             storySource = "dev.to",
             storyTitle = "Exploring Cirrus CI for Android",
             publishedTime = "2 days ago",
+            storyBookmarked = false,
             onClick = {},
-            onBookmarkButtonClick = {},
+            onBookmarkButtonCheckedChange = {},
             onReadMoreButtonClick = {},
             storyImageContent = {
                 Box(
@@ -249,8 +255,9 @@ private fun PreviewHomeFeeds() {
             storySource = "Android Developers Blog",
             storyTitle = "Android Dev Challenge: lift off with Jetpack Compose",
             publishedTime = "3 days ago",
+            storyBookmarked = false,
             onClick = {},
-            onBookmarkButtonClick = {},
+            onBookmarkButtonCheckedChange = {},
             onReadMoreButtonClick = {},
             storyImageContent = {
                 Box(
@@ -268,8 +275,9 @@ private fun PreviewHomeFeeds() {
             storySource = "Android Developers Blog",
             storyTitle = "First preview of Android 12",
             publishedTime = "2 weeks ago",
+            storyBookmarked = true,
             onClick = {},
-            onBookmarkButtonClick = {},
+            onBookmarkButtonCheckedChange = {},
             onReadMoreButtonClick = {},
             storyImageContent = {
                 Box(

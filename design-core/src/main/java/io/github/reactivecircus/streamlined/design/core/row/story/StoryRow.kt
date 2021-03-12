@@ -19,7 +19,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.BookmarkBorder
 import androidx.compose.material.icons.twotone.MoreHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -30,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.reactivecircus.streamlined.design.core.BookmarkToggleButton
 import io.github.reactivecircus.streamlined.design.theme.StreamlinedTheme
 
 @Composable
@@ -37,8 +37,9 @@ fun StoryRow(
     storySource: String,
     storyTitle: String,
     publishedTime: String,
+    storyBookmarked: Boolean,
     onClick: () -> Unit,
-    onBookmarkButtonClick: () -> Unit,
+    onBookmarkButtonCheckedChange: (Boolean) -> Unit,
     onReadMoreButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     storyImageContent: (@Composable () -> Unit)? = null,
@@ -87,16 +88,10 @@ fun StoryRow(
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    onClick = onBookmarkButtonClick,
-                    modifier = Modifier.size(40.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.TwoTone.BookmarkBorder,
-                        contentDescription = "Bookmark",
-                        tint = MaterialTheme.colors.secondary,
-                    )
-                }
+                BookmarkToggleButton(
+                    checked = storyBookmarked,
+                    onCheckedChange = onBookmarkButtonCheckedChange,
+                )
                 IconButton(
                     onClick = onReadMoreButtonClick,
                     modifier = Modifier.size(40.dp),
@@ -134,8 +129,9 @@ private fun PreviewStoryRow() {
         storySource = "dev.to",
         storyTitle = "Testing Kotlin Lambda Invocations without Mocking",
         publishedTime = "2 hours ago",
+        storyBookmarked = true,
         onClick = {},
-        onBookmarkButtonClick = {},
+        onBookmarkButtonCheckedChange = {},
         onReadMoreButtonClick = {},
         storyImageContent = {
             Box(
