@@ -61,7 +61,8 @@ jobs:
 
       - name: Assemble signed release App Bundle
         run: |
-          ./gradlew app:bundleProdRelease
+          # TODO Remove once https://issuetracker.google.com/issues/181493713 is fixed
+          ./gradlew app:bundleProdRelease -PforceStableR8
 
       - name: Cleanup secrets
         if: always()

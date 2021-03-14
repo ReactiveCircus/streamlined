@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
     google()
     gradlePluginPortal()
-    maven("https://storage.googleapis.com/r8-releases/raw/master")
+    maven("https://storage.googleapis.com/r8-releases/raw")
 }
 
 kotlinDslPluginOptions {
@@ -19,7 +19,11 @@ dependencies {
     implementation(Plugins.kotlinGradlePlugin)
     implementation(Plugins.detektGradlePlugin)
     implementation(Plugins.dependencyGraphGeneratorPlugin)
-    implementation("com.android.tools:r8:2.1.75")
+    // TODO Remove once https://issuetracker.google.com/issues/181493713 is fixed
+    @Suppress("UnstableApiUsage")
+    if (providers.gradleProperty("forceStableR8").forUseAtConfigurationTime().isPresent) {
+        implementation("com.android.tools:r8:2.2.60")
+    }
     implementation(Plugins.androidGradlePlugin)
     implementation(Plugins.appVersioningGradlePlugin)
     implementation(Plugins.kotlinSerializationPlugin)
