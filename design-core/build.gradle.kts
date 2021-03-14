@@ -13,12 +13,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":design-foundation"))
-    implementation(project(":design-theme"))
+    api(project(":design-theme"))
+    api(project(":design-foundation"))
 
     // Compose
+    implementation(Libraries.androidx.compose.ui)
     implementation(Libraries.androidx.compose.tooling)
-    implementation(Libraries.androidx.compose.layout)
+    implementation(Libraries.androidx.compose.foundation)
     implementation(Libraries.androidx.compose.material)
     implementation(Libraries.androidx.compose.materialIconsExtended)
 }

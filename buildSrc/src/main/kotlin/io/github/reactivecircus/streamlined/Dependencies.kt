@@ -130,7 +130,8 @@ object Libraries {
 
     object androidx {
         object compose {
-            const val layout = "androidx.compose.foundation:foundation-layout:${Versions.androidx.compose}"
+            const val ui = "androidx.compose.ui:ui:${Versions.androidx.compose}"
+            const val foundation = "androidx.compose.foundation:foundation:${Versions.androidx.compose}"
             const val material = "androidx.compose.material:material:${Versions.androidx.compose}"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.androidx.compose}"
             const val tooling = "androidx.compose.ui:ui-tooling:${Versions.androidx.compose}"

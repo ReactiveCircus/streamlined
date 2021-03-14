@@ -14,7 +14,8 @@ android {
 
 dependencies {
     // Compose
+    implementation(Libraries.androidx.compose.ui)
     implementation(Libraries.androidx.compose.tooling)
-    implementation(Libraries.androidx.compose.layout)
+    implementation(Libraries.androidx.compose.foundation)
     implementation(Libraries.androidx.compose.material)
 }

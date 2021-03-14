@@ -29,7 +29,6 @@ dependencies {
     implementation(project(":navigator"))
     implementation(project(":ui-common"))
     implementation(project(":design-core"))
-    implementation(project(":design-theme"))
     implementation(project(":domain-runtime"))
 
     // Coroutines
@@ -39,13 +38,14 @@ dependencies {
     implementation(Libraries.androidx.lifecycle.viewModelKtx)
     implementation(Libraries.androidx.lifecycle.commonJava8)
 
+    // Compose
+    implementation(Libraries.androidx.compose.ui)
+    implementation(Libraries.androidx.compose.tooling)
+    implementation(Libraries.androidx.compose.foundation)
+    implementation(Libraries.androidx.compose.material)
+
     // insets
     implementation(Libraries.accompanist.insets)
-
-    // Compose
-    implementation(Libraries.androidx.compose.tooling)
-    implementation(Libraries.androidx.compose.layout)
-    implementation(Libraries.androidx.compose.material)
 
     // Hilt
     implementation(Libraries.hilt.android)
