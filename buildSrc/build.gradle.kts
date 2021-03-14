@@ -8,6 +8,7 @@ repositories {
     mavenCentral()
     google()
     gradlePluginPortal()
+    maven("https://storage.googleapis.com/r8-releases/raw/master")
 }
 
 kotlinDslPluginOptions {
@@ -18,6 +19,7 @@ dependencies {
     implementation(Plugins.kotlinGradlePlugin)
     implementation(Plugins.detektGradlePlugin)
     implementation(Plugins.dependencyGraphGeneratorPlugin)
+    implementation("com.android.tools:r8:2.1.75")
     implementation(Plugins.androidGradlePlugin)
     implementation(Plugins.appVersioningGradlePlugin)
     implementation(Plugins.kotlinSerializationPlugin)
