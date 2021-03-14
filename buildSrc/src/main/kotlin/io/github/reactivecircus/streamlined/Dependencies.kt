@@ -134,7 +134,7 @@ object Libraries {
             const val material = "androidx.compose.material:material:${Versions.androidx.compose}"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.androidx.compose}"
             const val tooling = "androidx.compose.ui:ui-tooling:${Versions.androidx.compose}"
-            const val test = "androidx.compose.ui:ui-test:${Versions.androidx.compose}"
+            const val test = "androidx.compose.ui:ui-test-junit4:${Versions.androidx.compose}"
         }
 
         object core {
