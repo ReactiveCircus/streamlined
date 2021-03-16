@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.withSaveLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.reactivecircus.streamlined.design.foundation.IconSwitch
-import io.github.reactivecircus.streamlined.design.foundation.IconSwitchConstants
+import io.github.reactivecircus.streamlined.design.foundation.IconSwitchDefaults
 import io.github.reactivecircus.streamlined.design.theme.StreamlinedTheme
 
 @Composable
@@ -32,7 +32,7 @@ fun NightModeSwitch(
         onCheckedChange = onChange,
         modifier = modifier,
         enabled = enabled,
-        colors = IconSwitchConstants.defaultColors(
+        colors = IconSwitchDefaults.colors(
             checkedThumbColor = MaterialTheme.colors.primary,
             checkedTrackColor = MaterialTheme.colors.background,
             checkedTrackAlpha = 1.0f,
@@ -44,7 +44,7 @@ fun NightModeSwitch(
             uncheckedBorderColor = MaterialTheme.colors.onBackground,
             uncheckedBorderAlpha = UncheckedBorderAlpha,
         ),
-        sizes = IconSwitchConstants.defaultSizes(
+        sizes = IconSwitchDefaults.sizes(
             trackWidth = 60.dp,
             trackHeight = 32.dp,
             thumbDiameter = 40.dp,

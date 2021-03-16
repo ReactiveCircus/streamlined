@@ -74,9 +74,9 @@ import kotlin.math.roundToInt
  * [MutableInteractionSource] if you want to observe [Interaction]s and customize the
  * appearance / behavior of this Switch in different [Interaction]s.
  * @param colors [IconSwitchColors] that will be used to determine the color of the thumb and track
- * in different states. See [IconSwitchConstants.defaultColors].
+ * in different states. See [IconSwitchDefaults.colors].
  * @param sizes [IconSwitchSizes] that will be used to determine the sizes of the thumb, track and border.
- * See [IconSwitchConstants.defaultSizes].
+ * See [IconSwitchDefaults.sizes].
  * @param content the content (icon) to be drawn inside the IconSwitch. This is typically an [Icon].
  */
 @OptIn(ExperimentalMaterialApi::class)
@@ -87,8 +87,8 @@ fun IconSwitch(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    colors: IconSwitchColors = IconSwitchConstants.defaultColors(),
-    sizes: IconSwitchSizes = IconSwitchConstants.defaultSizes(),
+    colors: IconSwitchColors = IconSwitchDefaults.colors(),
+    sizes: IconSwitchSizes = IconSwitchDefaults.sizes(),
     content: @Composable () -> Unit
 ) {
     val minBound = 0f
@@ -140,7 +140,7 @@ fun IconSwitch(
 /**
  * Represents the colors used by a [IconSwitch] in different states
  *
- * See [IconSwitchConstants.defaultColors] for the default implementation that follows Material
+ * See [IconSwitchDefaults.colors] for the default implementation that follows Material
  * specifications.
  */
 @ExperimentalMaterialApi
@@ -175,7 +175,7 @@ interface IconSwitchColors {
 /**
  * Represents the sizes used by a [IconSwitch]
  *
- * See [IconSwitchConstants.defaultSizes] for the default implementation.
+ * See [IconSwitchDefaults.sizes] for the default implementation.
  */
 @ExperimentalMaterialApi
 @Stable
@@ -328,7 +328,7 @@ private val ThumbPressedElevation = 6.dp
 /**
  * Contains the default values used by [IconSwitch]
  */
-object IconSwitchConstants {
+object IconSwitchDefaults {
     /**
      * Creates a [IconSwitchColors] that represents the different colors used in a [IconSwitch] in
      * different states.
@@ -356,7 +356,7 @@ object IconSwitchConstants {
      */
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
-    fun defaultColors(
+    fun colors(
         checkedThumbColor: Color = MaterialTheme.colors.secondaryVariant,
         checkedTrackColor: Color = checkedThumbColor,
         checkedTrackAlpha: Float = 0.54f,
@@ -402,7 +402,7 @@ object IconSwitchConstants {
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
-    fun defaultSizes(
+    fun sizes(
         trackWidth: Dp = TrackWidth,
         trackHeight: Dp = TrackHeight,
         thumbDiameter: Dp = ThumbDiameter,
