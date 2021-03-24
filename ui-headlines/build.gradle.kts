@@ -44,7 +44,7 @@ dependencies {
     implementation(Libraries.androidx.compose.foundation)
     implementation(Libraries.androidx.compose.material)
 
-    // insets
+    // Compose utils
     implementation(Libraries.accompanist.insets)
 
     // Hilt

@@ -60,7 +60,7 @@ object Versions {
         }
     }
 
-    const val accompanist = "0.6.1"
+    const val accompanist = "0.6.2"
     const val material = "1.3.0"
     const val hilt = "2.33-beta"
     const val okhttp = "4.9.1"
@@ -202,8 +202,8 @@ object Libraries {
     }
 
     object accompanist {
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}"
-        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:${Versions.accompanist}"
+        const val coil = "com.google.accompanist:accompanist-coil:${Versions.accompanist}"
+        const val insets = "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
     }
 
     const val material = "com.google.android.material:material:${Versions.material}"
