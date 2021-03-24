@@ -91,12 +91,12 @@ internal fun LibraryAndroidComponentsExtension.configureAndroidLibraryVariants(p
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
         if (!project.hasUnitTestSource) {
-            beforeVariants { it.unitTestEnabled = false }
+            beforeVariants { it.enableUnitTest = false }
         }
 
         // disable android test tasks if the androidTest source set is empty
         if (!project.hasAndroidTestSource) {
-            beforeVariants { it.androidTestEnabled = false }
+            beforeVariants { it.enableAndroidTest = false }
         }
     }
 }
@@ -109,12 +109,12 @@ internal fun ApplicationAndroidComponentsExtension.configureAndroidApplicationVa
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
         if (!project.hasUnitTestSource) {
-            beforeVariants { it.unitTestEnabled = false }
+            beforeVariants { it.enableUnitTest = false }
         }
 
         // disable android test tasks if the androidTest source set is empty
         if (!project.hasAndroidTestSource) {
-            beforeVariants { it.androidTestEnabled = false }
+            beforeVariants { it.enableAndroidTest = false }
         }
     }
 }
