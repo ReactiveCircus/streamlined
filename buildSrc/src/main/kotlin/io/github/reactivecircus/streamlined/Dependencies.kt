@@ -12,7 +12,7 @@ object Versions {
     const val playPublisher = "2.8.0"
     const val dependencyGraphGenerator = "0.5.0"
     const val bugsnag = "5.6.0"
-    const val leakCanary = "2.6"
+    const val leakCanary = "2.7"
     const val desugarLibs = "1.1.1"
 
     object kotlinx {
