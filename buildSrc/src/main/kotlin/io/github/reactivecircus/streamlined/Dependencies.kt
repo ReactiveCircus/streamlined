@@ -149,6 +149,7 @@ object Libraries {
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.androidx.constraintLayout}"
 
         object lifecycle {
+            const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidx.lifecycle}"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidx.lifecycle}"
             const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:${Versions.androidx.lifecycle}"
             const val process = "androidx.lifecycle:lifecycle-process:${Versions.androidx.lifecycle}"

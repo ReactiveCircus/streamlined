@@ -30,6 +30,7 @@ dependencies {
     api(Libraries.androidx.core.ktx)
     api(Libraries.androidx.navigation.fragmentKtx)
     api(Libraries.androidx.navigation.uiKtx)
+    implementation(Libraries.androidx.lifecycle.runtimeKtx)
 
     // Material Components
     api(Libraries.material)
