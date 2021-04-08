@@ -14,6 +14,7 @@ internal fun Project.configureKapt() {
                 option("-Adagger.fastInit=enabled")
                 option("-Adagger.strictMultibindingValidation=enabled")
                 option("-Adagger.experimentalDaggerErrorMessages=enabled")
+                option("-Adagger.hilt.shareTestComponents=true")
                 if (isCiBuild) {
                     option("-Xmaxerrs", 500)
                 } else {
