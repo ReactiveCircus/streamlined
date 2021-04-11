@@ -1,6 +1,8 @@
 import io.github.reactivecircus.streamlined.FlavorDimensions
 import io.github.reactivecircus.streamlined.Libraries
 import io.github.reactivecircus.streamlined.ProductFlavors
+import io.github.reactivecircus.streamlined.addBuildConfigField
+import io.github.reactivecircus.streamlined.addResValue
 import io.github.reactivecircus.streamlined.dsl.devImplementation
 import io.github.reactivecircus.streamlined.dsl.mockImplementation
 import io.github.reactivecircus.streamlined.dsl.prodImplementation
@@ -129,7 +131,7 @@ androidComponents {
     // disable mockRelease, devRelease and prodDebug build variants
     beforeVariants {
         it.enabled = it.flavorName == ProductFlavors.PROD && it.buildType == BuildType.RELEASE.name ||
-                it.flavorName != ProductFlavors.PROD && it.buildType == BuildType.DEBUG.name
+            it.flavorName != ProductFlavors.PROD && it.buildType == BuildType.DEBUG.name
     }
 
     // disable android test for dev flavor
@@ -139,42 +141,42 @@ androidComponents {
     onVariants {
         if (it.buildType == BuildType.DEBUG.name) {
             // override app name for LeakCanary
-            it.addResValue("leak_canary_display_activity_label", "string", "streamlined leaks", null)
+            it.addResValue(key = "leak_canary_display_activity_label", type = "string", value = "streamlined leaks")
 
             // turn on strict mode for non-CI debug builds
-            it.addBuildConfigField("ENABLE_STRICT_MODE", !isCiBuild, null)
+            it.addBuildConfigField(key = "ENABLE_STRICT_MODE", value = !isCiBuild)
 
             // concatenate build variant to app name
-            it.addResValue("app_name", "string", "streamlined-${it.name}", null)
+            it.addResValue(key = "app_name", type = "string", value = "streamlined-${it.name}")
         } else {
             // set app_name for release build
-            it.addResValue("app_name", "string", "streamlined.", null)
+            it.addResValue(key = "app_name", type = "string", value = "streamlined.")
         }
 
         when (it.flavorName) {
             ProductFlavors.MOCK -> {
                 it.manifestPlaceholders.put("bugsnagApiKey", "")
-                it.addBuildConfigField("ENABLE_BUGSNAG", false, null)
-                it.addBuildConfigField("ENABLE_ANALYTICS", false, null)
+                it.addBuildConfigField(key = "ENABLE_BUGSNAG", value = false)
+                it.addBuildConfigField(key = "ENABLE_ANALYTICS", value = false)
             }
             ProductFlavors.DEV -> {
                 it.manifestPlaceholders.put("bugsnagApiKey", "\"${envOrProp("RELEASE_PROBE_BUGSNAG_API_KEY")}\"")
-                it.addBuildConfigField("ENABLE_BUGSNAG", isCiBuild, null)
-                it.addBuildConfigField("ENABLE_ANALYTICS", true, null)
-                it.addBuildConfigField("BASE_URL", "\"https://newsapi.org/v2/\"", null)
-                it.addBuildConfigField("API_KEY", "\"${envOrProp("NEWS_API_DEV_API_KEY")}\"", null)
+                it.addBuildConfigField(key = "ENABLE_BUGSNAG", value = isCiBuild)
+                it.addBuildConfigField(key = "ENABLE_ANALYTICS", value = true)
+                it.addBuildConfigField(key = "BASE_URL", value = "\"https://newsapi.org/v2/\"")
+                it.addBuildConfigField(key = "API_KEY", value = "\"${envOrProp("NEWS_API_DEV_API_KEY")}\"")
             }
             ProductFlavors.PROD -> {
                 it.manifestPlaceholders.put("bugsnagApiKey", "\"${envOrProp("STREAMLINED_BUGSNAG_PROD_API_KEY")}\"")
-                it.addBuildConfigField("ENABLE_BUGSNAG", true, null)
-                it.addBuildConfigField("ENABLE_ANALYTICS", true, null)
-                it.addBuildConfigField("BASE_URL", "\"https://newsapi.org/v2/\"", null)
-                it.addBuildConfigField("API_KEY", "\"${envOrProp("NEWS_API_PROD_API_KEY")}\"", null)
+                it.addBuildConfigField(key = "ENABLE_BUGSNAG", value = true)
+                it.addBuildConfigField(key = "ENABLE_ANALYTICS", value = true)
+                it.addBuildConfigField(key = "BASE_URL", value = "\"https://newsapi.org/v2/\"")
+                it.addBuildConfigField(key = "API_KEY", value = "\"${envOrProp("NEWS_API_PROD_API_KEY")}\"")
             }
         }
 
         // database name
-        it.addBuildConfigField("DATABASE_NAME", "\"streamlined.db\"", null)
+        it.addBuildConfigField(key = "DATABASE_NAME", value = "\"streamlined.db\"")
     }
 }
 
