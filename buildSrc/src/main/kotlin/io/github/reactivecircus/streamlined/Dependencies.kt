@@ -9,7 +9,7 @@ object Versions {
     const val googleServices = "4.3.5"
     const val detekt = "1.16.0"
     const val sqldelight = "1.4.4"
-    const val playPublisher = "2.8.0"
+    const val playPublisher = "3.4.0-agp7.0"
     const val dependencyGraphGenerator = "0.5.0"
     const val bugsnag = "5.6.0"
     const val leakCanary = "2.7"

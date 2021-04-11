@@ -181,8 +181,8 @@ androidComponents {
 }
 
 play {
-    serviceAccountCredentials = rootProject.file("secrets/play-api.json")
-    defaultToAppBundles = true
+    serviceAccountCredentials.set(rootProject.file("secrets/play-api.json"))
+    defaultToAppBundles.set(true)
 }
 
 dependencies {
