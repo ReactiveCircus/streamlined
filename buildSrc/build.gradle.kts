@@ -11,10 +11,6 @@ repositories {
     maven("https://storage.googleapis.com/r8-releases/raw")
 }
 
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
-}
-
 dependencies {
     implementation(Plugins.kotlinGradlePlugin)
     implementation(Plugins.detektGradlePlugin)
