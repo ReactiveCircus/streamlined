@@ -32,15 +32,15 @@ object Versions {
         const val core = "1.6.0-alpha01"
         const val annotation = "1.3.0-alpha01"
         const val appCompat = "1.3.0-rc01"
-        const val activity = "1.3.0-alpha06"
-        const val fragment = "1.3.2"
+        const val activity = "1.3.0-alpha07"
+        const val fragment = "1.3.3"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.0"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.4"
         const val lifecycle = "2.4.0-alpha01"
         const val navigation = "2.3.5"
-        const val work = "2.6.0-alpha01"
+        const val work = "2.6.0-alpha02"
         const val hilt = "1.0.0-beta01"
 
         object test {
