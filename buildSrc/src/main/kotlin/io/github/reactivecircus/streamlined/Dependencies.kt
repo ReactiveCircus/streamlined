@@ -13,7 +13,7 @@ object Versions {
     const val dependencyGraphGenerator = "0.5.0"
     const val bugsnag = "5.6.0"
     const val leakCanary = "2.7"
-    const val desugarLibs = "1.1.1"
+    const val desugarLibs = "1.1.5"
 
     object kotlinx {
         const val coroutines = "1.4.3"
