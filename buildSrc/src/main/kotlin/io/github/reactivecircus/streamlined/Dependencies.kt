@@ -8,7 +8,7 @@ object Versions {
     const val appVersioning = "0.8.1"
     const val googleServices = "4.3.5"
     const val detekt = "1.16.0"
-    const val sqldelight = "1.4.4"
+    const val sqldelight = "1.5.0"
     const val playPublisher = "3.4.0-agp7.0"
     const val dependencyGraphGenerator = "0.5.0"
     const val bugsnag = "5.6.0"
