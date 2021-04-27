@@ -2,12 +2,12 @@ package io.github.reactivecircus.streamlined.data
 
 import com.google.common.truth.Truth.assertThat
 import io.github.reactivecircus.store.ext.RefreshScope
+import kotlin.time.Duration
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import kotlin.time.TestTimeSource
-import kotlin.time.seconds
 
 @ExperimentalCoroutinesApi
 class TimeBasedRefreshPolicyTest {
@@ -16,7 +16,7 @@ class TimeBasedRefreshPolicyTest {
     fun `non-positive expiration is not allowed`() {
         val exception1 = assertThrows(IllegalArgumentException::class.java) {
             TimeBasedRefreshPolicy(
-                expiration = 0.seconds
+                expiration = Duration.seconds(0)
             )
         }
 
@@ -26,7 +26,7 @@ class TimeBasedRefreshPolicyTest {
 
         val exception2 = assertThrows(IllegalArgumentException::class.java) {
             TimeBasedRefreshPolicy(
-                expiration = (-1).seconds
+                expiration = Duration.seconds((-1))
             )
         }
 
@@ -59,7 +59,7 @@ class TimeBasedRefreshPolicyTest {
             val scope = RefreshScope("scope")
             val testTimeSource = TestTimeSource()
             val refreshPolicy = TimeBasedRefreshPolicy(
-                expiration = 10.seconds,
+                expiration = Duration.seconds(10),
                 timeSource = testTimeSource
             )
             refreshPolicy.onRefreshed(scope)
@@ -67,12 +67,12 @@ class TimeBasedRefreshPolicyTest {
             assertThat(refreshPolicy.shouldRefresh(scope))
                 .isFalse()
 
-            testTimeSource += 9.seconds
+            testTimeSource += Duration.seconds(9)
 
             assertThat(refreshPolicy.shouldRefresh(scope))
                 .isFalse()
 
-            testTimeSource += 1.seconds
+            testTimeSource += Duration.seconds(1)
 
             assertThat(refreshPolicy.shouldRefresh(scope))
                 .isTrue()
@@ -83,12 +83,12 @@ class TimeBasedRefreshPolicyTest {
         val scope = RefreshScope("scope")
         val testTimeSource = TestTimeSource()
         val refreshPolicy = TimeBasedRefreshPolicy(
-            expiration = 10.seconds,
+            expiration = Duration.seconds(10),
             timeSource = testTimeSource
         )
         refreshPolicy.onRefreshed(scope)
 
-        testTimeSource += 9.seconds
+        testTimeSource += Duration.seconds(9)
 
         assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
@@ -96,27 +96,27 @@ class TimeBasedRefreshPolicyTest {
         // expiry is updated to 10 seconds from now
         refreshPolicy.onRefreshed(scope)
 
-        testTimeSource += 1.seconds
+        testTimeSource += Duration.seconds(1)
 
         assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
-        testTimeSource += 8.seconds
+        testTimeSource += Duration.seconds(8)
 
         // expiry is updated again to 10 seconds from now
         refreshPolicy.onRefreshed(scope)
 
-        testTimeSource += 1.seconds
+        testTimeSource += Duration.seconds(1)
 
         assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
-        testTimeSource += 8.seconds
+        testTimeSource += Duration.seconds(8)
 
         assertThat(refreshPolicy.shouldRefresh(scope))
             .isFalse()
 
-        testTimeSource += 1.seconds
+        testTimeSource += Duration.seconds(1)
 
         assertThat(refreshPolicy.shouldRefresh(scope))
             .isTrue()
@@ -128,12 +128,12 @@ class TimeBasedRefreshPolicyTest {
         val scope2 = RefreshScope("scope2")
         val testTimeSource = TestTimeSource()
         val refreshPolicy = TimeBasedRefreshPolicy(
-            expiration = 10.seconds,
+            expiration = Duration.seconds(10),
             timeSource = testTimeSource
         )
         refreshPolicy.onRefreshed(scope1)
 
-        testTimeSource += 5.seconds
+        testTimeSource += Duration.seconds(5)
 
         refreshPolicy.onRefreshed(scope2)
 
@@ -143,7 +143,7 @@ class TimeBasedRefreshPolicyTest {
         assertThat(refreshPolicy.shouldRefresh(scope2))
             .isFalse()
 
-        testTimeSource += 5.seconds
+        testTimeSource += Duration.seconds(5)
 
         assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
@@ -151,7 +151,7 @@ class TimeBasedRefreshPolicyTest {
         assertThat(refreshPolicy.shouldRefresh(scope2))
             .isFalse()
 
-        testTimeSource += 5.seconds
+        testTimeSource += Duration.seconds(5)
 
         assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
@@ -166,16 +166,16 @@ class TimeBasedRefreshPolicyTest {
         val scope2 = RefreshScope("scope2")
         val testTimeSource = TestTimeSource()
         val refreshPolicy = TimeBasedRefreshPolicy(
-            expiration = 10.seconds,
+            expiration = Duration.seconds(10),
             timeSource = testTimeSource
         )
         refreshPolicy.onRefreshed(scope1)
 
-        testTimeSource += 5.seconds
+        testTimeSource += Duration.seconds(5)
 
         refreshPolicy.onRefreshed(scope2)
 
-        testTimeSource += 4.seconds
+        testTimeSource += Duration.seconds(4)
 
         refreshPolicy.reset()
 
@@ -185,7 +185,7 @@ class TimeBasedRefreshPolicyTest {
         assertThat(refreshPolicy.shouldRefresh(scope2))
             .isTrue()
 
-        testTimeSource += 11.seconds
+        testTimeSource += Duration.seconds(11)
 
         assertThat(refreshPolicy.shouldRefresh(scope1))
             .isTrue()
