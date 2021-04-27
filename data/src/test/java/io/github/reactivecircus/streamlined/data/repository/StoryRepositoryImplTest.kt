@@ -22,8 +22,8 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import kotlin.collections.set
+import kotlin.time.Duration
 import kotlin.time.TestTimeSource
-import kotlin.time.seconds
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -115,7 +115,7 @@ class StoryRepositoryImplTest {
         scope = testScope
     )
 
-    private val freshDataExpiration = 10.seconds
+    private val freshDataExpiration = Duration.seconds(10)
 
     private val clock = TestTimeSource()
 
@@ -172,7 +172,7 @@ class StoryRepositoryImplTest {
             assertThat(headlineStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += 9.seconds
+            clock += Duration.seconds(9)
 
             storyRepository.streamHeadlineStories().recordWith(flowRecorder)
 
@@ -180,7 +180,7 @@ class StoryRepositoryImplTest {
             assertThat(headlineStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += 1.seconds
+            clock += Duration.seconds(1)
 
             storyRepository.streamHeadlineStories().recordWith(flowRecorder)
 
@@ -230,7 +230,7 @@ class StoryRepositoryImplTest {
             assertThat(personalizedStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += 9.seconds
+            clock += Duration.seconds(9)
 
             storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
 
@@ -238,7 +238,7 @@ class StoryRepositoryImplTest {
             assertThat(personalizedStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += 1.seconds
+            clock += Duration.seconds(1)
 
             storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
 

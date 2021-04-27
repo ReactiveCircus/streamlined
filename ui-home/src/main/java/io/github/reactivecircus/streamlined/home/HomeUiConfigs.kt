@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import reactivecircus.blueprint.async.coroutines.CoroutineDispatcherProvider
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.seconds
 
 interface HomeUiConfigs {
     val numberOfHeadlinesDisplayed: Int
@@ -21,6 +20,6 @@ class DefaultHomeUiConfigs @Inject constructor(
 
     companion object {
         internal const val NUMBER_OF_HEADLINES_DISPLAYED = 3
-        internal val TRANSIENT_ERROR_DISPLAY_DURATION = 2.seconds
+        internal val TRANSIENT_ERROR_DISPLAY_DURATION = Duration.seconds(2)
     }
 }

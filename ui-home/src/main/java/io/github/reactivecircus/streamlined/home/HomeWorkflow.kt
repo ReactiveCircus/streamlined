@@ -55,7 +55,7 @@ class HomeWorkflow @Inject constructor(
             }
             is HomeState.Error.Transient -> {
                 context.runningWorker(
-                    Worker.timer(homeUiConfigs.transientErrorDisplayDuration.inMilliseconds.toLong())
+                    Worker.timer(homeUiConfigs.transientErrorDisplayDuration.inWholeMilliseconds)
                         .transform { it.flowOn(homeUiConfigs.delayDispatcher) }
                 ) {
                     onDismissTransientError()

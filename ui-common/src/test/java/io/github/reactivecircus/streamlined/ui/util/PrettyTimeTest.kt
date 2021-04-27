@@ -1,15 +1,12 @@
 package io.github.reactivecircus.streamlined.ui.util
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
 import java.util.Locale
-import kotlin.time.days
-import kotlin.time.hours
-import kotlin.time.minutes
-import kotlin.time.seconds
+import kotlin.time.Duration
+import org.junit.Test
 
 class PrettyTimeTest {
 
@@ -58,72 +55,105 @@ class PrettyTimeTest {
 
     @Test
     fun `timeAgo() returns 'Moments ago' when given time from now is less than 1 minute`() {
-        val nowMillis = 61.seconds.inMilliseconds.toLong()
+        val nowMillis = Duration.seconds(61).inWholeMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(1.seconds.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.seconds(1).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("1 minute ago")
-        assertThat(30.seconds.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.seconds(30).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("Moments ago")
-        assertThat(61.seconds.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.seconds(61).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("Moments ago")
-        assertThat(62.seconds.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.seconds(62).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("Moments ago")
     }
 
     @Test
     fun `timeAgo() returns 'x minute(s) ago' when given time from now is between 1 hour and 1 minute`() {
-        val nowMillis = 61.minutes.inMilliseconds.toLong()
+        val nowMillis = Duration.minutes(61).inWholeMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(1.minutes.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.minutes(1).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("1 hour ago")
-        assertThat(30.minutes.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.minutes(30).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("31 minutes ago")
-        assertThat(60.minutes.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.minutes(60).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("1 minute ago")
     }
 
     @Test
     fun `timeAgo() returns 'x hour(s) ago' when given time from now is between 1 day and 1 hour`() {
-        val nowMillis = 25.hours.inMilliseconds.toLong()
+        val nowMillis = Duration.hours(25).inWholeMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(1.hours.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.hours(1).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("Yesterday")
-        assertThat(12.hours.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.hours(12).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("13 hours ago")
-        assertThat(24.hours.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.hours(24).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("1 hour ago")
     }
 
     @Test
     fun `timeAgo() returns 'Yesterday' or 'x days ago' when given time from now is between 1 week and 1 day`() {
-        val nowMillis = 8.days.inMilliseconds.toLong()
+        val nowMillis = Duration.days(8).inWholeMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(1.days.inMilliseconds.toLong().timeAgo(pattern, zoneId, locale, fixedClock))
+        assertThat(
+            Duration.days(1).inWholeMilliseconds.toLong()
+                .timeAgo(pattern, zoneId, locale, fixedClock)
+        )
             .isEqualTo("Fri 2 Jan at 12:00 AM")
-        assertThat(3.days.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.days(3).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("5 days ago")
-        assertThat(7.days.inMilliseconds.toLong().timeAgo(pattern, clock = fixedClock))
+        assertThat(
+            Duration.days(7).inWholeMilliseconds.toLong().timeAgo(pattern, clock = fixedClock)
+        )
             .isEqualTo("Yesterday")
     }
 
     @Test
     fun `timeAgo() returns formatted date string when given time from now is between at least 1 week`() {
-        val nowMillis = 10.days.inMilliseconds.toLong()
+        val nowMillis = Duration.days(10).inWholeMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
-        assertThat(3.days.inMilliseconds.toLong().timeAgo(pattern, zoneId, locale, fixedClock))
+        assertThat(
+            Duration.days(3).inWholeMilliseconds.toLong()
+                .timeAgo(pattern, zoneId, locale, fixedClock)
+        )
             .isEqualTo("Sun 4 Jan at 12:00 AM")
-        assertThat(2.days.inMilliseconds.toLong().timeAgo(pattern, zoneId, locale, fixedClock))
+        assertThat(
+            Duration.days(2).inWholeMilliseconds.toLong()
+                .timeAgo(pattern, zoneId, locale, fixedClock)
+        )
             .isEqualTo("Sat 3 Jan at 12:00 AM")
     }
 
     @Test
     fun `timeAgo() returns formatted date string when given time from now is 0 or negative`() {
-        val nowMillis = 10.days.inMilliseconds.toLong()
+        val nowMillis = Duration.days(10).inWholeMilliseconds.toLong()
         val fixedClock = FixedClock(nowMillis)
 
         assertThat(0L.timeAgo(pattern, zoneId, locale, fixedClock))

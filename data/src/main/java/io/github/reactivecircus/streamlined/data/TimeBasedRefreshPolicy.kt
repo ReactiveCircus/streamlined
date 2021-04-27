@@ -2,12 +2,11 @@ package io.github.reactivecircus.streamlined.data
 
 import io.github.reactivecircus.store.ext.RefreshPolicy
 import io.github.reactivecircus.store.ext.RefreshScope
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
-import kotlin.time.minutes
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * A [RefreshPolicy] implementation which determines whether data should be refreshed
@@ -56,6 +55,6 @@ class TimeBasedRefreshPolicy(
     }
 
     companion object {
-        val DEFAULT_EXPIRATION = 5.minutes
+        val DEFAULT_EXPIRATION = Duration.minutes(5)
     }
 }

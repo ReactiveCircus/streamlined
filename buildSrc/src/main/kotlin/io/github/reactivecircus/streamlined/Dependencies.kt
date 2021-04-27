@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object Versions {
-    const val kotlin = "1.4.32"
+    const val kotlin = "1.5.0"
     const val androidGradlePlugin = "7.1.0-alpha01"
     const val appVersioning = "0.9.0"
     const val googleServices = "4.3.8"
@@ -16,7 +16,7 @@ object Versions {
     const val desugarLibs = "1.1.5"
 
     object kotlinx {
-        const val coroutines = "1.4.3"
+        const val coroutines = "1.5.0-RC"
         const val serialization = "1.1.0"
     }
 
