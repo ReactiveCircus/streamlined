@@ -17,7 +17,7 @@ object Versions {
 
     object kotlinx {
         const val coroutines = "1.5.0-RC"
-        const val serialization = "1.1.0"
+        const val serialization = "1.2.1"
     }
 
     object firebase {
