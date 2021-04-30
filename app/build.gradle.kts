@@ -57,9 +57,6 @@ android {
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.testing.ScreenTestRunner"
-
-        // only support English for now
-        resConfigs("en")
     }
 
     signingConfigs {
@@ -91,12 +88,11 @@ android {
                 signingConfig = signingConfigs.getByName(BuildType.RELEASE.name)
             }
             isMinifyEnabled = true
-            isShrinkResources = true
             proguardFiles("shrinker-rules.pro")
         }
     }
 
-    flavorDimensions(FlavorDimensions.ENVIRONMENT)
+    flavorDimensions.add(FlavorDimensions.ENVIRONMENT)
 
     productFlavors {
         register(ProductFlavors.MOCK) {
@@ -117,12 +113,12 @@ android {
             java.srcDir("src/online/java")
         }
     }
+}
 
-    applicationVariants.all {
-        // disable google services plugin for mock flavor
-        if (flavorName == ProductFlavors.MOCK) {
-            tasks.named("process${name.capitalize()}GoogleServices").configure { enabled = false }
-        }
+// disable google services plugin for mock flavor
+tasks.whenTaskAdded {
+    if (name == "processMockDebugGoogleServices") {
+        enabled = false
     }
 }
 

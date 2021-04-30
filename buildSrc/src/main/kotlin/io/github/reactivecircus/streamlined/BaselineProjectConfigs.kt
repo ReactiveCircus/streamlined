@@ -52,11 +52,11 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     buildToolsVersion(androidSdk.buildTools)
 
     defaultConfig {
-        minSdkVersion(androidSdk.minSdk)
-        targetSdkVersion(androidSdk.targetSdk)
+        minSdk = androidSdk.minSdk
+        targetSdk = androidSdk.targetSdk
 
         // only support English for now
-        resConfigs("en")
+        resourceConfigurations.add("en")
     }
 
     testOptions.animationsDisabled = true
