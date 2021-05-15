@@ -6,7 +6,7 @@ object Versions {
     const val kotlin = "1.4.32"
     const val androidGradlePlugin = "7.0.0-alpha15"
     const val appVersioning = "0.8.1"
-    const val googleServices = "4.3.5"
+    const val googleServices = "4.3.8"
     const val detekt = "1.16.0"
     const val sqldelight = "1.5.0"
     const val playPublisher = "3.4.0-agp7.0"
