@@ -24,7 +24,7 @@ jobs:
     name: Assemble
     runs-on: ubuntu-latest
     env:
-      JAVA_TOOL_OPTIONS: -Xmx4g
+      JAVA_TOOL_OPTIONS: -Xmx4g -XX:+UseParallelGC
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
       STREAMLINED_KEY_PASSWORD: ${{ secrets.STREAMLINED_KEY_PASSWORD }}
       STREAMLINED_STORE_PASSWORD: ${{ secrets.STREAMLINED_STORE_PASSWORD }}
@@ -80,7 +80,7 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     env:
-      JAVA_TOOL_OPTIONS: -Xmx4g
+      JAVA_TOOL_OPTIONS: -Xmx4g -XX:+UseParallelGC
       ENABLE_APP_VERSIONING: false
 
     steps:
@@ -123,7 +123,7 @@ jobs:
     name: Static analysis
     runs-on: ubuntu-latest
     env:
-      JAVA_TOOL_OPTIONS: -Xmx4g
+      JAVA_TOOL_OPTIONS: -Xmx4g -XX:+UseParallelGC
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
       ENABLE_APP_VERSIONING: false
 
@@ -165,7 +165,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 25
     env:
-      JAVA_TOOL_OPTIONS: -Xmx4g
+      JAVA_TOOL_OPTIONS: -Xmx4g -XX:+UseParallelGC
       ENABLE_APP_VERSIONING: false
 
     steps:
@@ -201,7 +201,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     env:
-      JAVA_TOOL_OPTIONS: -Xmx4g
+      JAVA_TOOL_OPTIONS: -Xmx4g -XX:+UseParallelGC
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
       STREAMLINED_BUGSNAG_PROD_API_KEY: ${{ secrets.STREAMLINED_BUGSNAG_PROD_API_KEY }}
       ENABLE_APP_VERSIONING: false
