@@ -59,6 +59,9 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     }
 
     testOptions.animationsDisabled = true
+
+    // TODO re-enable once lint analysis failure is fixed
+    lintOptions.disable("DialogFragmentCallbacksDetector")
 }
 
 /**

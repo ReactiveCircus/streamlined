@@ -19,10 +19,10 @@ fun Fragment.navigate(
 ) = navControllerByType(navControllerType).safeNavigate(destination, createNavArgsBundle(args))
 
 fun <Input : Parcelable> Fragment.requireNavInput(): Input =
-    requireArguments().getParcelable<Input>(NAV_ARGS_KEY)!!
+    requireArguments().getParcelable(NAV_ARGS_KEY)!!
 
 fun <Input : Parcelable> Fragment.navInputOrNull(): Input? =
-    arguments?.getParcelable<Input>(NAV_ARGS_KEY)
+    arguments?.getParcelable(NAV_ARGS_KEY)
 
 fun Fragment.navControllerByType(
     navControllerType: NavControllerType = NavControllerType.Parent
