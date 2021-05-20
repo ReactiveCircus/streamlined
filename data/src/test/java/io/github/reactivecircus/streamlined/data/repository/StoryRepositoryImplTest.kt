@@ -145,7 +145,7 @@ class StoryRepositoryImplTest {
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
                     StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.SourceOfTruth),
-                    StoreResponse.Loading<List<Story>>(ResponseOrigin.Fetcher),
+                    StoreResponse.Loading(ResponseOrigin.Fetcher),
                     StoreResponse.Data(dummyHeadlineStoryList, ResponseOrigin.Fetcher)
                 )
 
@@ -201,7 +201,7 @@ class StoryRepositoryImplTest {
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
                     StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.SourceOfTruth),
-                    StoreResponse.Loading<List<Story>>(ResponseOrigin.Fetcher),
+                    StoreResponse.Loading(ResponseOrigin.Fetcher),
                     StoreResponse.Data(dummyPersonalizedStoryList, ResponseOrigin.Fetcher)
                 )
 
