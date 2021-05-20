@@ -75,7 +75,7 @@ class StreamWithRefreshPolicyTest {
             assertThat(flowRecorder.takeAll())
                 .containsExactly(
                     StoreResponse.Data(1, ResponseOrigin.SourceOfTruth),
-                    StoreResponse.Loading<Int>(ResponseOrigin.Fetcher),
+                    StoreResponse.Loading(ResponseOrigin.Fetcher),
                     StoreResponse.Data(2, ResponseOrigin.Fetcher)
                 )
 

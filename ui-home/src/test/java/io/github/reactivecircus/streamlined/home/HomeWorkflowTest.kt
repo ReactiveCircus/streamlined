@@ -444,7 +444,7 @@ class HomeWorkflowTest {
 
             // advance virtual clock to when the transient error is expected to be dismissed
             testDispatcher.advanceTimeBy(
-                DefaultHomeUiConfigs.TRANSIENT_ERROR_DISPLAY_DURATION.toLongMilliseconds()
+                DefaultHomeUiConfigs.TRANSIENT_ERROR_DISPLAY_DURATION.inWholeMilliseconds
             )
 
             assertThat(awaitNextRendering().state)

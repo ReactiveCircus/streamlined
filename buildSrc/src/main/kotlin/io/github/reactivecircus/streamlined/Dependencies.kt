@@ -64,7 +64,7 @@ object Versions {
     const val okhttp = "4.9.1"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.8.0"
-    const val store = "4.0.0-alpha07"
+    const val store = "4.0.2-KT15"
     const val coil = "1.2.1"
     const val timber = "4.7.1"
     const val junit = "4.13.2"
