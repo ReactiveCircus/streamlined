@@ -7,7 +7,7 @@ object Versions {
     const val androidGradlePlugin = "7.0.0-beta02"
     const val appVersioning = "0.8.1"
     const val googleServices = "4.3.8"
-    const val detekt = "1.17.0"
+    const val detekt = "1.17.1"
     const val sqldelight = "1.5.0"
     const val playPublisher = "3.4.0-agp7.0"
     const val dependencyGraphGenerator = "0.5.0"
