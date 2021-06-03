@@ -28,8 +28,5 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             binding.bottomNavigationView,
             navController
         )
-
-        // TODO SDK bug - fragments should NOT be recreated when re-selecting item in bottom navigation view
-        //  https://issuetracker.google.com/issues/80029773
     }
 }
