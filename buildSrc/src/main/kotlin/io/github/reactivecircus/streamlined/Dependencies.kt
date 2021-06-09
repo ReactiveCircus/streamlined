@@ -24,7 +24,7 @@ object Versions {
         const val analytics = "19.0.0"
     }
 
-    const val blueprint = "1.16.0"
+    const val blueprint = "1.17.0"
     const val flowbinding = "1.0.0-beta02"
     const val workflow = "1.0.0-alpha13"
  
@@ -58,7 +58,7 @@ object Versions {
         }
     }
 
-    const val material = "1.3.0"
+    const val material = "1.4.0-rc01"
     const val insetter = "0.4.0"
     const val hilt = "2.36"
     const val okhttp = "4.9.1"
