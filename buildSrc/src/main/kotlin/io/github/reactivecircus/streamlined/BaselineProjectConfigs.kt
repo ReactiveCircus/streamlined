@@ -46,7 +46,7 @@ internal fun Project.configureForAllProjects() {
  */
 @Suppress("UnstableApiUsage")
 internal fun TestedExtension.configureCommonAndroidOptions() {
-    setCompileSdkVersion(androidSdk.compileSdk)
+    compileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
 
     defaultConfig {
