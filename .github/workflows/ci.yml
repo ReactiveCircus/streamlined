@@ -208,14 +208,8 @@ jobs:
           script: echo "Generated AVD snapshot for caching."
 
       - name: Run Android instrumented tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 23
-          arch: x86
-          profile: Nexus 5X
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: ./gradlew connectedCheck
+        run: |
+          ./gradlew ui-home:pixel2api28DebugAndroidTest
 
   publish-to-play-store:
     name: Publish to Play Store
