@@ -10,11 +10,10 @@ import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 internal fun Project.configureKapt() {
     extensions.configure<KaptExtension> {
         javacOptions {
-            if (hasDaggerCompilerDependency) {
+            if (hasHiltCompilerDependency) {
                 option("-Adagger.fastInit=enabled")
                 option("-Adagger.strictMultibindingValidation=enabled")
                 option("-Adagger.experimentalDaggerErrorMessages=enabled")
-                option("-Adagger.hilt.shareTestComponents=true")
                 if (isCiBuild) {
                     option("-Xmaxerrs", 500)
                 } else {
@@ -31,7 +30,7 @@ internal fun Project.configureKapt() {
     }
 }
 
-private val Project.hasDaggerCompilerDependency: Boolean
+private val Project.hasHiltCompilerDependency: Boolean
     get() = configurations.any {
         it.dependencies.any { dependency ->
             dependency.name == "hilt-compiler"

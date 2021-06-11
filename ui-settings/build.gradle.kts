@@ -9,7 +9,7 @@ plugins {
 }
 
 hilt {
-    enableExperimentalClasspathAggregation = true
+    enableAggregatingTask = true
 }
 
 android {

@@ -41,7 +41,7 @@ appVersioning {
 }
 
 hilt {
-    enableExperimentalClasspathAggregation = true
+    enableAggregatingTask = true
 }
 
 android {
