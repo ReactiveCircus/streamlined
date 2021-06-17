@@ -13,10 +13,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Delete
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.getPlugin
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
 
 /**
@@ -53,7 +52,7 @@ class StreamlinedPlugin : Plugin<Project> {
             when (this) {
                 is JavaPlugin,
                 is JavaLibraryPlugin -> {
-                    project.convention.getPlugin<JavaPluginConvention>().apply {
+                    project.extensions.getByType<JavaPluginExtension>().apply {
                         sourceCompatibility = JavaVersion.VERSION_11
                         targetCompatibility = JavaVersion.VERSION_11
                     }

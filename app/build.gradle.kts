@@ -53,7 +53,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.reactivecircus.streamlined"
-        base.archivesBaseName = "streamlined"
+        base.archivesName.set("streamlined")
 
         testApplicationId = "io.github.reactivecircus.streamlined.test"
         testInstrumentationRunner = "io.github.reactivecircus.streamlined.testing.ScreenTestRunner"
