@@ -205,6 +205,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
+          emulator-build: 6110076
           script: echo "Generated AVD snapshot for caching."
 
       - name: Run Android instrumented tests
@@ -215,6 +216,7 @@ jobs:
           profile: Nexus 5X
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-build: 6110076
           script: ./gradlew connectedCheck
 
   publish-to-play-store:
