@@ -29,11 +29,11 @@ object Versions {
     const val workflow = "1.0.0-alpha14"
  
     object androidx {
-        const val core = "1.6.0-rc01"
+        const val core = "1.7.0-alpha01"
         const val annotation = "1.3.0-alpha01"
-        const val appCompat = "1.4.0-alpha02"
+        const val appCompat = "1.4.0-alpha03"
         const val activity = "1.3.0-beta02"
-        const val fragment = "1.4.0-alpha03"
+        const val fragment = "1.4.0-alpha04"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.1"
         const val swipeRefreshLayout = "1.2.0-alpha01"
