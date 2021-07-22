@@ -40,7 +40,7 @@ object Versions {
         const val constraintLayout = "2.0.4"
         const val lifecycle = "2.4.0-alpha02"
         const val navigation = "2.4.0-alpha03"
-        const val work = "2.7.0-alpha04"
+        const val work = "2.7.0-alpha05"
         const val hilt = "1.0.0"
 
         object test {
