@@ -1,5 +1,6 @@
 package io.github.reactivecircus.streamlined
 
+import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.TestedExtension
@@ -9,6 +10,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
@@ -57,10 +59,18 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
         resourceConfigurations.add("en")
     }
 
-    testOptions.animationsDisabled = true
-
     // TODO re-enable once lint analysis failure is fixed
     lintOptions.disable("DialogFragmentCallbacksDetector")
+
+    testOptions {
+        animationsDisabled = true
+        devices.register<ManagedVirtualDevice>("pixel2api28") {
+            device = "Pixel 2"
+            apiLevel = 28
+            systemImageSource = "aosp"
+            abi = "x86"
+        }
+    }
 }
 
 /**
