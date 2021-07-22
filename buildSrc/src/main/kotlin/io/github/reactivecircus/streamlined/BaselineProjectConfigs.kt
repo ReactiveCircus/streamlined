@@ -1,7 +1,7 @@
 package io.github.reactivecircus.streamlined
 
-import com.android.build.api.extension.ApplicationAndroidComponentsExtension
-import com.android.build.api.extension.LibraryAndroidComponentsExtension
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import java.io.File
