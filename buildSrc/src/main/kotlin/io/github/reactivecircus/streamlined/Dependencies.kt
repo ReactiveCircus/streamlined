@@ -60,7 +60,7 @@ object Versions {
 
     const val material = "1.4.0-rc01"
     const val insetter = "0.4.0"
-    const val hilt = "2.38"
+    const val hilt = "2.38.1"
     const val okhttp = "4.9.1"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.8.0"
