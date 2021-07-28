@@ -69,16 +69,16 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
 @Suppress("UnstableApiUsage")
 internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
     lint {
-        disable("ParcelCreator")
-        disable("GoogleAppIndexingWarning")
-        isQuiet = false
-        isIgnoreWarnings = false
+        disable.add("ParcelCreator")
+        disable.add("GoogleAppIndexingWarning")
+        quiet = false
+        ignoreWarnings = false
         htmlReport = true
         xmlReport = true
         htmlOutput = File("${project.buildDir}/reports/lint/lint-reports.html")
         xmlOutput = File("${project.buildDir}/reports/lint/lint-reports.xml")
-        isCheckDependencies = true
-        isIgnoreTestSources = true
+        checkDependencies = true
+        ignoreTestSources = true
     }
 }
 
