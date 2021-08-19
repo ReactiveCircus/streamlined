@@ -24,7 +24,6 @@ plugins {
     kotlin("kapt")
 }
 
-@Suppress("UnstableApiUsage")
 val enableAppVersioning = providers
     .environmentVariable("ENABLE_APP_VERSIONING")
     .forUseAtConfigurationTime()
@@ -122,7 +121,6 @@ tasks.whenTaskAdded {
     }
 }
 
-@Suppress("UnstableApiUsage")
 androidComponents {
     // disable mockRelease, devRelease and prodDebug build variants
     beforeVariants {

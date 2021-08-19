@@ -44,7 +44,6 @@ internal fun Project.configureForAllProjects() {
 /**
  * Apply baseline configurations for all Android projects (Application and Library).
  */
-@Suppress("UnstableApiUsage")
 internal fun TestedExtension.configureCommonAndroidOptions() {
     setCompileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
@@ -60,13 +59,12 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
     testOptions.animationsDisabled = true
 
     // TODO re-enable once lint analysis failure is fixed
-    lintOptions.disable("DialogFragmentCallbacksDetector")
+    lintOptions.disable += "DialogFragmentCallbacksDetector"
 }
 
 /**
  * Apply configuration options for Android Application projects.
  */
-@Suppress("UnstableApiUsage")
 internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
     lint {
         disable.add("ParcelCreator")
@@ -85,7 +83,6 @@ internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: 
 /**
  * Configure the Application Library Component based on build variants.
  */
-@Suppress("UnstableApiUsage")
 internal fun LibraryAndroidComponentsExtension.configureAndroidLibraryVariants(project: Project) {
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty
@@ -103,7 +100,6 @@ internal fun LibraryAndroidComponentsExtension.configureAndroidLibraryVariants(p
 /**
  * Configure the Application Android Component based on build variants.
  */
-@Suppress("UnstableApiUsage")
 internal fun ApplicationAndroidComponentsExtension.configureAndroidApplicationVariants(project: Project) {
     project.plugins.withType<KotlinAndroidPluginWrapper> {
         // disable unit test tasks if the unitTest source set is empty

@@ -19,7 +19,6 @@ import org.gradle.kotlin.dsl.withType
  * Generated png file will be available at ./build/reports/dependency-graph/dependency-graph.png.
  *
  */
-@Suppress("UnstableApiUsage")
 internal fun Project.configureDependencyGraphGenerator() {
     require(isRoot)
     pluginManager.apply(DependencyGraphGeneratorPlugin::class.java)
