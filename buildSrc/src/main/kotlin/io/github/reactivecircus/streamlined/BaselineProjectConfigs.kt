@@ -45,7 +45,7 @@ internal fun Project.configureForAllProjects() {
  * Apply baseline configurations for all Android projects (Application and Library).
  */
 internal fun TestedExtension.configureCommonAndroidOptions() {
-    setCompileSdkVersion(androidSdk.compileSdk)
+    compileSdkVersion(androidSdk.compileSdk)
     buildToolsVersion(androidSdk.buildTools)
 
     defaultConfig {
