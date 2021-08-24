@@ -26,7 +26,7 @@ class BugsnagTree : Timber.Tree() {
     }
 
     @Suppress("ComplexMethod")
-    override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
 
         val log = buildString(message.length + capacityOffset) {
             append(System.currentTimeMillis())
@@ -50,17 +50,17 @@ class BugsnagTree : Timber.Tree() {
             }
         }
 
-        if (throwable != null) {
+        if (t != null) {
             when (priority) {
-                ERROR -> Bugsnag.notify(throwable) {
+                ERROR -> Bugsnag.notify(t) {
                     it.severity = Severity.ERROR
                     true
                 }
-                WARN -> Bugsnag.notify(throwable) {
+                WARN -> Bugsnag.notify(t) {
                     it.severity = Severity.WARNING
                     true
                 }
-                INFO -> Bugsnag.notify(throwable) {
+                INFO -> Bugsnag.notify(t) {
                     it.severity = Severity.INFO
                     true
                 }

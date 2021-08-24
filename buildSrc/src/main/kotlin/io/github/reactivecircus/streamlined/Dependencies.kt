@@ -26,7 +26,7 @@ object Versions {
 
     const val blueprint = "1.17.0"
     const val flowbinding = "1.0.0-beta02"
-    const val workflow = "1.0.0-alpha14"
+    const val workflow = "1.0.0-alpha21"
  
     object androidx {
         const val core = "1.7.0-alpha01"
@@ -69,7 +69,7 @@ object Versions {
     const val timber = "5.0.1"
     const val junit = "4.13.2"
     const val truth = "1.1.3"
-    const val radiography = "2.2.0"
+    const val radiography = "2.4.0"
 }
 
 object Plugins {
