@@ -3,7 +3,7 @@
 package io.github.reactivecircus.streamlined
 
 object Versions {
-    const val kotlin = "1.5.30"
+    const val kotlin = "1.5.31"
     const val androidGradlePlugin = "7.1.0-alpha12"
     const val appVersioning = "1.0.0"
     const val googleServices = "4.3.10"
@@ -29,18 +29,18 @@ object Versions {
     const val workflow = "1.0.0"
  
     object androidx {
-        const val core = "1.7.0-beta01"
-        const val annotation = "1.3.0-alpha01"
+        const val core = "1.7.0-beta02"
+        const val annotation = "1.3.0-beta01"
         const val appCompat = "1.4.0-alpha03"
-        const val activity = "1.4.0-alpha02"
+        const val activity = "1.4.0-beta01"
         const val fragment = "1.4.0-alpha06"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.1"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.4"
-        const val lifecycle = "2.4.0-beta01"
-        const val navigation = "2.4.0-alpha09"
-        const val work = "2.7.0-beta01"
+        const val lifecycle = "2.4.0-rc01"
+        const val navigation = "2.4.0-alpha10"
+        const val work = "2.7.0-rc01"
         const val hilt = "1.0.0"
 
         object test {
@@ -60,7 +60,7 @@ object Versions {
 
     const val material = "1.4.0-rc01"
     const val insetter = "0.4.0"
-    const val hilt = "2.38.1"
+    const val hilt = "2.39"
     const val okhttp = "4.9.1"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.8.0"
