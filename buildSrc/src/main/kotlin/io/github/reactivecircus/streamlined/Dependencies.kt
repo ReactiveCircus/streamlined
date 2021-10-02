@@ -4,7 +4,7 @@ package io.github.reactivecircus.streamlined
 
 object Versions {
     const val kotlin = "1.5.31"
-    const val androidGradlePlugin = "7.1.0-alpha12"
+    const val androidGradlePlugin = "7.1.0-alpha13"
     const val appVersioning = "1.0.0"
     const val googleServices = "4.3.10"
     const val detekt = "1.18.1"
@@ -60,7 +60,7 @@ object Versions {
 
     const val material = "1.4.0-rc01"
     const val insetter = "0.4.0"
-    const val hilt = "2.39"
+    const val hilt = "2.39.1"
     const val okhttp = "4.9.1"
     const val retrofit = "2.9.0"
     const val retrofitSerializationConverter = "0.8.0"
