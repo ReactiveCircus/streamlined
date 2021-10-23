@@ -206,6 +206,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
+          channel: canary
           script: echo "Generated AVD snapshot for caching."
 
       - name: Run Android instrumented tests
@@ -217,6 +218,7 @@ jobs:
           profile: Galaxy Nexus
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          channel: canary
           script: ./gradlew connectedCheck
 
   publish-to-play-store:
