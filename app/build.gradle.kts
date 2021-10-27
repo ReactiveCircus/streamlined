@@ -14,11 +14,11 @@ import org.gradle.language.nativeplatform.internal.BuildType
 plugins {
     `streamlined-plugin`
     `core-library-desugaring`
-    id("io.github.reactivecircus.app-versioning")
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("project-report")
+    id("io.github.reactivecircus.app-versioning")
     id("com.github.triplet.play")
     kotlin("android")
     kotlin("kapt")
