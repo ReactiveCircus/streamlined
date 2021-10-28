@@ -8,10 +8,6 @@ plugins {
     kotlin("kapt")
 }
 
-hilt {
-    enableAggregatingTask = true
-}
-
 android {
     buildFeatures {
         viewBinding = true

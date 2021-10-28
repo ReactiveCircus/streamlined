@@ -39,10 +39,6 @@ appVersioning {
     }
 }
 
-hilt {
-    enableAggregatingTask = true
-}
-
 android {
     buildFeatures {
         buildConfig = true
