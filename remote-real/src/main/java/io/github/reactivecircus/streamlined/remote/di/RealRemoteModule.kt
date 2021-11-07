@@ -44,11 +44,15 @@ internal object RealRemoteModule {
         okhttpClient: Lazy<OkHttpClient>
     ): Retrofit {
         val contentType = "application/json; charset=utf-8".toMediaType()
+        val json = Json {
+            ignoreUnknownKeys = true
+            explicitNulls = false
+        }
         return Retrofit.Builder()
             .baseUrl(apiConfigs.baseUrl)
             .callFactory { request -> okhttpClient.get().newCall(request) }
             .addConverterFactory(
-                Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)
+                json.asConverterFactory(contentType)
             )
             .build()
     }
