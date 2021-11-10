@@ -45,15 +45,6 @@ jobs:
           distribution: 'zulu'
           java-version: '15'
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-
-
       - name: Decrypt secrets
         run: |
           mkdir -p app/src/prod
@@ -61,8 +52,9 @@ jobs:
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
       - name: Assemble signed release App Bundle
-        run: |
-          ./gradlew app:bundleProdRelease
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: app:bundleProdRelease
 
       - name: Cleanup secrets
         if: always()
@@ -93,18 +85,10 @@ jobs:
           distribution: 'zulu'
           java-version: '15'
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-
-
       - name: Run unit tests
-        run: |
-          ./gradlew test -PslimTests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: test -PslimTests
 
       - name: Copy test results
         if: always()
@@ -137,23 +121,15 @@ jobs:
           distribution: 'zulu'
           java-version: '15'
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-
-
       - name: Decrypt secrets
         run: |
           mkdir -p app/src/prod
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
       - name: Run detekt and Android Lint
-        run: |
-          ./gradlew detekt app:lintProdRelease
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detekt app:lintProdRelease
 
       - name: Cleanup secrets
         if: always()
@@ -242,15 +218,6 @@ jobs:
           distribution: 'zulu'
           java-version: '15'
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-
-
       - name: Download build artifacts
         uses: actions/download-artifact@v1
         with:
@@ -278,8 +245,9 @@ jobs:
             -F overwrite=true
 
       - name: Publish release App Bundle to Play Store
-        run: |
-          ./gradlew publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
 
       - name: Cleanup secrets
         if: always()
