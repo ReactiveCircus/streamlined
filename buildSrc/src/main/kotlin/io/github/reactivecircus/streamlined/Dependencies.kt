@@ -4,14 +4,14 @@ package io.github.reactivecircus.streamlined
 
 object Versions {
     const val kotlin = "1.5.31"
-    const val androidGradlePlugin = "7.2.0-alpha03"
+    const val androidGradlePlugin = "7.2.0-alpha04"
     const val appVersioning = "1.0.0"
     const val googleServices = "4.3.10"
     const val detekt = "1.18.1"
     const val sqldelight = "1.5.1"
     const val playPublisher = "3.6.0"
     const val dependencyGraphGenerator = "0.5.0"
-    const val bugsnag = "5.11.0"
+    const val bugsnag = "5.15.0"
     const val leakCanary = "2.7"
     const val desugarLibs = "1.1.5"
 
