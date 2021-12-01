@@ -142,8 +142,8 @@ private val diffCallback: DiffUtil.ItemCallback<FeedItem> =
         ) = when (oldItem) {
             is FeedItem.Content -> {
                 newItem is FeedItem.Content &&
-                        oldItem.story.id == newItem.story.id &&
-                        oldItem.feedType == newItem.feedType
+                    oldItem.story.id == newItem.story.id &&
+                    oldItem.feedType == newItem.feedType
             }
             is FeedItem.Header -> newItem is FeedItem.Header && oldItem.feedType == newItem.feedType
             is FeedItem.TopHeadlinesFooter -> newItem is FeedItem.TopHeadlinesFooter

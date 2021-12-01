@@ -6,6 +6,8 @@ complexity:
 
 formatting:
   android: true
+  ImportOrdering:
+    active: false
   MaximumLineLength:
     excludes: ["**/test/**","**/androidTest/**"]
 

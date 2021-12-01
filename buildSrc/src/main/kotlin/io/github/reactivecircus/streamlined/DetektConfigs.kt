@@ -1,5 +1,6 @@
 package io.github.reactivecircus.streamlined
 
+import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Project
@@ -22,8 +23,10 @@ internal fun Project.configureDetektPlugin() {
             config = files("${project.rootDir}/detekt.yml")
             buildUponDefaultConfig = true
             allRules = true
+        }
+        tasks.withType<Detekt>().configureEach {
             reports {
-                reports.html.destination = file("${project.buildDir}/reports/detekt/${project.name}.html")
+                html.outputLocation.set(file("build/reports/detekt/${project.name}.html"))
             }
         }
     }

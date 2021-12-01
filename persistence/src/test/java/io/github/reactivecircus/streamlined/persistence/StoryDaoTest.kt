@@ -20,7 +20,8 @@ class StoryDaoTest {
     private val queries = StreamlinedDatabase(inMemorySqlDriver).storyEntityQueries
 
     private val dao: StoryDao = StoryDaoImpl(
-        queries, DatabaseConfigs(
+        queries,
+        DatabaseConfigs(
             databaseName = null,
             coroutineContext = testScope.coroutineContext,
         )

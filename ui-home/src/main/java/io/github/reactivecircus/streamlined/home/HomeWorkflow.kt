@@ -64,9 +64,12 @@ class HomeWorkflow @Inject constructor(
             else -> Unit
         }
 
-        return HomeRendering(renderState, onRefresh = context.eventHandler {
-            this.state = HomeState.InFlight.Refresh(renderState.itemsOrNull)
-        })
+        return HomeRendering(
+            renderState,
+            onRefresh = context.eventHandler {
+                this.state = HomeState.InFlight.Refresh(renderState.itemsOrNull)
+            }
+        )
     }
 
     override fun snapshotState(state: HomeState): Snapshot? = null
