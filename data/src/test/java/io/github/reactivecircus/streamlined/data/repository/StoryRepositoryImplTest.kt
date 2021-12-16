@@ -15,16 +15,18 @@ import io.github.reactivecircus.streamlined.data.mapper.toModel
 import io.github.reactivecircus.streamlined.data.testutil.TestStoryDao
 import io.github.reactivecircus.streamlined.domain.model.Story
 import io.github.reactivecircus.streamlined.persistence.StoryEntity
+import kotlin.collections.set
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
+import kotlin.time.TestTimeSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
-import kotlin.collections.set
-import kotlin.time.Duration
-import kotlin.time.TestTimeSource
 
+@ExperimentalTime
 @FlowPreview
 @ExperimentalCoroutinesApi
 class StoryRepositoryImplTest {
@@ -115,7 +117,7 @@ class StoryRepositoryImplTest {
         scope = testScope
     )
 
-    private val freshDataExpiration = Duration.seconds(10)
+    private val freshDataExpiration = 10.seconds
 
     private val clock = TestTimeSource()
 
@@ -172,7 +174,7 @@ class StoryRepositoryImplTest {
             assertThat(headlineStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += Duration.seconds(9)
+            clock += 9.seconds
 
             storyRepository.streamHeadlineStories().recordWith(flowRecorder)
 
@@ -180,7 +182,7 @@ class StoryRepositoryImplTest {
             assertThat(headlineStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += Duration.seconds(1)
+            clock += 1.seconds
 
             storyRepository.streamHeadlineStories().recordWith(flowRecorder)
 
@@ -230,7 +232,7 @@ class StoryRepositoryImplTest {
             assertThat(personalizedStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += Duration.seconds(9)
+            clock += 9.seconds
 
             storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
 
@@ -238,7 +240,7 @@ class StoryRepositoryImplTest {
             assertThat(personalizedStoryFetcher.fetchCount)
                 .isEqualTo(1)
 
-            clock += Duration.seconds(1)
+            clock += 1.seconds
 
             storyRepository.streamPersonalizedStories(query).recordWith(flowRecorder)
 

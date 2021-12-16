@@ -6,7 +6,9 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -36,23 +38,23 @@ fun Long.timeAgo(
     val timeAgo = (clock.currentTimeMillis - this)
         .toDuration(DurationUnit.MILLISECONDS)
     return when {
-        timeAgo < Duration.minutes(1) -> "Moments ago"
-        timeAgo < Duration.hours(1) -> {
-            if (timeAgo < Duration.minutes(2)) {
+        timeAgo < 1.minutes -> "Moments ago"
+        timeAgo < 1.hours -> {
+            if (timeAgo < 2.minutes) {
                 "1 minute ago"
             } else {
                 "${timeAgo.inWholeMinutes} minutes ago"
             }
         }
-        timeAgo < Duration.days(1) -> {
-            if (timeAgo < Duration.hours(2)) {
+        timeAgo < 1.days -> {
+            if (timeAgo < 2.hours) {
                 "1 hour ago"
             } else {
                 "${timeAgo.inWholeHours.toInt()} hours ago"
             }
         }
-        timeAgo < Duration.days(7) -> {
-            if (timeAgo < Duration.days(2)) {
+        timeAgo < 7.days -> {
+            if (timeAgo < 2.days) {
                 "Yesterday"
             } else {
                 "${timeAgo.inWholeDays.toInt()} days ago"
