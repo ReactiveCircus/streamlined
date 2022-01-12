@@ -120,7 +120,7 @@ tasks.whenTaskAdded {
 androidComponents {
     // disable mockRelease, devRelease and prodDebug build variants
     beforeVariants {
-        it.enabled = it.flavorName == ProductFlavors.PROD && it.buildType == BuildType.RELEASE.name ||
+        it.enable = it.flavorName == ProductFlavors.PROD && it.buildType == BuildType.RELEASE.name ||
             it.flavorName != ProductFlavors.PROD && it.buildType == BuildType.DEBUG.name
     }
 
