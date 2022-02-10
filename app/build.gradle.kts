@@ -26,7 +26,6 @@ plugins {
 
 val enableAppVersioning = providers
     .environmentVariable("ENABLE_APP_VERSIONING")
-    .forUseAtConfigurationTime()
     .getOrElse("true").toBoolean()
 
 appVersioning {

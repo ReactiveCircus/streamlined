@@ -3,9 +3,9 @@ package io.github.reactivecircus.streamlined
 import org.gradle.api.Project
 
 val Project.isCiBuild: Boolean
-    get() = providers.environmentVariable("CI").forUseAtConfigurationTime().orNull == "true"
+    get() = providers.environmentVariable("CI").orNull == "true"
 
 fun Project.envOrProp(name: String): String {
-    return providers.environmentVariable(name).forUseAtConfigurationTime().orNull
-        ?: providers.gradleProperty(name).forUseAtConfigurationTime().getOrElse("")
+    return providers.environmentVariable(name).orNull
+        ?: providers.gradleProperty(name).getOrElse("")
 }
