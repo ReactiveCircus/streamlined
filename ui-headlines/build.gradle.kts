@@ -3,7 +3,7 @@ import io.github.reactivecircus.streamlined.Libraries
 plugins {
     `streamlined-plugin`
     id("com.android.library")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     kotlin("android")
     kotlin("kapt")
 }

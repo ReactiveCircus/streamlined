@@ -4,7 +4,7 @@ plugins {
     `streamlined-plugin`
     `core-library-desugaring`
     id("com.android.library")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     kotlin("android")
     kotlin("kapt")
 }

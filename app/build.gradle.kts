@@ -15,7 +15,7 @@ plugins {
     `streamlined-plugin`
     `core-library-desugaring`
     id("com.android.application")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
     id("project-report")
     id("io.github.reactivecircus.app-versioning")
