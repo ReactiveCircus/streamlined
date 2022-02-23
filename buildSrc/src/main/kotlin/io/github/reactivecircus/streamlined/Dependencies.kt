@@ -29,17 +29,17 @@ object Versions {
     const val workflow = "1.0.0"
  
     object androidx {
-        const val core = "1.8.0-alpha04"
+        const val core = "1.8.0-alpha05"
         const val annotation = "1.4.0-alpha02"
         const val appCompat = "1.4.1"
-        const val activity = "1.5.0-alpha02"
+        const val activity = "1.5.0-alpha03"
         const val fragment = "1.4.1"
         const val coordinatorLayout = "1.1.0"
         const val recyclerView = "1.2.1"
         const val swipeRefreshLayout = "1.2.0-alpha01"
         const val constraintLayout = "2.0.4"
-        const val lifecycle = "2.5.0-alpha02"
-        const val navigation = "2.5.0-alpha02"
+        const val lifecycle = "2.5.0-alpha03"
+        const val navigation = "2.5.0-alpha03"
         const val work = "2.7.1"
         const val hilt = "1.0.0"
 
