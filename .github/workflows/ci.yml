@@ -51,10 +51,10 @@ jobs:
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/streamlined.aes -out secrets/streamlined.jks -k $ENCRYPTION_KEY
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
+      - uses: gradle/gradle-build-action@v2
+
       - name: Assemble signed release App Bundle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: app:bundleProdRelease
+        run: ./gradlew app:bundleProdRelease
 
       - name: Cleanup secrets
         if: always()
@@ -85,10 +85,10 @@ jobs:
           distribution: 'zulu'
           java-version: '15'
 
+      - uses: gradle/gradle-build-action@v2
+
       - name: Run unit tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: test -PslimTests
+        run: ./gradlew test -PslimTests
 
       - name: Copy test results
         if: always()
@@ -126,10 +126,11 @@ jobs:
           mkdir -p app/src/prod
           openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in secrets/google-services-prod.aes -out app/src/prod/google-services.json -k $ENCRYPTION_KEY
 
+      - uses: gradle/gradle-build-action@v2
+
       - name: Run detekt and Android Lint
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: detekt app:lintProdRelease
+
+        run: ./gradlew detekt app:lintProdRelease
 
       - name: Cleanup secrets
         if: always()
@@ -244,10 +245,10 @@ jobs:
             -F versionName=$VERSION_NAME \
             -F overwrite=true
 
+      - uses: gradle/gradle-build-action@v2
+
       - name: Publish release App Bundle to Play Store
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
+        run: ./gradlew publishBundle --artifact-dir app/build/outputs/bundle/prodRelease
 
       - name: Cleanup secrets
         if: always()
