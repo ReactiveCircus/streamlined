@@ -4,20 +4,10 @@ plugins {
     `kotlin-dsl`
 }
 
-repositories {
-    mavenCentral()
-    google()
-    gradlePluginPortal()
-    // TODO Remove once updated to AGP that bundles at least r8 3.0.37-dev
-    maven("https://storage.googleapis.com/r8-releases/raw")
-}
-
 dependencies {
     implementation(Plugins.kotlinGradlePlugin)
     implementation(Plugins.detektGradlePlugin)
     implementation(Plugins.dependencyGraphGeneratorPlugin)
-    // TODO Remove once updated to AGP that bundles at least r8 3.0.37-dev
-    implementation("com.android.tools:r8:3.0.37-dev")
     implementation(Plugins.androidGradlePlugin)
     implementation(Plugins.appVersioningGradlePlugin)
     implementation(Plugins.kotlinSerializationPlugin)

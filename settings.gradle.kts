@@ -1,5 +1,13 @@
 rootProject.name= "streamlined"
 
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}
+
 include(":app")
 include(":navigator")
 include(":design-themes")

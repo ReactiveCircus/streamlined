@@ -9,7 +9,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -20,11 +19,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.configureForAllProjects() {
     // apply and configure detekt plugin
     configureDetektPlugin()
-
-    repositories {
-        mavenCentral()
-        google()
-    }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
