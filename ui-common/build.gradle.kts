@@ -8,7 +8,10 @@ plugins {
     kotlin("kapt")
 }
 
-android.buildFeatures.androidResources = true
+android {
+    namespace = "io.github.reactivecircus.streamlined.ui"
+    buildFeatures.androidResources = true
+}
 
 dependencies {
     api(project(":analytics-api-base"))

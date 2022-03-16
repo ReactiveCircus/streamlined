@@ -6,6 +6,10 @@ plugins {
     kotlin("android")
 }
 
+android {
+    namespace = "io.github.reactivecircus.analytics.firebase"
+}
+
 dependencies {
     api(project(":analytics-api-base"))
 

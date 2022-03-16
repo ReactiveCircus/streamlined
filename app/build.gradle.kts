@@ -39,6 +39,8 @@ appVersioning {
 }
 
 android {
+    namespace = "io.github.reactivecircus.streamlined"
+
     buildFeatures {
         buildConfig = true
         viewBinding = true

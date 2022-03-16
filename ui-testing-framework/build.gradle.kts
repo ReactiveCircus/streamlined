@@ -8,6 +8,10 @@ plugins {
     kotlin("kapt")
 }
 
+android {
+    namespace = "io.github.reactivecircus.streamlined.testing"
+}
+
 dependencies {
     implementation(project(":analytics-api-no-op"))
     implementation(project(":navigator"))

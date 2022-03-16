@@ -6,7 +6,10 @@ plugins {
     kotlin("android")
 }
 
-android.buildFeatures.androidResources = true
+android {
+    namespace = "io.github.reactivecircus.streamlined.design"
+    buildFeatures.androidResources = true
+}
 
 dependencies {
     // AndroidX

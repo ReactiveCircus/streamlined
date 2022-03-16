@@ -10,6 +10,8 @@ plugins {
 }
 
 android {
+    namespace = "io.github.reactivecircus.streamlined.home"
+
     buildFeatures {
         viewBinding = true
         androidResources = true

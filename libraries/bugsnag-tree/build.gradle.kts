@@ -6,6 +6,10 @@ plugins {
     kotlin("android")
 }
 
+android {
+    namespace = "io.github.reactivecircus.bugsnag"
+}
+
 dependencies {
     // timber
     implementation(Libraries.timber)

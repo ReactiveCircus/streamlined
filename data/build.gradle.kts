@@ -8,6 +8,10 @@ plugins {
     kotlin("kapt")
 }
 
+android {
+    namespace = "io.github.reactivecircus.streamlined.data"
+}
+
 dependencies {
     implementation(project(":domain-api"))
     implementation(project(":remote-base"))

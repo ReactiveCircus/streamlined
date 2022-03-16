@@ -7,7 +7,10 @@ plugins {
     id("kotlin-parcelize")
 }
 
-android.buildFeatures.androidResources = true
+android {
+    namespace = "io.github.reactivecircus.streamlined.navigator"
+    buildFeatures.androidResources = true
+}
 
 dependencies {
     // AndroidX

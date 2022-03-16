@@ -7,6 +7,10 @@ plugins {
     `kotlin-kapt`
 }
 
+android {
+    namespace = "io.github.reactivecircus.streamlined.work"
+}
+
 dependencies {
     implementation(project(":domain-runtime"))
 
