@@ -29,8 +29,8 @@ object Versions {
     const val workflow = "1.0.0"
  
     object androidx {
-        const val core = "1.8.0-rc01"
-        const val annotation = "1.4.0-alpha02"
+        const val core = "1.8.0-rc02"
+        const val annotation = "1.4.0-beta01"
         const val appCompat = "1.4.1"
         const val activity = "1.5.0-rc01"
         const val fragment = "1.4.1"
